@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_to_do_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_to_do_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'toDoList.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'toDoList.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'toDoList.creation') }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for toDoList in pagination.items %}
+                <tr>
+                    <td>{{ toDoList.id }}</td>
+                    <td>{{ toDoList.title }}</td>
+                    <td>{{ toDoList.creation|date('d-m-yy') }}</td>
+                    <td></td>
+                    <td>
+                        <a href="{{ url('to_do_show', {'id': toDoList.id}) }}" title="{{ 'action_view'|trans }}">
+                            {{ 'action_view'|trans }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message_empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

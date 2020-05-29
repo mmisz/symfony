@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_to_do_details'|trans }}{{ toDoList.id }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'label_title'|trans }} - {{ toDoList.title }}</h1>
+    <p>{{ 'list_date'|trans }} - {{ toDoList.creation|date('d-m-yy') }}</p>
+    <p>{{ 'label_tags'|trans }}:</p>
+    <h2>{{ 'header_to_do'|trans({'%id%': toDoList.id|default('')}) }}</h2>
+    <table>
+        <tr>
+            <th>{{ 'label_name'|trans }}</th>
+            <th>{{ 'list_element_done'|trans }}</th>
+        </tr>
+        {% for element in toDoList.listElements %}
+            <tr>
+                <td>{{ element.content }}</td>
+                <td><input type="checkbox"></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr>
+    {% if toDoList.listComments|length %}
+    <table>
+        <tr>
+            <th><h3>{{ 'label_comments'|trans }}</h3></th>
+            <th>{{ 'label_actions'|trans }}</th>
+
+        </tr>
+        {% for comment in toDoList.listComments %}
+            <tr>
+                <td>
+                    {{ comment.content }}
+                </td>
+                <td>
+                <a href="{{ url('list_comment_edit', {'id': comment.id}) }}">
+                    <button class="btn btn-secondary">{{ 'label_edit'|trans }}</button>
+                </a>
+                <a href="{{ url('list_comment_delete', {'id': comment.id}) }}">
+                     <button class="btn btn-secondary">{{ 'label_delete'|trans }}</button>
+                </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr>
+        {% endif %}
+    <b>{{ 'title_comment_create'|trans }}</b>
+    {{ form_start(form, { method: 'POST', action: url('to_do_show',{'id': toDoList.id}) }) }}
+    {{ form_widget(form) }}
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ 'action_save'|trans }}" class="btn btn-primary" />
+    </div>
+    <hr>
+    <div class="form-group row float-sm-left">
+        <a href="{{ url('to_do_index') }}" title="{{ 'action_back_to_list'|trans }}">
+            {{ 'action_back_to_list'|trans }}
+        </a>
+    </div>
+{% endblock %}
