@@ -35,7 +35,24 @@ class ToDoListRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ToDoList::class);
     }
-
+    public function save(ToDoList $toDoList): void
+    {
+        $this->_em->persist($toDoList);
+        $this->_em->flush($toDoList);
+    }
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\ListComment $listComment ListComment entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(ToDoList $toDoList): void
+    {
+        $this->_em->remove($toDoList);
+        $this->_em->flush($toDoList);
+    }
 
     /**
      * Query all records.
