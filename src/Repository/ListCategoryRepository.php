@@ -4,7 +4,8 @@ namespace App\Repository;
 
 use App\Entity\ListCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method ListCategory|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,7 +24,7 @@ class ListCategoryRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    const PAGINATOR_ITEMS_PER_PAGE = 3;
 
     /**
      * CategoryRepository constructor.
@@ -58,7 +59,32 @@ class ListCategoryRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('listCategory');
     }
-
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\ListCategory $category Category entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(ListCategory $category): void
+    {
+        $this->_em->persist($category);
+        $this->_em->flush($category);
+    }
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\ListCategory $category ListCategory entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(ListCategory $category): void
+    {
+        $this->_em->remove($category);
+        $this->_em->flush($category);
+    }
     // /**
     //  * @return ListCategory[] Returns an array of ListCategory objects
     //  */

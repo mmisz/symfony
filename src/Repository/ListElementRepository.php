@@ -4,7 +4,8 @@ namespace App\Repository;
 
 use App\Entity\ListElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method ListElement|null find($id, $lockMode = null, $lockVersion = null)

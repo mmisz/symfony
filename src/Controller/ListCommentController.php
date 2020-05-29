@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\ListCommentType;
 use App\Repository\ListCommentRepository;
 use App\Entity\ListComment;
+use App\Repository\ToDoListRepository;
+use App\Entity\ToDoList;
 /**
  * Class ListComment.
  */
@@ -48,7 +50,7 @@ class ListCommentController extends AbstractController
         }
 
         return $this->render(
-            'list-comment/editComment.html.twig',
+            'list-comment/edit.html.twig',
             [
                 'form' => $form->createView(),
                 'listComment' => $listComment,
@@ -90,12 +92,50 @@ class ListCommentController extends AbstractController
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
         }
         return $this->render(
-            'list-comment/deleteComment.html.twig',
+            'list-comment/delete.html.twig',
             [
                 'form' => $form->createView(),
                 'listComment' => $listComment,
                 'listId' => $listComment->getToDoList()->getId(),
             ]
+        );
+    }
+    /**
+     * Create action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/list-comment-create{id}",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="list_comment_create",
+     * )
+     */
+    public function create(ToDoList $toDoList, Request $request, ListCommentRepository $listCommentRepository): Response
+    {
+        $listComment = new ListComment();
+        $form = $this->createForm(ListCommentType::class, $listComment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $listComment->setToDoList($toDoList);
+            $this->addFlash('success', 'message.deleted_successfully');
+            $listCommentRepository->save($listComment);
+            return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
+        }
+
+        return $this->render(
+            'list-comment/create.html.twig',
+            ['form' => $form->createView(),
+                'listId' => $toDoList->getId(),
+                ]
         );
     }
 }

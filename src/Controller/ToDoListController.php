@@ -66,21 +66,12 @@ class ToDoListController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(ToDoList $toDoList, Request $request, ListCommentRepository $listCommentRepository): Response
+    public function show(ToDoList $toDoList, Request $request): Response
     {
-        $listComment = new ListComment();
-        $form = $this->createForm(ListCommentType::class, $listComment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'message.deleted_successfully');
-            $toDoList->addListComment($listComment);
-            $listCommentRepository->save($listComment);
-        }
 
         return $this->render(
             'to-do/show.html.twig',
-            ['form' => $form->createView(),
+            [
             'toDoList' => $toDoList]
         );
     }
