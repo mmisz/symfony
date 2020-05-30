@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_comment_create'|trans }}
+    {{ 'title_category_create'|trans }}
 {% endblock %}
 
 {% block body %}
     <h1>{{ 'title_category_create'|trans }}</h1>
-    {{ form_start(form, { method: 'POST', action: url('list_comment_create', {id: listId}) }) }}
+    {{ form_start(form, { method: 'POST', action: url('list_category_create') }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'action_save'|trans }}" class="btn btn-secondary" />
     </div>
     <div class="form-group row float-sm-left">
-        <a href="{{ url('to_do_show',{'id': listId}) }}" class="btn btn-primary">
+        <a href="{{ url('list_category_index') }}" class="btn btn-primary">
             {{ 'action_back_to_list'|trans }}
         </a>
     </div>

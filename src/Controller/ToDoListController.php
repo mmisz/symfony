@@ -7,6 +7,7 @@ namespace App\Controller;
 
 use App\Entity\ListElement;
 use App\Entity\ToDoList;
+use App\Form\ToDoType;
 use App\Repository\ListElementRepository;
 use App\Repository\ToDoListRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -90,7 +91,7 @@ class ToDoListController extends AbstractController
      *     "/list-delete/{id}",
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="list_delete",
+     *     name="to_do_delete",
      * )
      */
     public function delete(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
@@ -112,6 +113,46 @@ class ToDoListController extends AbstractController
                 'form' => $form->createView(),
                 'toDoList' => $toDoList,
                 'listId' => $toDoList->getId(),
+            ]
+        );
+    }
+    /**
+     * Edit action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \App\Entity\ListCategory                      $category           Category entity
+     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/edit",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="to_do_edit",
+     * )
+     */
+    public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
+    {
+        $form = $this->createForm(ToDoType::class, $toDoList, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $toDoListRepository->save($toDoList);
+
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('to_do_index');
+        }
+
+        return $this->render(
+            'to-do/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'toDoList' => $toDoList,
             ]
         );
     }

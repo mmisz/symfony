@@ -6,6 +6,7 @@ use App\Repository\ListCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ListCategoryRepository::class)
@@ -29,6 +30,20 @@ class ListCategory
      * @ORM\OneToMany(targetEntity=ToDoList::class, mappedBy="category")
      */
     private $toDoLists;
+
+    /**
+     * Code.
+     *
+     * @var string
+     *
+     * @ORM\Column(
+     *     type="string",
+     *     length=255
+     * )
+     *
+     * @Gedmo\Slug(fields={"title"})
+     */
+    private $code;
 
     public function __construct()
     {
@@ -79,6 +94,18 @@ class ListCategory
                 $toDoList->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

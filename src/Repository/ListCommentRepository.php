@@ -27,7 +27,7 @@ class ListCommentRepository extends ServiceEntityRepository
     const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
-     * CategoryRepository constructor.
+     * ListCommentRepository constructor.
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */

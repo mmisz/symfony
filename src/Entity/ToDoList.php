@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ToDoListRepository::class)
@@ -15,14 +17,25 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class ToDoList
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * Primary key.
+     *
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * Title.
+     *
+     * @var string
+     *
+     * @ORM\Column(
+     *     type="string",
+     *     length=255,
+     * )
      */
     private $title;
 
@@ -57,17 +70,34 @@ class ToDoList
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
-
     /**
-     * @ORM\ManyToMany(targetEntity=ListTag::class, mappedBy="toDoList")
+     * Tags.
+     *
+     * @var array
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\ListTag",
+     *     inversedBy="toDoList",
+     *     orphanRemoval=true
+     * )
+     * @ORM\JoinTable(name="list_tag_to_do_list")
+     */
+    /**
+     * małpaORM\ManyToMany(targetEntity=ListTag::class, mappedBy="toDoList")
      */
     private $listTags;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=ListTag::class, inversedBy="toDoLists")
+     */
+    private $listTag;
 
     public function __construct()
     {
         $this->listElements = new ArrayCollection();
         $this->listComments = new ArrayCollection();
         $this->listTags = new ArrayCollection();
+        $this->listTag = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,14 +215,6 @@ class ToDoList
         return $this;
     }
 
-    /**
-     * @return Collection|ListTag[]
-     */
-    public function getListTags(): Collection
-    {
-        return $this->listTags;
-    }
-
     public function addListTag(ListTag $listTag): self
     {
         if (!$this->listTags->contains($listTag)) {
@@ -211,5 +233,13 @@ class ToDoList
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|ListTag[]
+     */
+    public function getListTag(): Collection
+    {
+        return $this->listTag;
     }
 }

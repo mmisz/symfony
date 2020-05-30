@@ -168,6 +168,11 @@ class ListCategoryController extends AbstractController
      */
     public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
     {
+        if ($category->getToDoLists()->count()) {
+            $this->addFlash('warning', 'message_category_contains_tasks');
+
+            return $this->redirectToRoute('category_index');
+        }
         $form = $this->createForm(ListCategoryType::class, $category, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
