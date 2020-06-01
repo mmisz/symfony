@@ -59,4 +59,36 @@ class ListTagRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('toDoList');
     }
+
+    /**
+     * @param ListTag $listTag
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(ListTag $listTag)
+    {
+        $this->_em->persist($listTag);
+        $this->_em->flush($listTag);
+    }
+
+    public function findOneByName(string $name)
+    {
+      return $this->findOneBy(
+          ['name' => $name]
+    );
+    }
+
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\ListComment $listTag ListTag entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(ListTag $listTag): void
+    {
+        $this->_em->remove($listTag);
+        $this->_em->flush($listTag);
+    }
 }

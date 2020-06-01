@@ -127,6 +127,7 @@ class ListCommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listComment->setToDoList($toDoList);
             $this->addFlash('success', 'message_created_successfully');
+            $listComment->setCreation(new \DateTime());
             $listCommentRepository->save($listComment);
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
         }

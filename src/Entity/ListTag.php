@@ -52,12 +52,13 @@ class ListTag
      */
     private $name;
 
+
     /**
      * ToDoList.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\ToDoList[] ToDoList
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\ToDoList[] ToDoLists
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ToDoList", mappedBy="listTags")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ToDoList", mappedBy="listTag")
      *
      * @Assert\Type(type="Doctrine\Common\Collections\ArrayCollection")
      */
@@ -79,11 +80,18 @@ class ListTag
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -106,12 +114,12 @@ class ListTag
     /**
      * Remove toDoList from collection.
      *
-     * @param \App\Entity\ToDoList $toDoList Task entity
+     * @param \App\Entity\ToDoList $toDoList ToDoList entity
      */
     public function removeToDoList(ToDoList $toDoList): void
     {
-        if ($this->tasks->contains($toDoList)) {
-            $this->tasks->removeElement($toDoList);
+        if ($this->toDoLists->contains($toDoList)) {
+            $this->toDoLists->removeElement($toDoList);
             $toDoList->removeListTag($this);
         }
     }

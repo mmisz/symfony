@@ -1,12 +1,11 @@
 <?php
 /**
- * ToDo type.
+ * ListSingleTag type.
  */
 
 namespace App\Form;
 
-use App\Entity\ListCategory;
-use App\Entity\ToDoList;
+use App\Entity\ListTag;
 use App\Form\DataTransformer\ListTagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,9 +14,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ToDoType.
+ * Class ListSingleTag.
  */
-class ToDoType extends AbstractType
+class ListSingleTagType extends AbstractType
 {
     /**
      * Tags data transformer.
@@ -27,7 +26,6 @@ class ToDoType extends AbstractType
     private $tagsDataTransformer;
 
     /**
-     * TaskType constructor.
      *
      * @param \App\Form\DataTransformer\ListTagsDataTransformer $tagsDataTransformer Tags data transformer
      */
@@ -50,17 +48,7 @@ class ToDoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'title',
-            TextType::class,
-            [
-                'label' => 'label_title',
-                'required' => true,
-                'attr' => ['max_length' => 100],
-            ]
-        );
-
-        $builder->add(
-            'listTag',
+            'name',
             TextType::class,
             [
                 'label' => 'label_tags',
@@ -69,7 +57,7 @@ class ToDoType extends AbstractType
             ]
         );
 
-        $builder->get('listTag')->addModelTransformer(
+        $builder->get('name')->addModelTransformer(
             $this->tagsDataTransformer
         );
     }
@@ -81,7 +69,7 @@ class ToDoType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => ToDoList::class]);
+        $resolver->setDefaults(['data_class' => ListTag::class]);
     }
 
     /**
@@ -94,6 +82,6 @@ class ToDoType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'toDoList';
+        return 'listTag';
     }
 }

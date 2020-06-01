@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ToDoListRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,7 +67,7 @@ class ToDoList
     private $listComments;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ListCategory::class, inversedBy="toDoLists")
+     * @ORM\ManyToOne(targetEntity=ListCategory::class, inversedBy="to_do_lists")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -77,18 +78,10 @@ class ToDoList
      *
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\ListTag",
-     *     inversedBy="toDoList",
+     *     inversedBy="to_do_lists",
      *     orphanRemoval=true
      * )
-     * @ORM\JoinTable(name="list_tag_to_do_list")
-     */
-    /**
-     * małpaORM\ManyToMany(targetEntity=ListTag::class, mappedBy="toDoList")
-     */
-    private $listTags;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=ListTag::class, inversedBy="toDoLists")
+     * @ORM\JoinTable(name="to_do_list_list_tag")
      */
     private $listTag;
 
@@ -96,20 +89,29 @@ class ToDoList
     {
         $this->listElements = new ArrayCollection();
         $this->listComments = new ArrayCollection();
-        $this->listTags = new ArrayCollection();
         $this->listTag = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return $this
+     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -117,11 +119,18 @@ class ToDoList
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getDone(): ?int
     {
         return $this->done;
     }
 
+    /**
+     * @param int $done
+     * @return $this
+     */
     public function setDone(int $done): self
     {
         $this->done = $done;
@@ -129,11 +138,18 @@ class ToDoList
         return $this;
     }
 
-    public function getCreation(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface
+     */
+    public function getCreation(): DateTimeInterface
     {
         return $this->creation;
     }
 
+    /**
+     * @param \DateTimeInterface $creation
+     * @return $this
+     */
     public function setCreation(\DateTimeInterface $creation): self
     {
         $this->creation = $creation;
@@ -149,6 +165,10 @@ class ToDoList
         return $this->listElements;
     }
 
+    /**
+     * @param ListElement $listElement
+     * @return $this
+     */
     public function addListElement(ListElement $listElement): self
     {
         if (!$this->listElements->contains($listElement)) {
@@ -159,6 +179,10 @@ class ToDoList
         return $this;
     }
 
+    /**
+     * @param ListElement $listElement
+     * @return $this
+     */
     public function removeListElement(ListElement $listElement): self
     {
         if ($this->listElements->contains($listElement)) {
@@ -180,6 +204,10 @@ class ToDoList
         return $this->listComments;
     }
 
+    /**
+     * @param ListComment $listComment
+     * @return $this
+     */
     public function addListComment(ListComment $listComment): self
     {
         if (!$this->listComments->contains($listComment)) {
@@ -190,6 +218,10 @@ class ToDoList
         return $this;
     }
 
+    /**
+     * @param ListComment $listComment
+     * @return $this
+     */
     public function removeListComment(ListComment $listComment): self
     {
         if ($this->listComments->contains($listComment)) {
@@ -203,43 +235,59 @@ class ToDoList
         return $this;
     }
 
+    /**
+     * @return ListCategory|null
+     */
     public function getCategory(): ?ListCategory
     {
         return $this->category;
     }
 
+    /**
+     * @param ListCategory|null $category
+     * @return $this
+     */
     public function setCategory(?ListCategory $category): self
     {
         $this->category = $category;
 
         return $this;
     }
+    /**
+     * Getter for listTag.
+     *
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\ListTag[] ListTag collection
+     */
+    public function getListTag(): Collection
+    {
+        return $this->listTag;
+    }
 
+    /**
+     * @param ListTag $listTag
+     * @return $this
+     */
     public function addListTag(ListTag $listTag): self
     {
-        if (!$this->listTags->contains($listTag)) {
-            $this->listTags[] = $listTag;
+        if (!$this->listTag->contains($listTag)) {
+            $this->listTag[] = $listTag;
             $listTag->addToDoList($this);
         }
 
         return $this;
     }
 
+    /**
+     * @param ListTag $listTag
+     * @return $this
+     */
     public function removeListTag(ListTag $listTag): self
     {
-        if ($this->listTags->contains($listTag)) {
-            $this->listTags->removeElement($listTag);
+        if ($this->listTag->contains($listTag)) {
+            $this->listTag->removeElement($listTag);
             $listTag->removeToDoList($this);
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection|ListTag[]
-     */
-    public function getListTag(): Collection
-    {
-        return $this->listTag;
     }
 }

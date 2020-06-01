@@ -5,9 +5,20 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'label_title'|trans }} - {{ toDoList.title }}</h1>
+    <h3>{{ 'title_to_do_details'|trans }}</h3>
+    <h1>
+        <a href="{{ url('list_category_show', {id: toDoList.category.id}) }}" title="{{ 'action_view'|trans }}">
+            {{ toDoList.category.title }} </a>
+            >
+            {{ toDoList.title }}</h1>
     <p>{{ 'list_date'|trans }} - {{ toDoList.creation|date('d-m-yy') }}</p>
-    <p>{{ 'label_tags'|trans }}:</p>
+    <p>{{ 'label_tags'|trans }}:
+    {% for element in toDoList.listTag %}
+        <a href="{{ url('list_tag_show', {'id': element.id}) }}" title="{{ 'action_view'|trans }}"">
+            #{{ element.name }}
+        </a>
+        {% endfor %}
+    </p>
     <h2>{{ 'header_to_do'|trans({'%id%': toDoList.id|default('')}) }}</h2>
     <table>
         <tr>
@@ -32,6 +43,7 @@
 
         {% for comment in toDoList.listComments %}
             <hr>
+            <p>{{ comment.creation|date("m/d/Y") }}</p>
             <p>{{ comment.content }}</p>
             <p>
                 <a href="{{ url('list_comment_edit', {'id': comment.id}) }}">

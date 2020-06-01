@@ -29,6 +29,11 @@ class ListComment
      */
     private $to_do_list;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +59,18 @@ class ListComment
     public function setToDoList(?ToDoList $to_do_list): self
     {
         $this->to_do_list = $to_do_list;
+
+        return $this;
+    }
+
+    public function getCreation(): ?\DateTimeInterface
+    {
+        return $this->creation;
+    }
+
+    public function setCreation(\DateTimeInterface $creation): self
+    {
+        $this->creation = $creation;
 
         return $this;
     }
