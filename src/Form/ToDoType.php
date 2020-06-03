@@ -6,6 +6,7 @@
 namespace App\Form;
 
 use App\Entity\ListCategory;
+use App\Entity\ListStatus;
 use App\Entity\ToDoList;
 use App\Form\DataTransformer\ListTagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -82,6 +83,17 @@ class ToDoType extends AbstractType
         $builder->get('listTag')->addModelTransformer(
             $this->tagsDataTransformer
         );
+        $builder->add('status', EntityType::class, [
+            // looks for choices from this entity
+            'class' => ListStatus::class,
+
+            // uses the User.username property as the visible option string
+            'choice_label' => 'name',
+
+            // used to render a select box, check boxes or radios
+            // 'multiple' => true,
+            // 'expanded' => true,
+        ]);
     }
 
     /**

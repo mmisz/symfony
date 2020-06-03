@@ -9,6 +9,7 @@ use App\Entity\ListElement;
 use App\Entity\ToDoList;
 use App\Form\ToDoType;
 use App\Repository\ListElementRepository;
+use App\Repository\ListStatusRepository;
 use App\Repository\ToDoListRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,17 +39,18 @@ class ToDoListController extends AbstractController
      *     name="to_do_index",
      * )
      */
-    public function index(Request $request, ToDoListRepository $toDoList, PaginatorInterface $paginator): Response
+    public function index(Request $request, ToDoListRepository $toDoList, PaginatorInterface $paginator, ListStatusRepository $listStatus): Response
     {
         $pagination = $paginator->paginate(
-            $toDoList->queryAll(),
+               $toDoList->queryAll(),
+                //$listStatus->queryAll()
             $request->query->getInt('page', 1),
             ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
         );
 
         return $this->render(
             'to-do/index.html.twig',
-            ['pagination' => $pagination]
+            ['pagination' => $pagination,]
         );
     }
 
@@ -86,7 +88,7 @@ class ToDoListController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/list-delete/{id}",
+     *     "/to-do-delete/{id}",
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="to_do_delete",
@@ -100,7 +102,7 @@ class ToDoListController extends AbstractController
         if (!$form->isSubmitted() && $request->isMethod('DELETE')) {
             $form->submit($request->request->get($form->getName()));
         }
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'message_deleted_successfully');
             $toDoListRepository->delete($toDoList);
             return $this->redirectToRoute('to_do_index');
@@ -127,7 +129,7 @@ class ToDoListController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/{id}/edit",
+     *     "/{id}/to-do-edit",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="to_do_edit",
@@ -139,8 +141,12 @@ class ToDoListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($toDoList->getStatus()->getName()=='done') {
+                $toDoList->setDoneDate(new \DateTime());
+            } else {
+                $toDoList->setDoneDate(null);
+            }
             $toDoListRepository->save($toDoList);
-
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('to_do_index');
@@ -151,6 +157,47 @@ class ToDoListController extends AbstractController
             [
                 'form' => $form->createView(),
                 'toDoList' => $toDoList,
+            ]
+        );
+    }
+    /**
+     * Create action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \App\Entity\ListCategory                      $category           Category entity
+     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/to-do-create",
+     *     methods={"GET", "POST"},
+     *     name="to_do_create",
+     * )
+     */
+    public function create(Request $request, ToDoListRepository $toDoListRepository, ListStatusRepository $listStatusRepository): Response
+    {
+        $toDoList = new ToDoList();
+        $form = $this->createForm(ToDoType::class, $toDoList);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $toDoList->setCreation(new \DateTime());
+            $toDoList->setStatus($listStatusRepository->findOneBy(['name' => 'to do']));
+            $toDoListRepository->save($toDoList);
+
+            $this->addFlash('success', 'message_created_successfully');
+
+            return $this->redirectToRoute('to_do_index');
+        }
+
+        return $this->render(
+            'to-do/create.html.twig',
+            [
+                'form' => $form->createView(),
             ]
         );
     }

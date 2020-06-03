@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\ListElement;
 use App\Entity\ToDoList;
 use App\Repository\ListElementRepository;
+use App\Repository\ListElementStatusRepository;
 use App\Repository\ListStatusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,6 +88,12 @@ class ListElementController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if($form->isSubmitted() && $form->isValid()){
+            if($listElement->getStatus()->getName()=='done'){
+                $listElement->setDoneDate(new \DateTime());
+            }
+            else{
+                $listElement->setDoneDate(null);
+            }
             $this->addFlash('success', 'message_deleted_successfully');
             $listElementRepository->delete($listElement);
             $toDoList = $listElement->getToDoList();
@@ -120,7 +127,7 @@ class ListElementController extends AbstractController
      *     name="list_element_create",
      * )
      */
-    public function create(ToDoList $toDoList, Request $request, ListElementRepository $listElementRepository, ListElementRepository $listStatusRepository): Response
+    public function create(ToDoList $toDoList, Request $request, ListElementRepository $listElementRepository, ListElementStatusRepository $listStatusRepository): Response
     {
         $listElement = new ListElement();
         $form = $this->createForm(ListElementType::class, $listElement);
@@ -130,7 +137,7 @@ class ListElementController extends AbstractController
             $listElement->setToDoList($toDoList);
             $this->addFlash('success', 'message_created_successfully');
             $listElement->setCreation(new \DateTime());
-            $listElement->setStatus($listStatusRepository->findOneBy(['name'=>'to do']));
+            $listElement->setStatus($listStatusRepository->findOneBy(['name' => 'to do']));
             $listElementRepository->save($listElement);
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
         }

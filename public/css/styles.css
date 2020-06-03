@@ -26,3 +26,10 @@
     padding:20px;
     margin:0 auto;
 }
+.done td{
+    text-decoration: line-through;
+    background-color: #d4edda;
+}
+.status{
+    text-decoration: none;
+}

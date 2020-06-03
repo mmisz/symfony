@@ -58,7 +58,7 @@ class ListCategoryController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
-     *     "/{id}",
+     *     "/{id}/list-category",
      *     methods={"GET"},
      *     name="list_category_show",
      *     requirements={"id": "[1-9]\d*"},
@@ -83,7 +83,7 @@ class ListCategoryController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/create",
+     *     "/list-category-create",
      *     methods={"GET", "POST"},
      *     name="list_category_create",
      * )
@@ -120,7 +120,7 @@ class ListCategoryController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/{id}/edit",
+     *     "/{id}/list-category-edit",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="list_category_edit",
@@ -160,7 +160,7 @@ class ListCategoryController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/{id}/delete",
+     *     "/{id}/list-category-delete",
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="list_category_delete",

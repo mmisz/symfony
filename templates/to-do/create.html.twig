@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_to_do_create'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_to_do_create'|trans }}</h1>
+    {{ form_start(form, { method: 'POST', action: url('to_do_create')}) }}
+    {{ form_widget(form) }}
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ 'action_create'|trans }}" class="btn btn-secondary" />
+    </div>
+    <div class="form-group row float-sm-left">
+        <a href="{{ url('to_do_index') }}" class="btn btn-primary">
+            {{ 'action_back_to_list'|trans }}
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

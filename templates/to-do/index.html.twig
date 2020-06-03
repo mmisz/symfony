@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title_to_do_list'|trans }}<a href="#" title="{{ 'to_do_list_create'|trans }}">
+    <h1>{{ 'title_to_do_list'|trans }}<a href="{{ url('to_do_create') }}" title="{{ 'action_create'|trans }}">
             <svg class="bi bi-plus-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
                 <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
@@ -25,17 +25,30 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'toDoList.title') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'toDoList.creation') }}</th>
                 <th>{{ 'label_category'|trans}}</th>
+                <th>{{ 'label_status'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
             {% for toDoList in pagination.items %}
-                <tr>
+                {% if toDoList.status.name == 'done' %}
+                    <tr class="done">
+                {% else %}
+                    <tr>
+                {% endif %}
                     <td>{{ toDoList.id }}</td>
                     <td>{{ toDoList.title }}</td>
                     <td>{{ toDoList.creation|date('d-m-yy') }}</td>
                     <td>
                         <a href ="{{url('list_category_show', {'id': toDoList.category.id})}}"> {{ toDoList.category.title }} </a>
+                    </td>
+                    <td style="text-decoration: none">
+                       {% if toDoList.status.name == 'to do' %}
+                            {{ 'label_to_do'|trans }}
+                        {% else %}
+                            <p>{{ 'label_done_at'|trans }}:</p>
+                            <p>{{ toDoList.doneDate|date() }}</p>
+                       {% endif %}
                     </td>
                     <td>
                         <a href="{{ url('to_do_show', {'id': toDoList.id}) }}" title="{{ 'action_view'|trans }}">
