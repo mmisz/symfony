@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=ToDoListRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ToDoListRepository", repositoryClass=ToDoListRepository::class)
  * @ORM\Table(name="to_do_lists")
  */
 class ToDoList
@@ -37,13 +37,16 @@ class ToDoList
      *     type="string",
      *     length=255,
      * )
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="3",
+     *     max="64",
+     * )
      */
     private $title;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
-    private $done;
 
     /**
      * Created at.
@@ -85,6 +88,19 @@ class ToDoList
      */
     private $listTag;
 
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $done_date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ListStatus::class, inversedBy="toDoLists")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $status;
+
+
     public function __construct()
     {
         $this->listElements = new ArrayCollection();
@@ -115,25 +131,6 @@ class ToDoList
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getDone(): ?int
-    {
-        return $this->done;
-    }
-
-    /**
-     * @param int $done
-     * @return $this
-     */
-    public function setDone(int $done): self
-    {
-        $this->done = $done;
 
         return $this;
     }
@@ -287,6 +284,30 @@ class ToDoList
             $this->listTag->removeElement($listTag);
             $listTag->removeToDoList($this);
         }
+
+        return $this;
+    }
+
+    public function getDoneDate(): ?\DateTimeInterface
+    {
+        return $this->done_date;
+    }
+
+    public function setDoneDate(?\DateTimeInterface $done_date): self
+    {
+        $this->done_date = $done_date;
+
+        return $this;
+    }
+
+    public function getStatus(): ?ListStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?ListStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

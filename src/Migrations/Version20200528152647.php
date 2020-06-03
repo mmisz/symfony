@@ -24,7 +24,7 @@ final class Version20200528152647 extends AbstractMigration
 
         $this->addSql('CREATE TABLE list_comments (id INT AUTO_INCREMENT NOT NULL, to_do_list_id INT NOT NULL, content LONGTEXT NOT NULL, INDEX IDX_21F3A54AB3AB48EB (to_do_list_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE list_elements (id INT AUTO_INCREMENT NOT NULL, to_do_list_id INT NOT NULL, content VARCHAR(255) NOT NULL, INDEX IDX_3A27343DB3AB48EB (to_do_list_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE to_do_lists (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, done SMALLINT NOT NULL, creation DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE to_do_lists (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, creation DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE list_comments ADD CONSTRAINT FK_21F3A54AB3AB48EB FOREIGN KEY (to_do_list_id) REFERENCES to_do_lists (id)');
         $this->addSql('ALTER TABLE list_elements ADD CONSTRAINT FK_3A27343DB3AB48EB FOREIGN KEY (to_do_list_id) REFERENCES to_do_lists (id)');
     }

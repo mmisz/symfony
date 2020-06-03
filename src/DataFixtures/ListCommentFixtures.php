@@ -25,7 +25,7 @@ class ListCommentFixtures extends AbstractBaseFixtures implements DependentFixtu
             $listComment = new ListComment();
             $listComment->setContent($this->faker->sentence);
             $listComment->setToDoList($this->getRandomReference('toDoLists'));
-
+            $listComment->setCreation($this->faker->dateTimeBetween('-100 days', '-1 days'));
             return $listComment;
         });
 

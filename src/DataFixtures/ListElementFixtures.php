@@ -24,7 +24,9 @@ class ListElementFixtures extends AbstractBaseFixtures implements DependentFixtu
         $this->createMany(70, 'listElements', function ($i) {
             $listElement = new ListElement();
             $listElement->setContent($this->faker->sentence);
-            $listElement->setDone(0);
+            $listElement->setStatus($this->getRandomReference('elementStatuses'));
+            $listElement->setDoneDate(null);
+            $listElement->setCreation($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $listElement->setToDoList($this->getRandomReference('toDoLists'));
 
             return $listElement;

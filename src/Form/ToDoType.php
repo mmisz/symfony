@@ -58,7 +58,17 @@ class ToDoType extends AbstractType
                 'attr' => ['max_length' => 100],
             ]
         );
+        $builder->add('category', EntityType::class, [
+            // looks for choices from this entity
+            'class' => ListCategory::class,
 
+            // uses the User.username property as the visible option string
+            'choice_label' => 'title',
+
+            // used to render a select box, check boxes or radios
+            // 'multiple' => true,
+            // 'expanded' => true,
+        ]);
         $builder->add(
             'listTag',
             TextType::class,

@@ -1,0 +1,28 @@
+
+.visible{
+    display:block;
+}
+.notVisible{
+    display: none;
+}
+#toggleDiv1 hr:last-child{
+    display: none;
+}
+#toggleDiv2 hr:last-child{
+    display: none;
+}
+#commentContainer hr:last-child{
+    display: none;
+}
+#toggleContainer{
+    border:1px solid black;
+    width:70%;
+    padding:20px;
+    margin:0 auto;
+}
+#commentContainer{
+    border:1px solid black;
+    width:70%;
+    padding:20px;
+    margin:0 auto;
+}

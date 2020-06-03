@@ -68,18 +68,16 @@ class ToDoListController extends AbstractController
      */
     public function show(ToDoList $toDoList, Request $request): Response
     {
-
         return $this->render(
             'to-do/show.html.twig',
-            [
-            'toDoList' => $toDoList]
+            ['toDoList' => $toDoList]
         );
     }
     /**
      * Delete action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListComment $listComment
+     * @param \App\Entity\ListComment $listComment
      * @param \App\Repository\ListCommentRepository $listCommentRepository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response

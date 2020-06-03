@@ -12,8 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 class ListComment
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * Primary key.
+     *
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -34,16 +38,26 @@ class ListComment
      */
     private $creation;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -51,11 +65,18 @@ class ListComment
         return $this;
     }
 
+    /**
+     * @return ToDoList|null
+     */
     public function getToDoList(): ?ToDoList
     {
         return $this->to_do_list;
     }
 
+    /**
+     * @param ToDoList|null $to_do_list
+     * @return $this
+     */
     public function setToDoList(?ToDoList $to_do_list): self
     {
         $this->to_do_list = $to_do_list;

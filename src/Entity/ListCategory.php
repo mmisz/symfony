@@ -7,16 +7,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ListCategoryRepository::class)
  * @ORM\Table(name="list_categories")
+ *
+ * @UniqueEntity(fields={"title"})
  */
 class ListCategory
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * Primary key.
+     *
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;

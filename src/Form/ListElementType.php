@@ -1,65 +1,55 @@
 <?php
-/**
- * ListSingleTag type.
- */
+
 
 namespace App\Form;
 
-use App\Entity\ListTag;
-use App\Form\DataTransformer\ListTagsDataTransformer;
+use App\Entity\ListElementStatus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use App\Entity\ListElement;
 /**
- * Class ListSingleTag.
+ * Class ListElementType
+ * @package App\Form
  */
-class ListSingleTagType extends AbstractType
+class ListElementType extends AbstractType
 {
-    /**
-     * Tags data transformer.
-     *
-     * @var \App\Form\DataTransformer\ListTagsDataTransformer
-     */
-    private $tagsDataTransformer;
-
-    /**
-     *
-     * @param \App\Form\DataTransformer\ListTagsDataTransformer $tagsDataTransformer Tags data transformer
-     */
-    public function __construct(ListTagsDataTransformer $tagsDataTransformer)
-    {
-        $this->tagsDataTransformer = $tagsDataTransformer;
-    }
-
     /**
      * Builds the form.
      *
      * This method is called for each type in the hierarchy starting from the
      * top most type. Type extensions can further modify the form.
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder The form builder
-     * @param array $options The options
      * @see FormTypeExtensionInterface::buildForm()
      *
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder The form builder
+     * @param array                                        $options The options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'name',
-            TextType::class,
+            'content',
+            TextareaType::class,
             [
-                'label' => 'label_tags',
-                'required' => false,
-                'attr' => ['max_length' => 100],
+                'label' => 'label_content',
+                'required' => true,
+                'attr' => ['max_length' => 255],
             ]
         );
+        $builder->add('status', EntityType::class, [
+            // looks for choices from this entity
+            'class' => ListElementStatus::class,
 
-        $builder->get('name')->addModelTransformer(
-            $this->tagsDataTransformer
-        );
+            // uses the User.username property as the visible option string
+            'choice_label' => 'name',
+
+            // used to render a select box, check boxes or radios
+            // 'multiple' => true,
+            // 'expanded' => true,
+        ]);
     }
 
     /**
@@ -69,7 +59,7 @@ class ListSingleTagType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => ListTag::class]);
+        $resolver->setDefaults(['data_class' => ListElement::class]);
     }
 
     /**
@@ -82,6 +72,9 @@ class ListSingleTagType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'listTag';
+        return 'listElement';
     }
+}
+{
+
 }

@@ -27,7 +27,7 @@ class ListElementRepository extends ServiceEntityRepository
     const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
-     * CategoryRepository constructor.
+     * ListElementRepository constructor.
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */
@@ -46,7 +46,6 @@ class ListElementRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder();
-
     }
 
     /**
@@ -59,5 +58,30 @@ class ListElementRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('listElement');
+    }
+
+    /**
+     * @param ListElement $listElement
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(ListElement $listElement)
+    {
+        $this->_em->persist($listElement);
+        $this->_em->flush($listElement);
+    }
+
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\ListElement $listElement ListElement entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(ListElement $listElement): void
+    {
+        $this->_em->remove($listElement);
+        $this->_em->flush($listElement);
     }
 }
