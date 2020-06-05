@@ -33,3 +33,7 @@
 .status{
     text-decoration: none;
 }
+.active:hover{
+    border-radius: 3px;
+    background-color: #0062cc;
+}

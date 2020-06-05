@@ -2,11 +2,210 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="label_actions">
-                <source>label_actions</source>
-                <target>Actions</target>
-            </trans-unit>
-
+                        <trans-unit id="action_delete">
+                            <source>action_delete</source>
+                            <target>Delete</target>
+                        </trans-unit>
+                        <trans-unit id="title_category_edit">
+                            <source>title_category_edit</source>
+                            <target>Update Category</target>
+                        </trans-unit>
+                        <trans-unit id="action_back_to_list">
+                            <source>action_back_to_list</source>
+                            <target>Go back to List</target>
+                        </trans-unit>
+                        <trans-unit id="label_to_do">
+                            <source>label_to_do</source>
+                            <target>To Do Lists</target>
+                        </trans-unit>
+                        <trans-unit id="label_list_category">
+                            <source>label_list_category</source>
+                            <target>Categories</target>
+                        </trans-unit>
+                        <trans-unit id="label_list_tags">
+                            <source>label_list_tags</source>
+                            <target>Tags</target>
+                        </trans-unit>
+                        <trans-unit id="message_form_error">
+                            <source>message_form_error</source>
+                            <target>Error in form</target>
+                        </trans-unit>
+                        <trans-unit id="action_save">
+                            <source>action_save</source>
+                            <target>Save</target>
+                        </trans-unit>
+                        <trans-unit id="title_category_create">
+                            <source>title_category_create</source>
+                            <target>Create Category</target>
+                        </trans-unit>
+                        <trans-unit id="title_category_delete">
+                            <source>title_category_delete</source>
+                            <target>Delete Category</target>
+                        </trans-unit>
+                        <trans-unit id="action_edit">
+                            <source>action_edit</source>
+                            <target>Update</target>
+                        </trans-unit>
+                        <trans-unit id="title_category_list">
+                            <source>title_category_list</source>
+                            <target>Category</target>
+                        </trans-unit>
+                        <trans-unit id="list_category_create">
+                            <source>list_category_create</source>
+                            <target>Create Category</target>
+                        </trans-unit>
+                        <trans-unit id="label_id">
+                            <source>label_id</source>
+                            <target>id</target>
+                        </trans-unit>
+                        <trans-unit id="label_title">
+                            <source>label_title</source>
+                            <target>title</target>
+                        </trans-unit>
+                        <trans-unit id="label_actions">
+                            <source>label_actions</source>
+                            <target>actions</target>
+                        </trans-unit>
+                        <trans-unit id="action_view">
+                            <source>action_view</source>
+                            <target>view details</target>
+                        </trans-unit>
+                        <trans-unit id="action_update">
+                            <source>action_update</source>
+                            <target>Update</target>
+                        </trans-unit>
+                        <trans-unit id="message_empty_list">
+                            <source>message_empty_list</source>
+                            <target>No elements to view</target>
+                        </trans-unit>
+                        <trans-unit id="title_category_details">
+                            <source>title_category_details</source>
+                            <target>To Do Lists in Category</target>
+                        </trans-unit>
+                        <trans-unit id="label_category">
+                            <source>label_category</source>
+                            <target>category</target>
+                        </trans-unit>
+                        <trans-unit id="title_to_do_list">
+                            <source>title_to_do_list</source>
+                            <target>To Do List</target>
+                        </trans-unit>
+                        <trans-unit id="label_created_at">
+                            <source>label_created_at</source>
+                            <target>created at</target>
+                        </trans-unit>
+                        <trans-unit id="title_comment_create">
+                            <source>title_comment_create</source>
+                            <target>Create Comment</target>
+                        </trans-unit>
+                        <trans-unit id="title_comment_delete">
+                            <source>title_comment_delete</source>
+                            <target>Delete Comment</target>
+                        </trans-unit>
+                        <trans-unit id="title_list_comment_delete">
+                            <source>title_list_comment_delete</source>
+                            <target>Delete Comment</target>
+                        </trans-unit>
+                        <trans-unit id="title_comment_edit">
+                            <source>title_comment_edit</source>
+                            <target>Update Comment</target>
+                        </trans-unit>
+                        <trans-unit id="title_element_create">
+                            <source>title_element_create</source>
+                            <target>Create Task</target>
+                        </trans-unit>
+                        <trans-unit id="title_element_delete">
+                            <source>title_element_delete</source>
+                            <target>Delete Task</target>
+                        </trans-unit>
+                        <trans-unit id="title_element_edit">
+                            <source>title_element_edit</source>
+                            <target>Update Task</target>
+                        </trans-unit>
+                        <trans-unit id="title_tag_list">
+                            <source>title_tag_list</source>
+                            <target>Tags</target>
+                        </trans-unit>
+                        <trans-unit id="label_name">
+                            <source>label_name</source>
+                            <target>name</target>
+                        </trans-unit>
+                        <trans-unit id="title_tag_details">
+                            <source>title_tag_details</source>
+                            <target>view Tag details</target>
+                        </trans-unit>
+                        <trans-unit id="label_tag">
+                            <source>label_tag</source>
+                            <target>Tag</target>
+                        </trans-unit>
+                        <trans-unit id="title_to_do_create">
+                            <source>title_to_do_create</source>
+                            <target>Create To Do List</target>
+                        </trans-unit>
+                        <trans-unit id="action_create">
+                            <source>action_create</source>
+                            <target>Create</target>
+                        </trans-unit>
+                        <trans-unit id="title_to_do_delete">
+                            <source>title_to_do_delete</source>
+                            <target>Delete To Do List</target>
+                        </trans-unit>
+                        <trans-unit id="title_to_do_edit">
+                            <source>title_to_do_edit</source>
+                            <target>Update To Do List</target>
+                        </trans-unit>
+                        <trans-unit id="label_status">
+                            <source>label_status</source>
+                            <target>status</target>
+                        </trans-unit>
+                        <trans-unit id="label_done_at">
+                            <source>label_done_at</source>
+                            <target>done at</target>
+                        </trans-unit>
+                        <trans-unit id="title_to_do_details">
+                            <source>title_to_do_details</source>
+                            <target>view To Do List details</target>
+                        </trans-unit>
+                        <trans-unit id="label_tags">
+                            <source>label_tags</source>
+                            <target>tags</target>
+                        </trans-unit>
+                        <trans-unit id="header_list_elements">
+                            <source>header_list_elements</source>
+                            <target>Tasks</target>
+                        </trans-unit>
+                        <trans-unit id="list_element_create">
+                            <source>list_element_create</source>
+                            <target>Create Task</target>
+                        </trans-unit>
+                        <trans-unit id="header_create_element">
+                            <source>header_create_element</source>
+                            <target>Create Task</target>
+                        </trans-unit>
+                        <trans-unit id="header_comments">
+                            <source>header_comments</source>
+                            <target>Comments</target>
+                        </trans-unit>
+                        <trans-unit id="list_comment_create">
+                            <source>list_comment_create</source>
+                            <target>Create Comment</target>
+                        </trans-unit>
+                        <trans-unit id="label_create_comment">
+                            <source>label_create_comment</source>
+                            <target>create comment</target>
+                        </trans-unit>
+                        <trans-unit id="label_content">
+                            <source>label_create_comment</source>
+                            <target>content</target>
+                            </trans-unit>
+                        <trans-unit id="title_tag_edit">
+                            <source>title_tag_edit</source>
+                            <target>Update Tag</target>
+                        </trans-unit>
+                        <trans-unit id="title_tag_delete">
+                            <source>title_tag_delete</source>
+                            <target>Delete Tag</target>
+                        </trans-unit>
         </body>
     </file>
 </xliff>

@@ -34,13 +34,13 @@ class ListTag
     private $id;
 
     /**
-     * Name.
+     * name.
      *
      * @var string
      *
      * @ORM\Column(
      *     type="string",
-     *     length=100,
+     *     length=64,
      * )
      *
      * @Assert\Type(type="string")
@@ -54,13 +54,13 @@ class ListTag
 
 
     /**
-     * ToDoList.
+     * ToDoLists.
      *
      * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\ToDoList[] ToDoLists
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ToDoList", mappedBy="listTag")
      *
-     * @Assert\Type(type="Doctrine\Common\Collections\ArrayCollection")
+     * Assert\Type(type="Doctrine\Common\Collections\ArrayCollection")
      */
     private $toDoLists;
 

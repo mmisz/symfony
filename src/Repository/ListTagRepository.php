@@ -24,7 +24,7 @@ class ListTagRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    const PAGINATOR_ITEMS_PER_PAGE = 5;
 
     /**
      * CategoryRepository constructor.
@@ -71,6 +71,10 @@ class ListTagRepository extends ServiceEntityRepository
         $this->_em->flush($listTag);
     }
 
+    /**
+     * @param string $name
+     * @return ListTag|null
+     */
     public function findOneByName(string $name)
     {
       return $this->findOneBy(
@@ -91,4 +95,5 @@ class ListTagRepository extends ServiceEntityRepository
         $this->_em->remove($listTag);
         $this->_em->flush($listTag);
     }
+
 }

@@ -70,4 +70,123 @@ class ListTagController extends AbstractController
             ['tag' => $tag]
         );
     }
+    /**
+     * Edit action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \App\Entity\ListTag                   $listTag           ListTag entity
+     * @param \App\Repository\ListTagRepository        $listTagRepository ListTag repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/list-tag-edit",
+     *     methods={"GET", "PUT"},
+     *     name="list_tag_edit",
+     *     requirements={"id": "[1-9]\d*"},
+     * )
+     */
+    public function edit(Request $request, ListTag $listTag, ListTagRepository $listTagRepository): Response
+    {
+        $form = $this->createForm(ListSingleTagType::class, $listTag, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $listTagRepository->save($listTag);
+
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('list_tag_index');
+        }
+
+        return $this->render(
+            'list-tag/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'listTag' => $listTag,
+            ]
+        );
+    }
+    /**
+     * Delete action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \App\Entity\ListTag                      $listTag           ListTag entity
+     * @param \App\Repository\ListTagRepository        $listTagRepository ListTag repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/list-tag-delete",
+     *     methods={"GET", "DELETE"},
+     *     name="list_tag_delete",
+     *     requirements={"id": "[1-9]\d*"},
+     * )
+     */
+    public function delete(Request $request, ListTag $listTag, ListTagRepository $listTagRepository): Response
+    {
+        $form = $this->createForm(ListSingleTagType::class, $listTag, ['method' => 'DELETE']);
+        $form->handleRequest($request);
+
+        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
+            $form->submit($request->request->get($form->getName()));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $listTagRepository->delete($listTag);
+            $this->addFlash('success', 'message_deleted_successfully');
+
+            return $this->redirectToRoute('list_tag_index');
+        }
+
+        return $this->render(
+            'list-tag/delete.html.twig',
+            [
+                'form' => $form->createView(),
+                'listTag' => $listTag,
+            ]
+        );
+    }
+    /**
+     * Create action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+     * @param \App\Repository\ListTagRepository        $listTagRepository ListTag repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/list-tag-create",
+     *     methods={"GET", "POST"},
+     *     name="list_tag_create",
+     * )
+     */
+    public function create(Request $request, ListTagRepository $listTagRepository): Response
+    {
+        $listTag = new ListTag();
+        $form = $this->createForm(ListSingleTagType::class, $listTag);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $listTagRepository->save($listTag);
+
+            $this->addFlash('success', 'message_created_successfully');
+
+            return $this->redirectToRoute('list_tag_index');
+        }
+
+        return $this->render(
+            'list-tag/create.html.twig',
+            ['form' => $form->createView()]
+        );
+    }
 }
