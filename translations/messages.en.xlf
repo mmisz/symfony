@@ -226,6 +226,38 @@
                             <source>title_notes</source>
                             <target>Notes</target>
                         </trans-unit>
+                        <trans-unit id="title_tag_create">
+                            <source>title_tag_create</source>
+                            <target>Create Tag</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_create">
+                            <source>title_note_create</source>
+                            <target>Create Note</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_delete">
+                            <source>title_note_delete</source>
+                            <target>Delete Note</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_edit">
+                            <source>title_note_edit</source>
+                            <target>Update Note</target>
+                        </trans-unit>
+                        <trans-unit id="header_note_content">
+                            <source>header_note_content</source>
+                            <target>Note</target>
+                        </trans-unit>
+                        <trans-unit id="label_last_update">
+                            <source>label_last_update</source>
+                            <target>last update</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_details">
+                            <source>title_note_details</source>
+                            <target>Note Details</target>
+                        </trans-unit>
+                        <trans-unit id="label_not_udpated">
+                            <source>label_not_udpated</source>
+                            <target>not updated yet</target>
+                        </trans-unit>
 
 
         </body>

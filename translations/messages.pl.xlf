@@ -52,7 +52,7 @@
                         </trans-unit>
                         <trans-unit id="title_category_list">
                             <source>title_category_list</source>
-                            <target>Kategoria</target>
+                            <target>Kategorie</target>
                         </trans-unit>
                         <trans-unit id="list_category_create">
                             <source>list_category_create</source>
@@ -225,6 +225,38 @@
                         <trans-unit id="title_notes">
                             <source>title_notes</source>
                             <target>Notatki</target>
+                        </trans-unit>
+                        <trans-unit id="title_tag_create">
+                            <source>title_tag_create</source>
+                            <target>Tworzenie Taga</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_create">
+                            <source>title_note_create</source>
+                            <target>Tworzenie Notatki</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_delete">
+                            <source>title_note_delete</source>
+                            <target>Usuwanie Notatki</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_edit">
+                            <source>title_note_edit</source>
+                            <target>Edycja Notatki</target>
+                        </trans-unit>
+                        <trans-unit id="header_note_content">
+                            <source>header_note_content</source>
+                            <target>Notatka</target>
+                        </trans-unit>
+                        <trans-unit id="label_last_update">
+                            <source>label_last_update</source>
+                            <target>ostatnia aktualizacja</target>
+                        </trans-unit>
+                        <trans-unit id="title_note_details">
+                            <source>title_note_details</source>
+                            <target>Szczegóły Notatki</target>
+                        </trans-unit>
+                        <trans-unit id="label_not_udpated">
+                            <source>label_not_udpated</source>
+                            <target>brak aktualizacji</target>
                         </trans-unit>
 
             
