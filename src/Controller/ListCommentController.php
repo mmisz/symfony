@@ -23,7 +23,7 @@ class ListCommentController extends AbstractController
      * Edit action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\ListComment $listComment
+     * @param \App\Entity\ListComment $listComment
      * @param \App\Repository\ListCommentRepository $listCommentRepository
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -62,7 +62,7 @@ class ListCommentController extends AbstractController
      * Delete action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListComment $listComment
+     * @param \App\Entity\ListComment $listComment
      * @param \App\Repository\ListCommentRepository $listCommentRepository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
@@ -104,8 +104,8 @@ class ListCommentController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
-     *
+     * @param \App\Repository\ListCommentRepository        $listCommentRepository ListComment repository
+     * @param \App\Entity\ToDoList     $toDoList ToDoList
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @throws \Doctrine\ORM\ORMException

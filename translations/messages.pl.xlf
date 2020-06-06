@@ -18,6 +18,10 @@
                             <source>label_to_do</source>
                             <target>Listy Zadań</target>
                         </trans-unit>
+                        <trans-unit id="label_tasks">
+                            <source>label_tasks</source>
+                            <target>Zadania</target>
+                        </trans-unit>
                         <trans-unit id="label_list_category">
                             <source>label_list_category</source>
                             <target>Kategorie</target>
@@ -205,6 +209,22 @@
                         <trans-unit id="title_tag_delete">
                             <source>title_tag_delete</source>
                             <target>Usuwanie Taga</target>
+                        </trans-unit>
+                        <trans-unit id="label_task">
+                            <source>label_task</source>
+                            <target>Do zrobienia</target>
+                        </trans-unit>
+                        <trans-unit id="label_notes">
+                            <source>label_notes</source>
+                            <target>Notatki</target>
+                        </trans-unit>
+                        <trans-unit id="label_note">
+                            <source>label_note</source>
+                            <target>Notatka</target>
+                        </trans-unit>
+                        <trans-unit id="title_notes">
+                            <source>title_notes</source>
+                            <target>Notatki</target>
                         </trans-unit>
 
             

@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\ListElement;
 use App\Entity\ToDoList;
 use App\Form\ToDoType;
+use App\Repository\ListCategoryRepository;
 use App\Repository\ListElementRepository;
 use App\Repository\ListStatusRepository;
 use App\Repository\ToDoListRepository;
@@ -28,9 +29,9 @@ class ToDoListController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\ToDoListRepository            $toDoList ToDoList repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param ToDoListRepository $toDoListRepository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -39,15 +40,13 @@ class ToDoListController extends AbstractController
      *     name="to_do_index",
      * )
      */
-    public function index(Request $request, ToDoListRepository $toDoList, PaginatorInterface $paginator, ListStatusRepository $listStatus): Response
+    public function index(Request $request, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-               $toDoList->queryAll(),
-                //$listStatus->queryAll()
+            $toDoListRepository->queryAll(),
             $request->query->getInt('page', 1),
             ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
         );
-
         return $this->render(
             'to-do/index.html.twig',
             ['pagination' => $pagination,]
@@ -164,8 +163,8 @@ class ToDoListController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListCategory                      $category           Category entity
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     * @param \App\Entity\ToDoList                     $toDoList           ToDoList entity
+     * @param \App\Repository\ToDoListRepository        $toDoListRepository ToDoList repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *

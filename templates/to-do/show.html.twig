@@ -16,15 +16,17 @@
                 <path fill-rule="evenodd" d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z"/>
             </svg>
         </a></h1>
-    <p>{{ '	label_created_at'|trans }} - {{ toDoList.creation|date('d-m-yy') }}</p>
-    {% if toDoList.listTag|length %}
+    <hr>
     <p>{{ 'label_tags'|trans }}:
-    {% for element in toDoList.listTag %}
-        <a href="{{ url('list_tag_show', {'id': element.id}) }}" title="{{ 'action_view'|trans }}"">
-            #{{ element.name }}
-        </a>
+        {% for element in toDoList.listTag %}
+            <a href="{{ url('list_tag_show', {'id': element.id}) }}" title="{{ 'action_view'|trans }}">
+                #{{ element.name }}
+            </a>
         {% endfor %}
     </p>
+    <hr>
+    <p>{{ '	label_created_at'|trans }} - {{ toDoList.creation|date('d-m-yy') }}</p>
+    {% if toDoList.listTag|length %}
     {% endif %}
     {% if toDoList.listElements|length %}
     <h2>{{ 'header_list_elements'|trans({'%id%': toDoList.id|default('')}) }}
@@ -38,7 +40,7 @@
     <div id="toggleContainer">
         <button id="toggleButton" onclick="toggleFunction()" class="btn btn-primary">To Do</button>
     <div id="toggleDiv1" class="visible">
-    <p><b>{{ 'label_to_do'|trans }}:</b></p>
+    <p><b>{{ 'label_tasks'|trans }}:</b></p>
         {% for element in toDoList.listElements %}
             {% if element.status.name == 'to do' %}
             <p>{{ "	label_created_at"|trans }} {{ element.creation|date() }}</p>

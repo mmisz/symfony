@@ -24,7 +24,7 @@ class ListTagsDataTransformer implements DataTransformerInterface
     /**
      * ListTagsDataTransformer constructor.
      *
-     * @param \App\Repository\ListTagRepository $repository Tag repository
+     * @param \App\Repository\ListTagRepository $repository NoteTag repository
      */
     public function __construct(ListTagRepository $repository)
     {

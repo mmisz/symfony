@@ -2,18 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\ListTag;
+use App\Entity\NoteTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ListTag|null find($id, $lockMode = null, $lockVersion = null)
- * @method ListTag|null findOneBy(array $criteria, array $orderBy = null)
- * @method ListTag[]    findAll()
- * @method ListTag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method NoteTag|null find($id, $lockMode = null, $lockVersion = null)
+ * @method NoteTag|null findOneBy(array $criteria, array $orderBy = null)
+ * @method NoteTag[]    findAll()
+ * @method NoteTag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ListTagRepository extends ServiceEntityRepository
+class NoteTagRepository extends ServiceEntityRepository
 {
     /**
      * Items per page.
@@ -27,13 +27,13 @@ class ListTagRepository extends ServiceEntityRepository
     const PAGINATOR_ITEMS_PER_PAGE = 5;
 
     /**
-     * ListTagRepository constructor.
+     * NoteTagRepository constructor.
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
     {
-        parent::__construct($registry, ListTag::class);
+        parent::__construct($registry, NoteTag::class);
     }
 
 
@@ -57,43 +57,42 @@ class ListTagRepository extends ServiceEntityRepository
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('listTag');
+        return $queryBuilder ?? $this->createQueryBuilder('noteTag');
     }
 
     /**
-     * @param ListTag $listTag
+     * @param NoteTag $noteTag
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(ListTag $listTag)
+    public function save(NoteTag $noteTag)
     {
-        $this->_em->persist($listTag);
-        $this->_em->flush($listTag);
+        $this->_em->persist($noteTag);
+        $this->_em->flush($noteTag);
     }
 
     /**
      * @param string $name
-     * @return ListTag|null
+     * @return NoteTag
      */
     public function findOneByName(string $name)
     {
-      return $this->findOneBy(
-          ['name' => $name]
-    );
+        return $this->findOneBy(
+            ['name' => $name]
+        );
     }
 
     /**
      * Delete record.
      *
-     * @param \App\Entity\ListTag $listTag ListTag entity
+     * @param \App\Entity\NoteTag $noteTag NoteTag entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function delete(ListTag $listTag): void
+    public function delete(NoteTag $noteTag): void
     {
-        $this->_em->remove($listTag);
-        $this->_em->flush($listTag);
+        $this->_em->remove($noteTag);
+        $this->_em->flush($noteTag);
     }
-
 }

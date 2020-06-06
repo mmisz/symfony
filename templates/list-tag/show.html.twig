@@ -13,6 +13,8 @@
             <th>{{ 'label_id'|trans}}</th>
             <th>{{ 'label_name'|trans }}</th>
             <th>{{ 'label_created_at'|trans }}</th>
+            <th>{{ 'label_status'|trans }}</th>
+            <th>{{ 'label_category'|trans}}</th>
             <th>{{ 'label_actions'|trans }}</th>
         </tr>
         </thead>
@@ -22,6 +24,17 @@
                 <td>{{ toDoList.id }}</td>
                 <td>{{ toDoList.title }}</td>
                 <td>{{ toDoList.creation|date('d-m-yy') }}</td>
+                <td>
+                    {% if toDoList.status.name == 'to do' %}
+                        {{ 'label_task'|trans }}
+                    {% else %}
+                        <p>{{ 'label_done_at'|trans }}:
+                            {{ toDoList.doneDate|date('d-m-yy') }}</p>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href ="{{url('list_category_show', {'id': toDoList.category.id})}}"> {{ toDoList.category.title }} </a>
+                </td>
                 <td>
                     <a href="{{ url('to_do_show', {'id': toDoList.id}) }}" title="{{ 'action_view'|trans }}">
                         <svg class="bi bi-forward" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

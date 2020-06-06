@@ -2,18 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\ListCategory;
+use App\Entity\NoteCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ListCategory|null find($id, $lockMode = null, $lockVersion = null)
- * @method ListCategory|null findOneBy(array $criteria, array $orderBy = null)
- * @method ListCategory[]    findAll()
- * @method ListCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method NoteCategory|null find($id, $lockMode = null, $lockVersion = null)
+ * @method NoteCategory|null findOneBy(array $criteria, array $orderBy = null)
+ * @method NoteCategory[]    findAll()
+ * @method NoteCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ListCategoryRepository extends ServiceEntityRepository
+class NoteCategoryRepository extends ServiceEntityRepository
 {
     /**
      * Items per page.
@@ -31,9 +31,9 @@ class ListCategoryRepository extends ServiceEntityRepository
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
     {
-        parent::__construct($registry, ListCategory::class);
+        parent::__construct($registry, NoteCategory::class);
     }
 
 
@@ -57,17 +57,17 @@ class ListCategoryRepository extends ServiceEntityRepository
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('listCategory');
+        return $queryBuilder ?? $this->createQueryBuilder('noteCategory');
     }
     /**
      * Save record.
      *
-     * @param \App\Entity\ListCategory $category ListCategory entity
+     * @param \App\Entity\NoteCategory $category NoteCategory entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(ListCategory $category): void
+    public function save(NoteCategory $category): void
     {
         $this->_em->persist($category);
         $this->_em->flush($category);
@@ -75,26 +75,27 @@ class ListCategoryRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\ListCategory $category ListCategory entity
+     * @param \App\Entity\NoteCategory $category NoteCategory entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function delete(ListCategory $category): void
+    public function delete(NoteCategory $category): void
     {
         $this->_em->remove($category);
         $this->_em->flush($category);
     }
+
     // /**
-    //  * @return ListCategory[] Returns an array of ListCategory objects
+    //  * @return NoteCategory[] Returns an array of NoteCategory objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
+            ->orderBy('n.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -103,10 +104,10 @@ class ListCategoryRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ListCategory
+    public function findOneBySomeField($value): ?NoteCategory
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

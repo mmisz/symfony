@@ -1,31 +1,31 @@
 <?php
 /**
- * ListCategory controller.
+ * NoteCategory controller.
  */
 
 namespace App\Controller;
 
-use App\Entity\ListCategory;
-use App\Entity\ListComment;
-use App\Repository\ListCategoryRepository;
+use App\Entity\NoteCategory;
+use App\Form\NoteCategoryType;
+use App\Repository\NoteCategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\ListCategoryType;
+
 /**
- * Class ListCategoryController.
+ * Class NoteCategory.
  *
- * @Route("/list-category")
+ * @Route("/note-category")
  */
-class ListCategoryController extends AbstractController
+class NoteCategoryController extends AbstractController
 {
     /**
      * Index action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListCategoryRepository        $listCategoryRepository ListCategory repository
+     * @param \App\Repository\NoteCategoryRepository        $noteCategoryRepository NoteCategory repository
      * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
@@ -33,41 +33,40 @@ class ListCategoryController extends AbstractController
      * @Route(
      *     "/",
      *     methods={"GET"},
-     *     name="list_category_index",
+     *     name="note_category_index",
      * )
      */
-    public function index(Request $request, ListCategoryRepository $categoryRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, NoteCategoryRepository $categoryRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
             $categoryRepository->queryAll(),
             $request->query->getInt('page', 1),
-            ListCategoryRepository::PAGINATOR_ITEMS_PER_PAGE
+            NoteCategoryRepository::PAGINATOR_ITEMS_PER_PAGE
         );
 
         return $this->render(
-            'list-category/index.html.twig',
+            'note-category/index.html.twig',
             ['pagination' => $pagination]
         );
     }
-
     /**
      * Show action.
      *
-     * @param \App\Entity\ListCategory $category ListCategory entity
+     * @param \App\Entity\NoteCategory $category NoteCategory entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
-     *     "/{id}/list-category",
+     *     "/{id}/note-category",
      *     methods={"GET"},
-     *     name="list_category_show",
+     *     name="note_category_show",
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(ListCategory $category): Response
+    public function show(NoteCategory $category): Response
     {
         return $this->render(
-            'list-category/show.html.twig',
+            'note-category/show.html.twig',
             ['category' => $category]
         );
     }
@@ -75,7 +74,7 @@ class ListCategoryController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     * @param \App\Repository\NoteCategoryRepository        $categoryRepository NoteCategory repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -83,15 +82,15 @@ class ListCategoryController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/list-category-create",
+     *     "/note-category-create",
      *     methods={"GET", "POST"},
-     *     name="list_category_create",
+     *     name="note_category_create",
      * )
      */
-    public function create(Request $request, ListCategoryRepository $categoryRepository): Response
+    public function create(Request $request, NoteCategoryRepository $categoryRepository): Response
     {
-        $category = new ListCategory();
-        $form = $this->createForm(ListCategoryType::class, $category);
+        $category = new NoteCategory();
+        $form = $this->createForm(NoteCategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -99,11 +98,11 @@ class ListCategoryController extends AbstractController
 
             $this->addFlash('success', 'message_created_successfully');
 
-            return $this->redirectToRoute('list_category_index');
+            return $this->redirectToRoute('note_category_index');
         }
 
         return $this->render(
-            'list-category/create.html.twig',
+            'note-category/create.html.twig',
             ['form' => $form->createView()]
         );
     }
@@ -111,8 +110,8 @@ class ListCategoryController extends AbstractController
      * Edit action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListCategory                      $category           Category entity
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     * @param \App\Entity\NoteCategory                      $category           NoteCategory entity
+     * @param \App\Repository\NoteCategoryRepository        $categoryRepository NoteCategory repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -120,15 +119,15 @@ class ListCategoryController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/{id}/list-category-edit",
+     *     "/{id}/note-category-edit",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="list_category_edit",
+     *     name="note_category_edit",
      * )
      */
-    public function edit(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
+    public function edit(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
     {
-        $form = $this->createForm(ListCategoryType::class, $category, ['method' => 'PUT']);
+        $form = $this->createForm(NoteCategoryType::class, $category, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,11 +135,11 @@ class ListCategoryController extends AbstractController
 
             $this->addFlash('success', 'message_updated_successfully');
 
-            return $this->redirectToRoute('list_category_index');
+            return $this->redirectToRoute('note_category_index');
         }
 
         return $this->render(
-            'list-category/edit.html.twig',
+            'note-category/edit.html.twig',
             [
                 'form' => $form->createView(),
                 'category' => $category,
@@ -151,8 +150,8 @@ class ListCategoryController extends AbstractController
      * Delete action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListCategory                      $category           Category entity
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     * @param \App\Entity\NoteCategory                      $category           NoteCategory entity
+     * @param \App\Repository\NoteCategoryRepository        $categoryRepository NoteCategory repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -160,20 +159,20 @@ class ListCategoryController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/{id}/list-category-delete",
+     *     "/{id}/note-category-delete",
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="list_category_delete",
+     *     name="note_category_delete",
      * )
      */
-    public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
+    public function delete(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
     {
-        if ($category->getToDoLists()->count()) {
-            $this->addFlash('warning', 'message_category_contains_tasks');
+        if ($category->getNotes()->count()) {
+            $this->addFlash('warning', 'message_category_contains_notes');
 
-            return $this->redirectToRoute('list_category_index');
+            return $this->redirectToRoute('note_category_index');
         }
-        $form = $this->createForm(ListCategoryType::class, $category, ['method' => 'DELETE']);
+        $form = $this->createForm(NoteCategoryType::class, $category, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
@@ -182,13 +181,13 @@ class ListCategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->delete($category);
-            $this->addFlash('success', 'message.deleted_successfully');
+            $this->addFlash('success', 'message_deleted_successfully');
 
-            return $this->redirectToRoute('list_category_index');
+            return $this->redirectToRoute('note_category_index');
         }
 
         return $this->render(
-            'list-category/delete.html.twig',
+            'note-category/delete.html.twig',
             [
                 'form' => $form->createView(),
                 'category' => $category,
