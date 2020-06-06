@@ -53,12 +53,18 @@ class Note
      *     inversedBy="notes",
      *     orphanRemoval=true
      * )
-     * @ORM\JoinTable(name="note_note_tag")
      */
     private $noteTags;
 
     /**
-     * @ORM\ManyToOne(targetEntity=NoteCategory::class, inversedBy="notes")
+     * Category.
+     *
+     * @var \App\Entity\NoteCategory NoteCategory
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\NoteCategory",
+     *     inversedBy="notes",
+     * )
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -68,16 +74,26 @@ class Note
         $this->noteTags = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return $this
+     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -85,11 +101,18 @@ class Note
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -97,11 +120,18 @@ class Note
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreation(): ?\DateTimeInterface
     {
         return $this->creation;
     }
 
+    /**
+     * @param \DateTimeInterface $creation
+     * @return $this
+     */
     public function setCreation(\DateTimeInterface $creation): self
     {
         $this->creation = $creation;
@@ -109,11 +139,18 @@ class Note
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getLastUpdate(): ?\DateTimeInterface
     {
         return $this->last_update;
     }
 
+    /**
+     * @param \DateTimeInterface|null $last_update
+     * @return $this
+     */
     public function setLastUpdate(?\DateTimeInterface $last_update): self
     {
         $this->last_update = $last_update;
@@ -122,13 +159,19 @@ class Note
     }
 
     /**
-     * @return Collection|NoteTag[]
+     * Getter for noteTags.
+     *
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\NoteTag[] NoteTags collection
      */
     public function getNoteTags(): Collection
     {
         return $this->noteTags;
     }
 
+    /**
+     * @param NoteTag $noteTag
+     * @return $this
+     */
     public function addNoteTag(NoteTag $noteTag): self
     {
         if (!$this->noteTags->contains($noteTag)) {
@@ -138,6 +181,10 @@ class Note
         return $this;
     }
 
+    /**
+     * @param NoteTag $noteTag
+     * @return $this
+     */
     public function removeNoteTag(NoteTag $noteTag): self
     {
         if ($this->noteTags->contains($noteTag)) {
@@ -147,11 +194,18 @@ class Note
         return $this;
     }
 
+    /**
+     * @return NoteCategory|null
+     */
     public function getCategory(): ?NoteCategory
     {
         return $this->category;
     }
 
+    /**
+     * @param NoteCategory|null $category
+     * @return $this
+     */
     public function setCategory(?NoteCategory $category): self
     {
         $this->category = $category;

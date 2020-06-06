@@ -33,7 +33,13 @@
                     <td>{{ note.id }}</td>
                     <td>{{ note.title }}</td>
                     <td>{{ note.creation|date('d-m-yy') }}</td>
-                    <td>{{ note.lastUpdate|date('d-m-yy') }}</td>
+                    <td>
+                        {% if  note.lastUpdate is null %}
+                            -
+                        {% else %}
+                            {{ note.lastUpdate|date('d-m-yy | h:m') }}
+                        {% endif %}
+                    </td>
                     <td>
                         <a href ="#"> {{ note.category.title }} </a>
                     </td>

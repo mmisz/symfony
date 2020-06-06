@@ -91,7 +91,7 @@ class NoteTag
     }
 
     /**
-     * @return Collection|Note[]
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Note[] Notes collection
      */
     public function getNotes(): Collection
     {
