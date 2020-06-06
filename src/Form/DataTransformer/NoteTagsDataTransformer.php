@@ -22,7 +22,7 @@ class NoteTagsDataTransformer implements DataTransformerInterface
     private $repository;
 
     /**
-     * NoteTagsDataTransformer constructor.
+     * ListTagsDataTransformer constructor.
      *
      * @param \App\Repository\NoteTagRepository $repository NoteTag repository
      */
@@ -69,12 +69,12 @@ class NoteTagsDataTransformer implements DataTransformerInterface
 
         $noteTags = [];
 
-        foreach ($tagNames as $tagName) {
+        foreach ($noteTags as $tagName) {
             if ('' !== trim($tagName)) {
                 $noteTag = $this->repository->findOneByName(strtolower($tagName));
                 if (null == $noteTag) {
                     $noteTag = new NoteTag();
-                    $noteTag->setName($noteTag);
+                    $noteTag->setName($tagName);
                     $this->repository->save($noteTag);
                 }
                 $noteTags[] = $noteTag;

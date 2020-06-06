@@ -44,7 +44,16 @@ class Note
     private $last_update;
 
     /**
-     * @ORM\ManyToMany(targetEntity=NoteTag::class, inversedBy="notes")
+     * NoteTags.
+     *
+     * @var array
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\NoteTag",
+     *     inversedBy="notes",
+     *     orphanRemoval=true
+     * )
+     * @ORM\JoinTable(name="note_note_tag")
      */
     private $noteTags;
 

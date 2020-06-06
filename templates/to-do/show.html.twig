@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block body %}
+    {% if toDoList.status.name == 'done' %}
+    <h3 style="text-align:center">
+        {{ 'label_done_at'|trans }} - {{ toDoList.doneDate|date() }}
+    </h3>
+    {% endif %}
     <h1>
         <a href="{{ url('list_category_show', {id: toDoList.category.id}) }}" title="{{ 'action_view'|trans }}">
             {{ toDoList.category.title }} </a>
