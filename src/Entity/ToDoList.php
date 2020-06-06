@@ -102,6 +102,16 @@ class ToDoList
      */
     private $status;
 
+    /**
+     * Author.
+     *
+     * @var \App\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
 
     public function __construct()
     {
@@ -310,6 +320,18 @@ class ToDoList
     public function setStatus(?ListStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

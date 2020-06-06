@@ -43,7 +43,7 @@ class ToDoListController extends AbstractController
     public function index(Request $request, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $toDoListRepository->queryAll(),
+            $toDoListRepository->queryByAuthor($this->getUser()),
             $request->query->getInt('page', 1),
             ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -69,6 +69,11 @@ class ToDoListController extends AbstractController
      */
     public function show(ToDoList $toDoList, Request $request): Response
     {
+        if ($toDoList->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message.item_not_found');
+
+            return $this->redirectToRoute('to_do_index');
+        }
         return $this->render(
             'to-do/show.html.twig',
             ['toDoList' => $toDoList]
@@ -95,6 +100,11 @@ class ToDoListController extends AbstractController
      */
     public function delete(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
     {
+        if ($toDoList->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message.item_not_found');
+
+            return $this->redirectToRoute('to_do_index');
+        }
         $form = $this->createForm(ListDeleteType::class, $toDoList, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -136,6 +146,11 @@ class ToDoListController extends AbstractController
      */
     public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
     {
+        if ($toDoList->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message.item_not_found');
+
+            return $this->redirectToRoute('to_do_index');
+        }
         $form = $this->createForm(ToDoType::class, $toDoList, ['method' => 'PUT']);
         $form->handleRequest($request);
 
@@ -186,6 +201,7 @@ class ToDoListController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $toDoList->setCreation(new \DateTime());
             $toDoList->setStatus($listStatusRepository->findOneBy(['name' => 'to do']));
+            $toDoList->setAuthor($this->getUser());
             $toDoListRepository->save($toDoList);
 
             $this->addFlash('success', 'message_created_successfully');

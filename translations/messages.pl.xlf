@@ -148,7 +148,7 @@
                         </trans-unit>
                         <trans-unit id="action_create">
                             <source>action_create</source>
-                            <target>Dodaj Listę</target>
+                            <target>Dodaj</target>
                         </trans-unit>
                         <trans-unit id="title_to_do_delete">
                             <source>title_to_do_delete</source>

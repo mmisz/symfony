@@ -40,7 +40,7 @@ class NoteController extends AbstractController
     public function index(Request $request, NoteRepository $note, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $note->queryAll(),
+            $note->queryByAuthor($this->getUser()),
             $request->query->getInt('page', 1),
             NoteRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -65,6 +65,11 @@ class NoteController extends AbstractController
      */
     public function show(Note $note, Request $request): Response
     {
+        if ($note->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message.item_not_found');
+
+            return $this->redirectToRoute('note_index');
+        }
         return $this->render(
             'note/show.html.twig',
             ['note' => $note]
@@ -89,6 +94,11 @@ class NoteController extends AbstractController
      */
     public function edit(Request $request, Note $note, NoteRepository $noteRepository): Response
     {
+        if ($note->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message.item_not_found');
+
+            return $this->redirectToRoute('note_index');
+        }
         $form = $this->createForm(NoteType::class, $note, ['method' => 'PUT']);
         $form->handleRequest($request);
 
@@ -128,6 +138,11 @@ class NoteController extends AbstractController
      */
     public function delete(Request $request, Note $note, NoteRepository $noteRepository): Response
     {
+        if ($note->getAuthor() !== $this->getUser()) {
+            $this->addFlash('warning', 'message.item_not_found');
+
+            return $this->redirectToRoute('note_index');
+        }
         $form = $this->createForm(NoteDeleteType::class, $note, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -173,6 +188,7 @@ class NoteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $note->setCreation(new \DateTime());
+            $note->setAuthor($this->getUser());
             $noteRepository->save($note);
 
             $this->addFlash('success', 'message_created_successfully');

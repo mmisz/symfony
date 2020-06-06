@@ -1,4 +1,6 @@
 security:
+    access_decision_manager:
+        strategy: unanimous
     encoders:
         App\Entity\User:
             algorithm: auto
