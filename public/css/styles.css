@@ -37,3 +37,18 @@
     border-radius: 3px;
     background-color: #0062cc;
 }
+.toRight{
+    margin-left:auto;
+    margin-right:0;
+}
+#logBtn{
+    text-align: center;
+    margin:5px;
+}
+.noHover{
+     pointer-events: none;
+ }
+.navbar-nav .toRight{
+    margin-left:auto;
+    margin-right:0;
+}

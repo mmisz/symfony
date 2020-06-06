@@ -9,6 +9,7 @@
     {% endblock %}
 </head>
 <body>
+
 <div class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary">
         <ul class="navbar-nav">
@@ -32,8 +33,21 @@
                 <a class="nav-link" href="{{ url('note_tag_index') }}" title="{{ 'label_list_tags'|trans }}">{{'label_list_tags'|trans}}</a>
             </li>
         </ul>
-
+        <ul class="nav navbar-nav ml-auto">
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <li style="border-left:2px solid white;"></li>
+            <li class="nav-item active noHover nav-link">{{ app.user.email }}</li>
+            <li class="nav-item active toRight">
+                <a class="btn btn-light" href="{{ url('app_logout') }}">{{ 'action_logout'|trans }}</a>
+            </li>
+        {% else %}
+            <li class="nav-item active toRight">
+                <a class="btn btn btn-light" href="{{ url('app_login') }}">{{ 'action_login'|trans }}</a>
+            </li>
+        {% endif %}
+        </ul>
     </nav>
+
     {% include 'default/_flash_messages.html.twig' %}
     {% block body %}{% endblock %}
 </div>
