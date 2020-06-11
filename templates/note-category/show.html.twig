@@ -19,6 +19,7 @@
         </thead>
         <tbody>
         {% for note in category.notes %}
+            {% if is_granted("ROLE_ADMIN") or is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <tr>
                 <td>{{ note.id }}</td>
                 <td>{{ note.title }}</td>
@@ -44,6 +45,7 @@
                     </a>
                 </td>
             </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

@@ -9,6 +9,8 @@ use App\Entity\NoteCategory;
 use App\Form\NoteCategoryType;
 use App\Repository\NoteCategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,6 +88,7 @@ class NoteCategoryController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="note_category_create",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function create(Request $request, NoteCategoryRepository $categoryRepository): Response
     {
@@ -124,6 +127,7 @@ class NoteCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="note_category_edit",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
     {
@@ -164,6 +168,7 @@ class NoteCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="note_category_delete",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
     {

@@ -20,6 +20,7 @@
         </thead>
         <tbody>
         {% for toDoList in tag.toDoLists %}
+            {% if is_granted("ROLE_ADMIN") or is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <tr>
                 <td>{{ toDoList.id }}</td>
                 <td>{{ toDoList.title }}</td>
@@ -55,6 +56,7 @@
                     </a>
                 </td>
             </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

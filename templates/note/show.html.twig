@@ -29,7 +29,7 @@
     {% if note.lastUpdate is null %}
         <p>{{ 'label_last_update'|trans }} - {{ 'label_not_udpated'|trans  }}</p>
     {% else %}
-        <p>{{ 'label_last_update'|trans }} - {{ note.lastUpdate|date('d-m-yy | h:m') }}</p>
+        <p>{{ 'label_last_update'|trans }} - {{ note.lastUpdate|date('d-m-yy | g:ia') }}</p>
     {% endif %}
 
     {% if note.noteTags|length %}

@@ -12,12 +12,15 @@ use App\Repository\ListCategoryRepository;
 use App\Repository\ListElementRepository;
 use App\Repository\ListStatusRepository;
 use App\Repository\ToDoListRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Form\ListDeleteType;
+
 
 /**
  * Class ToDoList.
@@ -43,7 +46,7 @@ class ToDoListController extends AbstractController
     public function index(Request $request, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $toDoListRepository->queryByAuthor($this->getUser()),
+            $toDoListRepository->queryAll(),
             $request->query->getInt('page', 1),
             ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -64,16 +67,18 @@ class ToDoListController extends AbstractController
      *     "/{id}",
      *     methods={"GET", "POST"},
      *     name="to_do_show",
-     *     requirements={"id": "[1-9]\d*"},
-     * )
+     *     requirements={"id": "[1-9]\d*"})
+     *
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', toDoList)")
+     *
      */
     public function show(ToDoList $toDoList, Request $request): Response
     {
-        if ($toDoList->getAuthor() !== $this->getUser()) {
+       /* if ($toDoList->getAuthor() !== $this->getUser()) {
             $this->addFlash('warning', 'message.item_not_found');
 
             return $this->redirectToRoute('to_do_index');
-        }
+        }*/
         return $this->render(
             'to-do/show.html.twig',
             ['toDoList' => $toDoList]
@@ -97,14 +102,11 @@ class ToDoListController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="to_do_delete",
      * )
+     *
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('DELETE', toDoList)")
      */
     public function delete(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
     {
-        if ($toDoList->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message.item_not_found');
-
-            return $this->redirectToRoute('to_do_index');
-        }
         $form = $this->createForm(ListDeleteType::class, $toDoList, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -143,14 +145,11 @@ class ToDoListController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="to_do_edit",
      * )
+     *
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', toDoList)")
      */
     public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
     {
-        if ($toDoList->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message.item_not_found');
-
-            return $this->redirectToRoute('to_do_index');
-        }
         $form = $this->createForm(ToDoType::class, $toDoList, ['method' => 'PUT']);
         $form->handleRequest($request);
 
@@ -191,6 +190,7 @@ class ToDoListController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="to_do_create",
      * )
+     *
      */
     public function create(Request $request, ToDoListRepository $toDoListRepository, ListStatusRepository $listStatusRepository): Response
     {

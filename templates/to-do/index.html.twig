@@ -31,6 +31,7 @@
             </thead>
             <tbody>
             {% for toDoList in pagination.items %}
+                {% if is_granted("ROLE_ADMIN") or is_granted("VIEW", toDoList) %}
                 {% if toDoList.status.name == 'done' %}
                     <tr class="done">
                 {% else %}
@@ -70,6 +71,7 @@
                         </a>
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>

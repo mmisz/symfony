@@ -29,6 +29,7 @@
             </thead>
             <tbody>
             {% for note in pagination.items %}
+                {% if is_granted("ROLE_ADMIN") or is_granted("VIEW", note) %}
                     <tr>
                     <td>{{ note.id }}</td>
                     <td>{{ note.title }}</td>
@@ -63,6 +64,7 @@
                         </a>
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>

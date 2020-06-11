@@ -9,6 +9,8 @@ use App\Entity\NoteTag;
 use App\Form\NoteSingleTagType;
 use App\Repository\NoteTagRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +36,7 @@ class NoteTagController extends AbstractController
      *     methods={"GET"},
      *     name="note_tag_index",
      * )
+     *
      */
     public function index(Request $request, NoteTagRepository $tagRepository, PaginatorInterface $paginator): Response
     {
@@ -88,6 +91,7 @@ class NoteTagController extends AbstractController
      *     name="note_tag_edit",
      *     requirements={"id": "[1-9]\d*"},
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository): Response
     {
@@ -128,6 +132,7 @@ class NoteTagController extends AbstractController
      *     name="note_tag_delete",
      *     requirements={"id": "[1-9]\d*"},
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository): Response
     {
@@ -169,6 +174,7 @@ class NoteTagController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="note_tag_create",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function create(Request $request, NoteTagRepository $noteTagRepository): Response
     {

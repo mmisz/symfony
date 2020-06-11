@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ToDoListRepository", repositoryClass=ToDoListRepository::class)
  * @ORM\Table(name="to_do_lists")
  *
- * @UniqueEntity(fields={"title"})
  */
 class ToDoList
 {

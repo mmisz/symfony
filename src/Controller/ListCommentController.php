@@ -112,7 +112,7 @@ class ListCommentController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/list-comment-create{id}",
+     *     "/list-comment-create/{id}",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="list_comment_create",

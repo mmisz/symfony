@@ -9,6 +9,8 @@ use App\Entity\Note;
 use App\Form\NoteDeleteType;
 use App\Form\NoteType;
 use App\Repository\NoteRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,8 +41,8 @@ class NoteController extends AbstractController
      */
     public function index(Request $request, NoteRepository $note, PaginatorInterface $paginator): Response
     {
-        $pagination = $paginator->paginate(
-            $note->queryByAuthor($this->getUser()),
+            $pagination = $paginator->paginate(
+            $note->queryAll(),
             $request->query->getInt('page', 1),
             NoteRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -62,6 +64,8 @@ class NoteController extends AbstractController
      *     name="note_show",
      *     requirements={"id": "[1-9]\d*"},
      * )
+     *
+     *@Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', note)")
      */
     public function show(Note $note, Request $request): Response
     {
@@ -91,6 +95,8 @@ class NoteController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="note_edit",
      * )
+     *
+     *@Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', note)")
      */
     public function edit(Request $request, Note $note, NoteRepository $noteRepository): Response
     {
@@ -135,14 +141,12 @@ class NoteController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="note_delete",
      * )
+     *
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('DELETE', note)")
      */
     public function delete(Request $request, Note $note, NoteRepository $noteRepository): Response
     {
-        if ($note->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message.item_not_found');
 
-            return $this->redirectToRoute('note_index');
-        }
         $form = $this->createForm(NoteDeleteType::class, $note, ['method' => 'DELETE']);
         $form->handleRequest($request);
 

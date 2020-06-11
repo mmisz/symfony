@@ -10,17 +10,31 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 /**
  * Class SecurityController
  * @package App\Controller
+ *
+ * @Route("/")
  */
 class SecurityController extends AbstractController
 {
+    /**
+     * @Route("/", name="homepage")
+     */
+    public function homepage(AuthenticationUtils $authenticationUtils): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('to_do_index');
+        }
+        else{
+            return $this->redirectToRoute('app_login');
+        }
+    }
     /**
      * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('to_do_index');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -35,7 +49,7 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
         return $this->redirectToRoute('app_login');
+        //throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

@@ -9,6 +9,8 @@ use App\Entity\ListCategory;
 use App\Entity\ListComment;
 use App\Repository\ListCategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,6 +89,7 @@ class ListCategoryController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="list_category_create",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function create(Request $request, ListCategoryRepository $categoryRepository): Response
     {
@@ -125,6 +128,7 @@ class ListCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="list_category_edit",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
     {
@@ -165,7 +169,8 @@ class ListCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="list_category_delete",
      * )
-     */
+     * @IsGranted("ROLE_ADMIN")
+    */
     public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
     {
         if ($category->getToDoLists()->count()) {
