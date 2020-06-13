@@ -12,6 +12,7 @@ use App\Repository\ListCategoryRepository;
 use App\Repository\ListElementRepository;
 use App\Repository\ListStatusRepository;
 use App\Repository\ToDoListRepository;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -127,17 +128,19 @@ class ToDoListController extends AbstractController
             ]
         );
     }
+
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListCategory                      $category           Category entity
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\ListCategory $category Category entity
+     * @param \App\Repository\ListCategoryRepository $categoryRepository Category repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws Exception
      *
      * @Route(
      *     "/{id}/to-do-edit",
@@ -146,7 +149,7 @@ class ToDoListController extends AbstractController
      *     name="to_do_edit",
      * )
      *
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', toDoList)")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', toDoList)")
      */
     public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
     {

@@ -71,7 +71,7 @@ class ToDoList
     private $listComments;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ListCategory::class, inversedBy="to_do_lists")
+     * @ORM\ManyToOne(targetEntity=ListCategory::class, inversedBy="toDoLists")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -82,7 +82,7 @@ class ToDoList
      *
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\ListTag",
-     *     inversedBy="to_do_lists",
+     *     inversedBy="toDoLists",
      *     orphanRemoval=true
      * )
      * @ORM\JoinTable(name="to_do_list_list_tag")

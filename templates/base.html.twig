@@ -32,11 +32,21 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ url('note_tag_index') }}" title="{{ 'label_list_tags'|trans }}">{{'label_list_tags'|trans}}</a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <li style="border-right:2px solid white"></li>
+            <li class="nav-item active"><b class="nav-item active">
+                    <a class="nav-link" href="{{ url('user_index') }}" title="{{ 'label_users'|trans }}">{{'label_users'|trans}}</a>
+                </b></li>
+            {% endif %}
         </ul>
         <ul class="nav navbar-nav ml-auto">
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <li style="border-left:2px solid white;"></li>
-            <li class="nav-item active noHover nav-link">{{ app.user.email }}</li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url('user_edit', {'id': app.user.id}) }}">
+                    {{app.user.name}}
+                </a>
+            </li>
             <li class="nav-item active toRight">
                 <a class="btn btn-light" href="{{ url('app_logout') }}">{{ 'action_logout'|trans }}</a>
             </li>

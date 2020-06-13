@@ -7,7 +7,9 @@ namespace App\Controller;
 
 use App\Entity\ListCategory;
 use App\Entity\ListComment;
+use App\Entity\ToDoList;
 use App\Repository\ListCategoryRepository;
+use App\Repository\ToDoListRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -57,6 +59,9 @@ class ListCategoryController extends AbstractController
      *
      * @param \App\Entity\ListCategory $category ListCategory entity
      *
+     * @param ToDoListRepository $toDoListRepository
+     * @param PaginatorInterface $paginator
+     * @param $request
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -66,11 +71,19 @@ class ListCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(ListCategory $category): Response
+    public function show(ListCategory $category, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator,Request $request): Response
     {
+        $pagination = $paginator->paginate(
+            $toDoListRepository->queryByAuthorAndCategory($this->getUser(),$category),
+            $request->query->getInt('page', 1),
+            ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
         return $this->render(
             'list-category/show.html.twig',
-            ['category' => $category]
+            [
+                'pagination' => $pagination,
+                'category'=>$category
+            ]
         );
     }
     /**

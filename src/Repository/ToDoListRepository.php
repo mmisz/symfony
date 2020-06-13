@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\ListCategory;
 use App\Entity\ToDoList;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -78,19 +79,23 @@ class ToDoListRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('toDoList');
     }
+
     /**
      * Query tasks by author.
      *
      * @param \App\Entity\User $user User entity
      *
+     * @param ListCategory $category
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryByAuthor(User $user): QueryBuilder
+    public function queryByAuthorAndCategory(User $user, ListCategory $category): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
 
-        $queryBuilder->andWhere('toDoList.author = :author')
-            ->setParameter('author', $user);
+        $queryBuilder->andWhere('toDoList.author = :author AND toDoList.category = :category')
+            ->setParameter('category', $category)
+            ->setParameter('author', $user)
+        ;
 
         return $queryBuilder;
     }
