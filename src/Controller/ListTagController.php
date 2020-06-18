@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\ListTag;
 use App\Form\ListSingleTagType;
 use App\Repository\ListTagRepository;
+use App\Repository\ToDoListRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,11 +65,27 @@ class ListTagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(ListTag $tag): Response
+    public function show(ListTag $tag, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator,Request $request): Response
     {
+        if($this->isGranted('ROLE_ADMIN')){
+            $pagination = $paginator->paginate(
+                $toDoListRepository->findByTag($tag),
+                $request->query->getInt('page', 1),
+                ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
+        else{
+            $pagination = $paginator->paginate(
+                $toDoListRepository->queryByAuthorAndTag($this->getUser(),$tag),
+                $request->query->getInt('page', 1),
+                ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
         return $this->render(
             'list-tag/show.html.twig',
-            ['tag' => $tag]
+            [
+                'pagination' => $pagination,
+                'tag' => $tag]
         );
     }
     /**

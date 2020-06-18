@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ListCategory;
+use App\Entity\ListTag;
 use App\Entity\ToDoList;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -95,6 +96,38 @@ class ToDoListRepository extends ServiceEntityRepository
         $queryBuilder->andWhere('toDoList.author = :author AND toDoList.category = :category')
             ->setParameter('category', $category)
             ->setParameter('author', $user)
+        ;
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param User $user
+     * @param ListTag $tag
+     * @return QueryBuilder
+     */
+    public function queryByAuthorAndTag(User $user, ListTag $tag): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder->andWhere('toDoList.author = :author')
+            ->setParameter('author', $user)
+            ->innerJoin('toDoList.listTag', 'list_tag')
+            ->andWhere('list_tag = :tag')
+            ->setParameter('tag', $tag)
+        ;
+
+        return $queryBuilder;
+    }
+
+    public function findByTag(ListTag $tag)
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder
+            ->innerJoin('toDoList.listTag', 'list_tag')
+            ->andWhere('list_tag = :tag')
+            ->setParameter('tag', $tag)
         ;
 
         return $queryBuilder;

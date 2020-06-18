@@ -73,11 +73,21 @@ class ListCategoryController extends AbstractController
      */
     public function show(ListCategory $category, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator,Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $toDoListRepository->queryByAuthorAndCategory($this->getUser(),$category),
-            $request->query->getInt('page', 1),
-            ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        if($this->isGranted('ROLE_ADMIN')){
+            $pagination = $paginator->paginate(
+                $toDoListRepository->findBy(['category'=>$category]),
+                $request->query->getInt('page', 1),
+                ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
+        else{
+            $pagination = $paginator->paginate(
+                $toDoListRepository->queryByAuthorAndCategory($this->getUser(),$category),
+                $request->query->getInt('page', 1),
+                ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
+
         return $this->render(
             'list-category/show.html.twig',
             [

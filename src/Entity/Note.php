@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=NoteRepository::class)
  * @ORM\Table(name="notes")
  *
- * @UniqueEntity(fields={"title"})
  */
 class Note
 {

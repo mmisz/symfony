@@ -7,6 +7,7 @@ namespace App\Controller;
 
 use App\Entity\NoteTag;
 use App\Form\NoteSingleTagType;
+use App\Repository\NoteRepository;
 use App\Repository\NoteTagRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -66,11 +67,27 @@ class NoteTagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(NoteTag $tag): Response
+    public function show(NoteTag $tag, NoteRepository $noteRepository, PaginatorInterface $paginator,Request $request): Response
     {
+        if($this->isGranted('ROLE_ADMIN')){
+            $pagination = $paginator->paginate(
+                $noteRepository->findByTag($tag),
+                $request->query->getInt('page', 1),
+                NoteRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
+        else{
+            $pagination = $paginator->paginate(
+                $noteRepository->queryByAuthorAndTag($this->getUser(),$tag),
+                $request->query->getInt('page', 1),
+                NoteRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
         return $this->render(
             'note-tag/show.html.twig',
-            ['tag' => $tag]
+            [
+                'pagination' => $pagination,
+                'tag' => $tag]
         );
     }
     /**

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Note;
+use App\Entity\NoteCategory;
+use App\Entity\NoteTag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -104,6 +106,45 @@ class NoteRepository extends ServiceEntityRepository
 
         $queryBuilder->andWhere('note.author = :author')
             ->setParameter('author', $user);
+
+        return $queryBuilder;
+    }
+
+    public function queryByAuthorAndCategory(User $user, NoteCategory $category): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder->andWhere('note.author = :author AND note.category = :category')
+            ->setParameter('category', $category)
+            ->setParameter('author', $user)
+        ;
+
+        return $queryBuilder;
+    }
+
+
+    public function queryByAuthorAndTag(User $user, NoteTag $tag): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder->andWhere('note.author = :author')
+            ->setParameter('author', $user)
+            ->innerJoin('note.noteTags', 'note_tag')
+            ->andWhere('note_tag = :tag')
+            ->setParameter('tag', $tag)
+        ;
+
+        return $queryBuilder;
+    }
+    public function findByTag(NoteTag $tag)
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder
+            ->innerJoin('note.noteTags', 'note_tag')
+            ->andWhere('note_tag = :tag')
+            ->setParameter('tag', $tag)
+        ;
 
         return $queryBuilder;
     }

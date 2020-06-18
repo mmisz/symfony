@@ -5,11 +5,8 @@
 
 namespace App\Controller;
 
-use App\Entity\ListElement;
 use App\Entity\ToDoList;
 use App\Form\ToDoType;
-use App\Repository\ListCategoryRepository;
-use App\Repository\ListElementRepository;
 use App\Repository\ListStatusRepository;
 use App\Repository\ToDoListRepository;
 use Exception;

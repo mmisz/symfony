@@ -23,9 +23,10 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'toDoList.id') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'toDoList.title') }}</th>
+                <th>{{ 'label_author'|trans }}</th>
+                <th>{{ 'label_category'|trans }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'toDoList.creation') }}</th>
                 <th>{{ 'label_status'|trans }}</th>
-                <th>{{ 'label_category'|trans}}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -39,17 +40,18 @@
                 {% endif %}
                     <td>{{ toDoList.id }}</td>
                     <td>{{ toDoList.title }}</td>
+                    <td>{{ toDoList.author.name }}</td>
+                    <td>
+                        <a href ="{{url('list_category_show', {'id': toDoList.category.id})}}"> {{ toDoList.category.title }} </a>
+                    </td>
                     <td>{{ toDoList.creation|date('d-m-yy') }}</td>
                     <td style="text-decoration: none">
-                       {% if toDoList.status.name == 'to do' %}
+                        {% if toDoList.status.name == 'to do' %}
                             {{ 'label_task'|trans }}
                         {% else %}
                             <p>{{ 'label_done_at'|trans }}:
-                            {{ toDoList.doneDate|date('d-m-yy') }}</p>
-                       {% endif %}
-                    </td>
-                    <td>
-                        <a href ="{{url('list_category_show', {'id': toDoList.category.id})}}"> {{ toDoList.category.title }} </a>
+                                {{ toDoList.doneDate|date('d-m-yy') }}</p>
+                        {% endif %}
                     </td>
                     <td style="text-decoration: none">
                         <a href="{{ url('to_do_show', {'id': toDoList.id}) }}" title="{{ 'action_view'|trans }}">

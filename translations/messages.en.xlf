@@ -260,6 +260,86 @@
                         </trans-unit>
 
 
+                        <trans-unit id="label_users">
+                            <source>label_users</source>
+                            <target>Users</target>
+                        </trans-unit>
+                        <trans-unit id="action_logout">
+                            <source>action_logout</source>
+                            <target>log out</target>
+                        </trans-unit>
+                        <trans-unit id="action_register">
+                            <source>action_register</source>
+                            <target>register</target>
+                        </trans-unit>
+                        <trans-unit id="action_login">
+                            <source>action_login</source>
+                            <target>log in</target>
+                        </trans-unit>
+                        <trans-unit id="label_author">
+                            <source>label_author</source>
+                            <target>author</target>
+                        </trans-unit>
+                        <trans-unit id="label_sign_in">
+                            <source>label_sign_in</source>
+                            <target>sign in</target>
+                        </trans-unit>
+                        <trans-unit id="label_or">
+                            <source>label_or</source>
+                            <target>or</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_create">
+                            <source>title_user_create</source>
+                            <target>Create user</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_delete">
+                            <source>title_user_delete</source>
+                            <target>Delete user</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_edit">
+                            <source>title_user_edit</source>
+                            <target>Edit user</target>
+                        </trans-unit>
+                        <trans-unit id="user_edit">
+                            <source>user_edit</source>
+                            <target>edit user</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_list">
+                            <source>title_user_list</source>
+                            <target>Users</target>
+                        </trans-unit>
+                        <trans-unit id="label_email">
+                            <source>label_email</source>
+                            <target>email</target>
+                        </trans-unit>
+                        <trans-unit id="label_roles">
+                            <source>label_roles</source>
+                            <target>permissions</target>
+                        </trans-unit>
+                        <trans-unit id="title_user">
+                            <source>title_user</source>
+                            <target>User</target>
+                        </trans-unit>
+                        <trans-unit id="user_email">
+                            <source>user_email</source>
+                            <target>your email</target>
+                        </trans-unit>
+                        <trans-unit id="action_change">
+                            <source>action_change</source>
+                            <target>edit</target>
+                        </trans-unit>
+                        <trans-unit id="label_register">
+                            <source>label_register</source>
+                            <target>register</target>
+                        </trans-unit>
+                        <trans-unit id="user_password">
+                            <source>user_password</source>
+                            <target>your password</target>
+                        </trans-unit>
+                        <trans-unit id="user_name">
+                            <source>user_name</source>
+                            <target>your name</target>
+                        </trans-unit>
         </body>
     </file>
 </xliff>

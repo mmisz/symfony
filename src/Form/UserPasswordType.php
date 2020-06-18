@@ -2,23 +2,22 @@
 
 namespace App\Form;
 
-// src/Form/UserType.php
+// src/Form/UserPasswordType.php
 namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class UserType
+ * Class UserPasswordType
  * @package App\Form
  */
-class UserType extends AbstractType
+class UserPasswordType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -26,11 +25,23 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add(
+            'old_password',
+            PasswordType::class,
+            [
+                'mapped' => false,
+                'label' => 'old password',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
+                ],
+            ]
+        );
         $builder
-            ->add('email', EmailType::class)
-            ->add('name', TextType::class)
-            ->add('password', RepeatedType::class, array(
+            ->add('new_password', RepeatedType::class, array(
                 'type' => PasswordType::class,
+                'mapped' => false,
                 'first_options'  => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password'),
             ))

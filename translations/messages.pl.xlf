@@ -259,7 +259,87 @@
                             <target>brak aktualizacji</target>
                         </trans-unit>
 
-            
+
+                        <trans-unit id="label_users">
+                            <source>label_users</source>
+                            <target>Użytkownicy</target>
+                        </trans-unit>
+                        <trans-unit id="action_logout">
+                            <source>action_logout</source>
+                            <target>wyloguj się</target>
+                        </trans-unit>
+                        <trans-unit id="action_register">
+                            <source>action_register</source>
+                            <target>zarejestruj się</target>
+                        </trans-unit>
+                        <trans-unit id="action_login">
+                            <source>action_login</source>
+                            <target>zaloguj się</target>
+                        </trans-unit>
+                        <trans-unit id="label_author">
+                            <source>label_author</source>
+                            <target>autor</target>
+                        </trans-unit>
+                        <trans-unit id="label_sign_in">
+                            <source>label_sign_in</source>
+                            <target>zaloguj się</target>
+                        </trans-unit>
+                        <trans-unit id="label_or">
+                            <source>label_or</source>
+                            <target>albo</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_create">
+                            <source>title_user_create</source>
+                            <target>Stwórz użytkownika</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_delete">
+                            <source>title_user_delete</source>
+                            <target>Usuń użytkownika</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_edit">
+                            <source>title_user_edit</source>
+                            <target>Edytuj użytkownika</target>
+                        </trans-unit>
+                        <trans-unit id="user_edit">
+                            <source>user_edit</source>
+                            <target>edytuj użytkownika</target>
+                        </trans-unit>
+                        <trans-unit id="title_user_list">
+                            <source>title_user_list</source>
+                            <target>Użytkownicy</target>
+                        </trans-unit>
+                        <trans-unit id="label_email">
+                            <source>label_email</source>
+                            <target>email</target>
+                        </trans-unit>
+                        <trans-unit id="label_roles">
+                            <source>label_roles</source>
+                            <target>uprawnienia</target>
+                        </trans-unit>
+                        <trans-unit id="title_user">
+                            <source>title_user</source>
+                            <target>Użytkownik</target>
+                        </trans-unit>
+                        <trans-unit id="user_email">
+                            <source>user_email</source>
+                            <target>twój email</target>
+                        </trans-unit>
+                        <trans-unit id="action_change">
+                            <source>action_change</source>
+                            <target>zmień</target>
+                        </trans-unit>
+                        <trans-unit id="label_register">
+                            <source>label_register</source>
+                            <target>zarejestruj się</target>
+                        </trans-unit>
+                        <trans-unit id="user_password">
+                            <source>user_password</source>
+                            <target>twoje hasło</target>
+                        </trans-unit>
+                        <trans-unit id="user_name">
+                            <source>user_name</source>
+                            <target>twoja nazwa</target>
+                        </trans-unit>
         </body>
     </file>
 </xliff>

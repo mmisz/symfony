@@ -14,7 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\UserType;
+use App\Form\UserEmailType;
+use App\Form\UserPasswordType;
+use App\Form\AdminPasswordType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -54,6 +56,22 @@ class UserController extends AbstractController
         );
     }
     /**
+     * User action.
+     *
+     * @param User $usr User entity
+     *
+     * @Route("/{id}", name="user_show")
+     *
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
+     */
+    public function show(User $usr): Response
+    {
+        return $this->render(
+            'user/show.html.twig',
+            ['user' => $usr]
+        );
+    }
+    /**
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
@@ -74,7 +92,7 @@ class UserController extends AbstractController
     public function create(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserEmailType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -91,10 +109,50 @@ class UserController extends AbstractController
         );
     }
     /**
-     * Edit action.
+ * Edit email action.
+ *
+ * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
+ * @param \App\Entity\User                     $usr           User entity
+ * @param \App\Repository\UserRepository        $userRepository User repository
+ *
+ * @return \Symfony\Component\HttpFoundation\Response HTTP response
+ *
+ * @throws \Doctrine\ORM\ORMException
+ * @throws \Doctrine\ORM\OptimisticLockException
+ *
+ * @Route(
+ *     "/{id}/user-email",
+ *     methods={"GET", "PUT"},
+ *     requirements={"id": "[1-9]\d*"},
+ *     name="user_email",
+ * )
+ * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
+ */
+    public function editEmail(Request $request, User $usr, UserRepository $userRepository): Response
+    {
+        $form = $this->createForm(UserEmailType::class, $usr, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $userRepository->save($usr);
+            $this->addFlash('success', 'message_updated_successfully');
+                return $this->redirectToRoute('user_show',['id'=>$usr->getId()]);
+        }
+
+        return $this->render(
+            'user/email.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $usr,
+            ]
+        );
+    }
+    /**
+     * Edit password action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\User                     $user           User entity
+     * @param \App\Entity\User                     $usr           User entity
      * @param \App\Repository\UserRepository        $userRepository User repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
@@ -103,41 +161,60 @@ class UserController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/{id}/user-edit",
+     *     "/{id}/user-password",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="user_edit",
+     *     name="user_password",
      * )
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', user)")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function editPassword(Request $request, User $usr, UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $form = $this->createForm(UserType::class, $user, ['method' => 'PUT']);
+        if($this->isGranted('ROLE_ADMIN')){
+        $type = AdminPasswordType::class;
+    }
+    else{
+        $type = UserPasswordType::class;
+    }
+        $form = $this->createForm($type, $usr, ['method' => 'PUT']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
-            $userRepository->save($user);
-            $this->addFlash('success', 'message_updated_successfully');
+            $newPassword = $form->get('new_password')->getData();
+            $usr = $this->getUser();
             if($this->isGranted('ROLE_ADMIN')){
+                $usr->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $usr,
+                        $newPassword
+                    )
+                );
+                $userRepository->save($usr);
+                $this->addFlash('success', 'message_updated_successfully');
                 return $this->redirectToRoute('user_index');
             }
             else{
-                return $this->redirectToRoute('to_do_index');
+                $oldPassword = $form->get('old_password')->getData();
+                $checkPass = $passwordEncoder->isPasswordValid($usr, $oldPassword);
+                if($checkPass === true) {
+                    $usr->setPassword(
+                        $passwordEncoder->encodePassword(
+                            $usr,
+                            $newPassword
+                        )
+                    );
+                    $userRepository->save($usr);
+                    $this->addFlash('success', 'message_updated_successfully');
+                    return $this->redirectToRoute('user_show',['id'=>$usr->getId()]);
+                } else {
+                    $this->addFlash('warning', 'message_wrong_password');
+                }
             }
-
         }
-
         return $this->render(
-            'user/edit.html.twig',
+            'user/password.html.twig',
             [
                 'form' => $form->createView(),
-                'user' => $user,
+                'user' => $usr,
             ]
         );
     }
@@ -164,7 +241,7 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
 
-        $form = $this->createForm(UserType::class, $user, ['method' => 'DELETE']);
+        $form = $this->createForm(UserEmailType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {

@@ -42,7 +42,7 @@ class UserVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
+        return in_array($attribute, ['EDIT'])
             && $subject instanceof User;
     }
 
@@ -58,18 +58,17 @@ class UserVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        $user = $this->security->getUser();
+        $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
         }
 
-        // ... (check conditions and return true to grant permission) ...
+        dump($subject);
+
         switch ($attribute) {
-            case 'VIEW':
             case 'EDIT':
-            case 'DELETE':
-                if ($subject === $user) {
+                if ($subject->getId() === $user->getId()) {
                     return true;
                 }
                 break;

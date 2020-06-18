@@ -21,6 +21,7 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'note.id') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_title'|trans, 'note.title') }}</th>
+                <th>{{ 'label_author'|trans }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_created_at'|trans, 'note.creation') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_last_update'|trans, 'note.creation') }}</th>
                 <th>{{ 'label_category'|trans }}</th>
@@ -31,9 +32,10 @@
             {% for note in pagination.items %}
                 {% if is_granted("ROLE_ADMIN") or is_granted("VIEW", note) %}
                     <tr>
-                    <td>{{ note.id }}</td>
-                    <td>{{ note.title }}</td>
-                    <td>{{ note.creation|date('d-m-yy') }}</td>
+                        <td>{{ note.id }}</td>
+                        <td>{{ note.title }}</td>
+                        <td>{{ note.author.name }}</td>
+                        <td>{{ note.creation|date('d-m-yy') }}</td>
                     <td>
                         {% if  note.lastUpdate is null %}
                             -

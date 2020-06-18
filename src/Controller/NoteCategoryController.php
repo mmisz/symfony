@@ -5,9 +5,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Note;
 use App\Entity\NoteCategory;
 use App\Form\NoteCategoryType;
 use App\Repository\NoteCategoryRepository;
+use App\Repository\NoteRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -65,11 +67,29 @@ class NoteCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(NoteCategory $category): Response
+    public function show(NoteCategory $category, NoteRepository $noteRepository, PaginatorInterface $paginator,Request $request): Response
     {
+        if($this->isGranted('ROLE_ADMIN')){
+            $pagination = $paginator->paginate(
+                $noteRepository->findBy(['category'=>$category]),
+                $request->query->getInt('page', 1),
+                NoteRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
+        else{
+            $pagination = $paginator->paginate(
+                $noteRepository->queryByAuthorAndCategory($this->getUser(),$category),
+                $request->query->getInt('page', 1),
+                NoteRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
+
         return $this->render(
             'note-category/show.html.twig',
-            ['category' => $category]
+            [
+                'pagination' => $pagination,
+                'category'=>$category
+            ]
         );
     }
     /**
