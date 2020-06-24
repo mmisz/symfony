@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
- * @ORM\Entity(repositoryClass=ListElementRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ListElementRepository", repositoryClass=ListElementRepository::class)
  * @ORM\Table(name="list_elements")
  */
 class ListElement
@@ -26,29 +26,43 @@ class ListElement
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Type(type="string")
+     * @Assert\Length(
+     *     min="1",
+     *     max="255",
+     * )
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=ToDoList::class, inversedBy="listElements")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\ToDoList")
      */
     private $to_do_list;
 
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Assert\DateTime
      */
     private $creation;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\DateTime
      */
     private $done_date;
 
     /**
      * @ORM\ManyToOne(targetEntity=ListElementStatus::class, inversedBy="listElements")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\ListElementStatus")
      */
     private $status;
 

@@ -27,13 +27,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class UserController extends AbstractController
 {
+
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\UserRepository        $userRepository User repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
-     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Repository\UserRepository $userRepository User repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -70,43 +70,6 @@ class UserController extends AbstractController
         return $this->render(
             'user/show.html.twig',
             ['user' => $usr]
-        );
-    }
-    /**
-     * Create action.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\UserRepository        $userRepository User repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
-     * @Route(
-     *     "/user-create",
-     *     methods={"GET", "POST"},
-     *     name="user_create",
-     * )
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function create(Request $request, UserRepository $userRepository, TranslatorInterface $translator): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserEmailType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user);
-
-            $this->addFlash('success', $translator->trans('message_created_successfully'));
-
-            return $this->redirectToRoute('user_index');
-        }
-
-        return $this->render(
-            'user/create.html.twig',
-            ['form' => $form->createView()]
         );
     }
     /**

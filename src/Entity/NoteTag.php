@@ -41,8 +41,8 @@ class NoteTag
      * @Assert\Type(type="string")
      * @Assert\NotBlank
      * @Assert\Length(
-     *     min="3",
-     *     max="100",
+     *     min="1",
+     *     max="64",
      * )
      */
     private $name;

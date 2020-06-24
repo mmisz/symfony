@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ListCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ListCommentRepository::class)
  * @ORM\Table(name="list_comments")
@@ -24,21 +25,30 @@ class ListComment
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=ToDoList::class, inversedBy="listComments")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\ToDoList")
      */
     private $to_do_list;
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Assert\DateTime
      */
     private $creation;
 
     /**
+     *  Getter for id.
+     *
      * @return int|null
      */
     public function getId(): ?int
@@ -47,6 +57,8 @@ class ListComment
     }
 
     /**
+     * Getter for content.
+     *
      * @return string|null
      */
     public function getContent(): ?string
@@ -55,6 +67,8 @@ class ListComment
     }
 
     /**
+     * Setter for content.
+     *
      * @param string $content
      * @return $this
      */
@@ -66,6 +80,8 @@ class ListComment
     }
 
     /**
+     * Getter for to_do_list.
+     *
      * @return ToDoList|null
      */
     public function getToDoList(): ?ToDoList
@@ -74,6 +90,8 @@ class ListComment
     }
 
     /**
+     * Setter for to_do_list.
+     *
      * @param ToDoList|null $to_do_list
      * @return $this
      */
@@ -84,11 +102,22 @@ class ListComment
         return $this;
     }
 
+    /**
+     * getter for Creation.
+     *
+     * @return \DateTimeInterface|null
+     */
     public function getCreation(): ?\DateTimeInterface
     {
         return $this->creation;
     }
 
+    /**
+     * Setter for Creation.
+     *
+     * @param \DateTimeInterface $creation
+     * @return $this
+     */
     public function setCreation(\DateTimeInterface $creation): self
     {
         $this->creation = $creation;

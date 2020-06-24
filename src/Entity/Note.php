@@ -6,7 +6,9 @@ use App\Repository\NoteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=NoteRepository::class)
@@ -23,12 +25,27 @@ class Note
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * Title.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string",
+     *     length=150)
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="1",
+     *     max="150",
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
      */
     private $content;
 
@@ -39,6 +56,8 @@ class Note
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\DateTime
      */
     private $last_update;
 
@@ -52,6 +71,10 @@ class Note
      *     inversedBy="notes",
      *     orphanRemoval=true
      * )
+     *
+     * @Assert\All({
+     * @Assert\Type(type="App\Entity\NoteTag")
+     * })
      */
     private $noteTags;
 
@@ -65,6 +88,8 @@ class Note
      *     inversedBy="notes",
      * )
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\Category")
      */
     private $category;
 
@@ -75,6 +100,8 @@ class Note
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\User")
      */
     private $author;
 
@@ -222,11 +249,18 @@ class Note
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * @param User|null $author
+     * @return $this
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;

@@ -69,6 +69,8 @@ class User implements UserInterface
      * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email."
      * )
+     * @Assert\Type("string")
+     * @Assert\NotBlank
      */
     private $email;
 
@@ -85,11 +87,20 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(type="string")
+     *
+     * @Assert\Type("string")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=200)
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="1",
+     *     max="200",
+     * )
      */
     private $name;
 
@@ -200,11 +211,18 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;

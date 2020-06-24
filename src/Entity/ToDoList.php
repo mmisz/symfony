@@ -42,8 +42,8 @@ class ToDoList
      * @Assert\Type(type="string")
      * @Assert\NotBlank
      * @Assert\Length(
-     *     min="3",
-     *     max="64",
+     *     min="1",
+     *     max="255",
      * )
      */
     private $title;
@@ -57,22 +57,34 @@ class ToDoList
      * @ORM\Column(type="datetime")
      *
      * @Gedmo\Timestampable(on="create")
+     *
+     * @Assert\DateTime
      */
     private $creation;
 
     /**
      * @ORM\OneToMany(targetEntity=ListElement::class, mappedBy="to_do_list", orphanRemoval=true)
+     *
+     * @Assert\All({
+     * @Assert\Type(type="App\Entity\ListElement")
+     * })
      */
     private $listElements;
 
     /**
      * @ORM\OneToMany(targetEntity=ListComment::class, mappedBy="to_do_list", orphanRemoval=true)
+     *
+     * @Assert\All({
+     * @Assert\Type(type="App\Entity\ListComments")
+     * })
      */
     private $listComments;
 
     /**
      * @ORM\ManyToOne(targetEntity=ListCategory::class, inversedBy="toDoLists")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\ListCategory")
      */
     private $category;
     /**
@@ -86,18 +98,26 @@ class ToDoList
      *     orphanRemoval=true
      * )
      * @ORM\JoinTable(name="to_do_list_list_tag")
+     *
+     * @Assert\All({
+     * @Assert\Type(type="App\Entity\ListTag")
+     * })
      */
     private $listTag;
 
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\DateTime
      */
     private $done_date;
 
     /**
      * @ORM\ManyToOne(targetEntity=ListStatus::class, inversedBy="toDoLists")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * Assert\Type(type="App\Entity\ListStatus")
      */
     private $status;
 
@@ -108,10 +128,14 @@ class ToDoList
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\User")
      */
     private $author;
 
-
+    /**
+     * ToDoList constructor.
+     */
     public function __construct()
     {
         $this->listElements = new ArrayCollection();
@@ -299,11 +323,18 @@ class ToDoList
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getDoneDate(): ?\DateTimeInterface
     {
         return $this->done_date;
     }
 
+    /**
+     * @param DateTimeInterface|null $done_date
+     * @return $this
+     */
     public function setDoneDate(?\DateTimeInterface $done_date): self
     {
         $this->done_date = $done_date;
@@ -311,11 +342,18 @@ class ToDoList
         return $this;
     }
 
+    /**
+     * @return ListStatus|null
+     */
     public function getStatus(): ?ListStatus
     {
         return $this->status;
     }
 
+    /**
+     * @param ListStatus|null $status
+     * @return $this
+     */
     public function setStatus(?ListStatus $status): self
     {
         $this->status = $status;
@@ -323,11 +361,18 @@ class ToDoList
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * @param User|null $author
+     * @return $this
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
