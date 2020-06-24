@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class NoteCategory.
@@ -110,7 +111,7 @@ class NoteCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, NoteCategoryRepository $categoryRepository): Response
+    public function create(Request $request, NoteCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
     {
         $category = new NoteCategory();
         $form = $this->createForm(NoteCategoryType::class, $category);
@@ -119,7 +120,7 @@ class NoteCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
 
             return $this->redirectToRoute('note_category_index');
         }
@@ -149,7 +150,7 @@ class NoteCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
+    public function edit(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(NoteCategoryType::class, $category, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -157,7 +158,7 @@ class NoteCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category);
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
 
             return $this->redirectToRoute('note_category_index');
         }
@@ -190,7 +191,7 @@ class NoteCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
+    public function delete(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
     {
         if ($category->getNotes()->count()) {
             $this->addFlash('warning', 'message_category_contains_notes');
@@ -206,7 +207,7 @@ class NoteCategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->delete($category);
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
 
             return $this->redirectToRoute('note_category_index');
         }

@@ -160,7 +160,7 @@
                         </trans-unit>
                         <trans-unit id="label_status">
                             <source>label_status</source>
-                            <target>status</target>
+                            <target>stan</target>
                         </trans-unit>
                         <trans-unit id="label_done_at">
                             <source>label_done_at</source>
@@ -310,7 +310,7 @@
                         </trans-unit>
                         <trans-unit id="label_email">
                             <source>label_email</source>
-                            <target>email</target>
+                            <target>e-mail</target>
                         </trans-unit>
                         <trans-unit id="label_roles">
                             <source>label_roles</source>
@@ -339,6 +339,71 @@
                         <trans-unit id="user_name">
                             <source>user_name</source>
                             <target>twoja nazwa</target>
+                        </trans-unit>
+                        <trans-unit id="Repeat_Password">
+                            <source>Repeat_Password</source>
+                            <target>Powtórz hasło</target>
+                        </trans-unit>
+                        <trans-unit id="Password">
+                            <source>Password</source>
+                            <target>Podaj hasło</target>
+                        </trans-unit>
+                        <trans-unit id="old_password">
+                            <source>old_password</source>
+                            <target>stare hasło</target>
+                        </trans-unit>
+
+                        <trans-unit id="title_logged_as">
+                            <source>title_logged_as</source>
+                            <target>Jesteś zalogowany jako</target>
+                        </trans-unit>
+                        <trans-unit id="label_logout">
+                            <source>label_logout</source>
+                            <target>Wyloguj się</target>
+                        </trans-unit>
+                        <trans-unit id="label_pls_sign">
+                            <source>label_pls_sign</source>
+                            <target>Zaloguj się</target>
+                        </trans-unit>
+                        <trans-unit id="message_deleted_successfully">
+                            <source>message_deleted_successfully</source>
+                            <target>Usunięto element</target>
+                        </trans-unit>
+                        <trans-unit id="message_created_successfully">
+                            <source>message_created_successfully</source>
+                            <target>Stworzono element</target>
+                        </trans-unit>
+                        <trans-unit id="message_updated_successfully">
+                            <source>message_updated_successfully</source>
+                            <target>Zaktualizowano element</target>
+                        </trans-unit>
+                        <trans-unit id="message_item_not_found">
+                            <source>message_item_not_found</source>
+                            <target>Nie odnaleziono pozycji</target>
+                        </trans-unit>
+                        <trans-unit id="message_logged_successfully">
+                            <source>message_logged_successfully</source>
+                            <target>Zalogowano!</target>
+                        </trans-unit>
+                        <trans-unit id="message_wrong_password">
+                            <source>message_wrong_password</source>
+                            <target>Błędne hasło</target>
+                        </trans-unit>
+                        <trans-unit id="Status">
+                            <source>Status</source>
+                            <target>stan</target>
+                        </trans-unit>
+                        <trans-unit id="Category">
+                            <source>Category</source>
+                            <target>kategoria</target>
+                        </trans-unit>
+                        <trans-unit id="label_comment">
+                            <source>label_comment</source>
+                            <target>komentarz</target>
+                        </trans-unit>
+                        <trans-unit id="content">
+                            <source>content</source>
+                            <target>treść</target>
                         </trans-unit>
         </body>
     </file>

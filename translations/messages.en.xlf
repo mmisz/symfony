@@ -197,7 +197,7 @@
                         <trans-unit id="label_content">
                             <source>label_create_comment</source>
                             <target>content</target>
-                            </trans-unit>
+                         </trans-unit>
                         <trans-unit id="title_tag_edit">
                             <source>title_tag_edit</source>
                             <target>Update Tag</target>
@@ -340,6 +340,71 @@
                             <source>user_name</source>
                             <target>your name</target>
                         </trans-unit>
+                        <trans-unit id="Repeat_Password">
+                            <source>Repeat_Password</source>
+                            <target>Repeat Password</target>
+                        </trans-unit>
+                        <trans-unit id="Password">
+                            <source>Password</source>
+                            <target>Password</target>
+                        </trans-unit>
+                        <trans-unit id="old_password">
+                            <source>old_password</source>
+                            <target>old password</target>
+                        </trans-unit>
+                        <trans-unit id="title_logged_as">
+                            <source>title_logged_as</source>
+                            <target>You are logged in as</target>
+                        </trans-unit>
+                        <trans-unit id="label_logout">
+                            <source>label_logout</source>
+                            <target>Logout</target>
+                        </trans-unit>
+                        <trans-unit id="label_pls_sign">
+                            <source>label_pls_sign</source>
+                            <target>Please sign in</target>
+                        </trans-unit>
+                        <trans-unit id="message_deleted_successfully">
+                            <source>message_deleted_successfully</source>
+                            <target>Deleted successfully</target>
+                        </trans-unit>
+                        <trans-unit id="message_created_successfully">
+                            <source>message_created_successfully</source>
+                            <target>Created successfully</target>
+                        </trans-unit>
+                        <trans-unit id="message_updated_successfully">
+                            <source>message_updated_successfully</source>
+                            <target>Updated successfully</target>
+                        </trans-unit>
+                        <trans-unit id="message_item_not_found">
+                            <source>message_item_not_found</source>
+                            <target>Item not found</target>
+                        </trans-unit>
+                        <trans-unit id="message_logged_successfully">
+                            <source>message_logged_successfully</source>
+                            <target>Logged successfully</target>
+                        </trans-unit>
+                        <trans-unit id="message_wrong_password">
+                            <source>message_wrong_password</source>
+                            <target>Wrong password</target>
+                        </trans-unit>
+                        <trans-unit id="Status">
+                            <source>Status</source>
+                            <target>status</target>
+                        </trans-unit>
+                        <trans-unit id="Category">
+                            <source>Category</source>
+                            <target>category</target>
+                        </trans-unit>
+                        <trans-unit id="label_comment">
+                            <source>label_comment</source>
+                            <target>comment</target>
+                        </trans-unit>
+                        <trans-unit id="content">
+                            <source>content</source>
+                            <target>content</target>
+                        </trans-unit>
+
         </body>
     </file>
 </xliff>

@@ -18,6 +18,7 @@ use App\Form\UserEmailType;
 use App\Form\UserPasswordType;
 use App\Form\AdminPasswordType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class UserController.
@@ -89,7 +90,7 @@ class UserController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, UserRepository $userRepository): Response
+    public function create(Request $request, UserRepository $userRepository, TranslatorInterface $translator): Response
     {
         $user = new User();
         $form = $this->createForm(UserEmailType::class, $user);
@@ -98,7 +99,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->save($user);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
 
             return $this->redirectToRoute('user_index');
         }
@@ -128,7 +129,7 @@ class UserController extends AbstractController
  * )
  * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
  */
-    public function editEmail(Request $request, User $usr, UserRepository $userRepository): Response
+    public function editEmail(Request $request, User $usr, UserRepository $userRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(UserEmailType::class, $usr, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -136,7 +137,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $userRepository->save($usr);
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
                 return $this->redirectToRoute('user_show',['id'=>$usr->getId()]);
         }
 
@@ -168,7 +169,7 @@ class UserController extends AbstractController
      * )
      * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
      */
-    public function editPassword(Request $request, User $usr, UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function editPassword(Request $request, User $usr, UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder, TranslatorInterface $translator): Response
     {
         if($this->isGranted('ROLE_ADMIN')){
         $type = AdminPasswordType::class;
@@ -180,7 +181,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('new_password')->getData();
-            $usr = $this->getUser();
             if($this->isGranted('ROLE_ADMIN')){
                 $usr->setPassword(
                     $passwordEncoder->encodePassword(
@@ -189,10 +189,11 @@ class UserController extends AbstractController
                     )
                 );
                 $userRepository->save($usr);
-                $this->addFlash('success', 'message_updated_successfully');
+                $this->addFlash('success', $translator->trans('message_updated_successfully'));
                 return $this->redirectToRoute('user_index');
             }
             else{
+                $usr = $this->getUser();
                 $oldPassword = $form->get('old_password')->getData();
                 $checkPass = $passwordEncoder->isPasswordValid($usr, $oldPassword);
                 if($checkPass === true) {
@@ -206,7 +207,7 @@ class UserController extends AbstractController
                     $this->addFlash('success', 'message_updated_successfully');
                     return $this->redirectToRoute('user_show',['id'=>$usr->getId()]);
                 } else {
-                    $this->addFlash('warning', 'message_wrong_password');
+                    $this->addFlash('warning', $translator->trans('message_wrong_password'));
                 }
             }
         }
@@ -238,7 +239,7 @@ class UserController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, User $user, UserRepository $userRepository): Response
+    public function delete(Request $request, User $user, UserRepository $userRepository, TranslatorInterface $translator): Response
     {
 
         $form = $this->createForm(UserEmailType::class, $user, ['method' => 'DELETE']);

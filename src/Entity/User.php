@@ -67,7 +67,7 @@ class User implements UserInterface
      *     unique=true,
      * )
      * @Assert\Email(
-     *     checkMX = true
+     *     message = "The email '{{ value }}' is not a valid email."
      * )
      */
     private $email;

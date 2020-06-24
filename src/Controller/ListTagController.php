@@ -15,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * Class ListTagController.
  *
@@ -107,7 +109,7 @@ class ListTagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function edit(Request $request, ListTag $listTag, ListTagRepository $listTagRepository): Response
+    public function edit(Request $request, ListTag $listTag, ListTagRepository $listTagRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListSingleTagType::class, $listTag, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -115,7 +117,7 @@ class ListTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listTagRepository->save($listTag);
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
 
             return $this->redirectToRoute('list_tag_index');
         }
@@ -147,7 +149,7 @@ class ListTagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function delete(Request $request, ListTag $listTag, ListTagRepository $listTagRepository): Response
+    public function delete(Request $request, ListTag $listTag, ListTagRepository $listTagRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListSingleTagType::class, $listTag, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -158,7 +160,7 @@ class ListTagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $listTagRepository->delete($listTag);
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
 
             return $this->redirectToRoute('list_tag_index');
         }
@@ -188,7 +190,7 @@ class ListTagController extends AbstractController
      *     name="list_tag_create",
      * )
      */
-    public function create(Request $request, ListTagRepository $listTagRepository): Response
+    public function create(Request $request, ListTagRepository $listTagRepository, TranslatorInterface $translator): Response
     {
         $listTag = new ListTag();
         $form = $this->createForm(ListSingleTagType::class, $listTag);
@@ -197,7 +199,7 @@ class ListTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listTagRepository->save($listTag);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
 
             return $this->redirectToRoute('list_tag_index');
         }

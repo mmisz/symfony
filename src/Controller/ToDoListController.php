@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Form\ListDeleteType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 /**
@@ -103,7 +104,7 @@ class ToDoListController extends AbstractController
      *
      * @Security("is_granted('ROLE_ADMIN') or is_granted('DELETE', toDoList)")
      */
-    public function delete(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
+    public function delete(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListDeleteType::class, $toDoList, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -112,7 +113,7 @@ class ToDoListController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
             $toDoListRepository->delete($toDoList);
             return $this->redirectToRoute('to_do_index');
         }
@@ -148,7 +149,7 @@ class ToDoListController extends AbstractController
      *
      * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', toDoList)")
      */
-    public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
+    public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ToDoType::class, $toDoList, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -160,7 +161,7 @@ class ToDoListController extends AbstractController
                 $toDoList->setDoneDate(null);
             }
             $toDoListRepository->save($toDoList);
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
 
             return $this->redirectToRoute('to_do_index');
         }
@@ -192,7 +193,7 @@ class ToDoListController extends AbstractController
      * )
      *
      */
-    public function create(Request $request, ToDoListRepository $toDoListRepository, ListStatusRepository $listStatusRepository): Response
+    public function create(Request $request, ToDoListRepository $toDoListRepository, ListStatusRepository $listStatusRepository, TranslatorInterface $translator): Response
     {
         $toDoList = new ToDoList();
         $form = $this->createForm(ToDoType::class, $toDoList);
@@ -204,7 +205,7 @@ class ToDoListController extends AbstractController
             $toDoList->setAuthor($this->getUser());
             $toDoListRepository->save($toDoList);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
 
             return $this->redirectToRoute('to_do_index');
         }

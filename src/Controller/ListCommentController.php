@@ -14,6 +14,8 @@ use App\Repository\ListCommentRepository;
 use App\Entity\ListComment;
 use App\Repository\ToDoListRepository;
 use App\Entity\ToDoList;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * Class ListComment.
  */
@@ -36,7 +38,7 @@ class ListCommentController extends AbstractController
      *     name="list_comment_edit",
      * )
      */
-    public function edit(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository): Response
+    public function edit(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListCommentType::class, $listComment, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -44,7 +46,7 @@ class ListCommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listCommentRepository->save($listComment);
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
             $toDoList = $listComment->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
         }
@@ -77,7 +79,7 @@ class ListCommentController extends AbstractController
      *     name="list_comment_delete",
      * )
      */
-    public function delete(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository): Response
+    public function delete(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListCommentType::class, $listComment, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -86,7 +88,7 @@ class ListCommentController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if($form->isSubmitted() && $form->isValid()){
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
             $listCommentRepository->delete($listComment);
             $toDoList = $listComment->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
@@ -118,7 +120,7 @@ class ListCommentController extends AbstractController
      *     name="list_comment_create",
      * )
      */
-    public function create(ToDoList $toDoList, Request $request, ListCommentRepository $listCommentRepository): Response
+    public function create(ToDoList $toDoList, Request $request, ListCommentRepository $listCommentRepository, TranslatorInterface $translator): Response
     {
         $listComment = new ListComment();
         $form = $this->createForm(ListCommentType::class, $listComment);
@@ -126,7 +128,7 @@ class ListCommentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $listComment->setToDoList($toDoList);
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
             $listComment->setCreation(new \DateTime());
             $listCommentRepository->save($listComment);
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);

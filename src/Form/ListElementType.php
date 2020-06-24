@@ -34,7 +34,7 @@ class ListElementType extends AbstractType
             'content',
             TextareaType::class,
             [
-                'label' => 'label_content',
+                'label' => 'content',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]

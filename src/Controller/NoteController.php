@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Form\ListDeleteType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class Note.
@@ -67,10 +68,10 @@ class NoteController extends AbstractController
      *
      *@Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', note)")
      */
-    public function show(Note $note, Request $request): Response
+    public function show(Note $note, Request $request, TranslatorInterface $translator): Response
     {
         if ($note->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message.item_not_found');
+            $this->addFlash('warning', $translator->trans('message_item_not_found'));
 
             return $this->redirectToRoute('note_index');
         }
@@ -98,7 +99,7 @@ class NoteController extends AbstractController
      *
      *@Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', note)")
      */
-    public function edit(Request $request, Note $note, NoteRepository $noteRepository): Response
+    public function edit(Request $request, Note $note, NoteRepository $noteRepository, TranslatorInterface $translator): Response
     {
         if ($note->getAuthor() !== $this->getUser()) {
             $this->addFlash('warning', 'message.item_not_found');
@@ -111,7 +112,7 @@ class NoteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $note->setLastUpdate(new \DateTime());
             $noteRepository->save($note);
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
             return $this->redirectToRoute('note_index');
         }
 
@@ -144,7 +145,7 @@ class NoteController extends AbstractController
      *
      * @Security("is_granted('ROLE_ADMIN') or is_granted('DELETE', note)")
      */
-    public function delete(Request $request, Note $note, NoteRepository $noteRepository): Response
+    public function delete(Request $request, Note $note, NoteRepository $noteRepository, TranslatorInterface $translator): Response
     {
 
         $form = $this->createForm(NoteDeleteType::class, $note, ['method' => 'DELETE']);
@@ -154,7 +155,7 @@ class NoteController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if($form->isSubmitted() && $form->isValid()){
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
             $noteRepository->delete($note);
             return $this->redirectToRoute('note_index');
         }
@@ -184,7 +185,7 @@ class NoteController extends AbstractController
      *     name="note_create",
      * )
      */
-    public function create(Request $request, NoteRepository $noteRepository): Response
+    public function create(Request $request, NoteRepository $noteRepository, TranslatorInterface $translator): Response
     {
         $note = new Note();
         $form = $this->createForm(NoteType::class, $note);
@@ -195,7 +196,7 @@ class NoteController extends AbstractController
             $note->setAuthor($this->getUser());
             $noteRepository->save($note);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
 
             return $this->redirectToRoute('note_index');
         }

@@ -30,7 +30,7 @@ class UserPasswordType extends AbstractType
             PasswordType::class,
             [
                 'mapped' => false,
-                'label' => 'old password',
+                'label' => 'old_password',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -43,7 +43,7 @@ class UserPasswordType extends AbstractType
                 'type' => PasswordType::class,
                 'mapped' => false,
                 'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
+                'second_options' => array('label' => 'Repeat_Password'),
             ))
         ;
     }

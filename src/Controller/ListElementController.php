@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Form\ListElementType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ListElementController
@@ -38,7 +39,7 @@ class ListElementController extends AbstractController
      *     name="list_element_edit",
      * )
      */
-    public function edit(Request $request, ListElement $listElement, ListElementRepository $listElementRepository): Response
+    public function edit(Request $request, ListElement $listElement, ListElementRepository $listElementRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListElementType::class, $listElement, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -46,7 +47,7 @@ class ListElementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listElementRepository->save($listElement);
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
             $toDoList = $listElement->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
         }
@@ -79,7 +80,7 @@ class ListElementController extends AbstractController
      *     name="list_element_delete",
      * )
      */
-    public function delete(Request $request, ListElement $listElement, ListElementRepository $listElementRepository): Response
+    public function delete(Request $request, ListElement $listElement, ListElementRepository $listElementRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListElementType::class, $listElement, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -94,7 +95,7 @@ class ListElementController extends AbstractController
             else{
                 $listElement->setDoneDate(null);
             }
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
             $listElementRepository->delete($listElement);
             $toDoList = $listElement->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
@@ -127,7 +128,7 @@ class ListElementController extends AbstractController
      *     name="list_element_create",
      * )
      */
-    public function create(ToDoList $toDoList, Request $request, ListElementRepository $listElementRepository, ListElementStatusRepository $listStatusRepository): Response
+    public function create(ToDoList $toDoList, Request $request, ListElementRepository $listElementRepository, ListElementStatusRepository $listStatusRepository, TranslatorInterface $translator): Response
     {
         $listElement = new ListElement();
         $form = $this->createForm(ListElementType::class, $listElement);
@@ -135,7 +136,7 @@ class ListElementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $listElement->setToDoList($toDoList);
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
             $listElement->setCreation(new \DateTime());
             $listElement->setStatus($listStatusRepository->findOneBy(['name' => 'to do']));
             $listElementRepository->save($listElement);

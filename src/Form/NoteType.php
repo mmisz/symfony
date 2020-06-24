@@ -61,8 +61,8 @@ class NoteType extends AbstractType
         );
         $builder->add('category', EntityType::class, [
             // looks for choices from this entity
+            'label' => 'label_category',
             'class' => NoteCategory::class,
-
             // uses the User.username property as the visible option string
             'choice_label' => 'title',
 
@@ -83,7 +83,7 @@ class NoteType extends AbstractType
             'content',
             TextareaType::class,
             [
-                'label' => 'label_content',
+                'label' => 'content',
                 'required' => true,
             ]
         );

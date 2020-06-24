@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * Class NoteTagController.
  *
@@ -110,7 +112,7 @@ class NoteTagController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository): Response
+    public function edit(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(NoteSingleTagType::class, $noteTag, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -118,7 +120,7 @@ class NoteTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $noteTagRepository->save($noteTag);
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
 
             return $this->redirectToRoute('note_tag_index');
         }
@@ -151,7 +153,7 @@ class NoteTagController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository): Response
+    public function delete(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(NoteSingleTagType::class, $noteTag, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -162,7 +164,7 @@ class NoteTagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $noteTagRepository->delete($noteTag);
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
 
             return $this->redirectToRoute('note_tag_index');
         }
@@ -193,7 +195,7 @@ class NoteTagController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, NoteTagRepository $noteTagRepository): Response
+    public function create(Request $request, NoteTagRepository $noteTagRepository, TranslatorInterface $translator): Response
     {
         $noteTag = new NoteTag();
         $form = $this->createForm(NoteSingleTagType::class, $noteTag);
@@ -202,7 +204,7 @@ class NoteTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $noteTagRepository->save($noteTag);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
 
             return $this->redirectToRoute('note_tag_index');
         }

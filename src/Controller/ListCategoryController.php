@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ListCategoryType;
+use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class ListCategoryController.
  *
@@ -114,7 +115,7 @@ class ListCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, ListCategoryRepository $categoryRepository): Response
+    public function create(Request $request, ListCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
     {
         $category = new ListCategory();
         $form = $this->createForm(ListCategoryType::class, $category);
@@ -123,7 +124,7 @@ class ListCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', $translator->trans('message_created_successfully'));
 
             return $this->redirectToRoute('list_category_index');
         }
@@ -153,7 +154,7 @@ class ListCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
+    public function edit(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ListCategoryType::class, $category, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -161,7 +162,7 @@ class ListCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category);
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', $translator->trans('message_updated_successfully'));
 
             return $this->redirectToRoute('list_category_index');
         }
@@ -194,7 +195,7 @@ class ListCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
     */
-    public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
+    public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
     {
         if ($category->getToDoLists()->count()) {
             $this->addFlash('warning', 'message_category_contains_tasks');
@@ -210,7 +211,7 @@ class ListCategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->delete($category);
-            $this->addFlash('success', 'message.deleted_successfully');
+            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
 
             return $this->redirectToRoute('list_category_index');
         }
