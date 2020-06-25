@@ -120,7 +120,7 @@ class NoteTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $noteTagRepository->save($noteTag);
 
-            $this->addFlash('success', $translator->trans('message_updated_successfully'));
+            $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('note_tag_index');
         }
@@ -164,7 +164,7 @@ class NoteTagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $noteTagRepository->delete($noteTag);
-            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
+            $this->addFlash('success','message_deleted_successfully');
 
             return $this->redirectToRoute('note_tag_index');
         }
@@ -204,7 +204,7 @@ class NoteTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $noteTagRepository->save($noteTag);
 
-            $this->addFlash('success', $translator->trans('message_created_successfully'));
+            $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('note_tag_index');
         }

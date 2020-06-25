@@ -89,6 +89,10 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      *
      * @Assert\Type("string")
+     * @Assert\Length(
+     *     min="6",
+     *     max="150",
+     * )
      */
     private $password;
 

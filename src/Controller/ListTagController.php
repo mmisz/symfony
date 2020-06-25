@@ -117,7 +117,7 @@ class ListTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listTagRepository->save($listTag);
 
-            $this->addFlash('success', $translator->trans('message_updated_successfully'));
+            $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('list_tag_index');
         }
@@ -160,7 +160,7 @@ class ListTagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $listTagRepository->delete($listTag);
-            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
+            $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('list_tag_index');
         }
@@ -199,7 +199,7 @@ class ListTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listTagRepository->save($listTag);
 
-            $this->addFlash('success', $translator->trans('message_created_successfully'));
+            $this->addFlash('success','message_created_successfully');
 
             return $this->redirectToRoute('list_tag_index');
         }

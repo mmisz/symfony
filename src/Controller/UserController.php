@@ -100,7 +100,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $userRepository->save($usr);
-            $this->addFlash('success', $translator->trans('message_updated_successfully'));
+            $this->addFlash('success','message_updated_successfully');
                 return $this->redirectToRoute('user_show',['id'=>$usr->getId()]);
         }
 
@@ -152,7 +152,7 @@ class UserController extends AbstractController
                     )
                 );
                 $userRepository->save($usr);
-                $this->addFlash('success', $translator->trans('message_updated_successfully'));
+                $this->addFlash('success','message_updated_successfully');
                 return $this->redirectToRoute('user_index');
             }
             else{

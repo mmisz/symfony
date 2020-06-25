@@ -113,7 +113,7 @@ class ToDoListController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
+            $this->addFlash('success','message_deleted_successfully');
             $toDoListRepository->delete($toDoList);
             return $this->redirectToRoute('to_do_index');
         }
@@ -161,7 +161,7 @@ class ToDoListController extends AbstractController
                 $toDoList->setDoneDate(null);
             }
             $toDoListRepository->save($toDoList);
-            $this->addFlash('success', $translator->trans('message_updated_successfully'));
+            $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('to_do_index');
         }
@@ -205,7 +205,7 @@ class ToDoListController extends AbstractController
             $toDoList->setAuthor($this->getUser());
             $toDoListRepository->save($toDoList);
 
-            $this->addFlash('success', $translator->trans('message_created_successfully'));
+            $this->addFlash('success','message_created_successfully');
 
             return $this->redirectToRoute('to_do_index');
         }

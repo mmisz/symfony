@@ -46,7 +46,7 @@ class ListCommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listCommentRepository->save($listComment);
 
-            $this->addFlash('success', $translator->trans('message_updated_successfully'));
+            $this->addFlash('success', 'message_updated_successfully');
             $toDoList = $listComment->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
         }
@@ -88,7 +88,7 @@ class ListCommentController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if($form->isSubmitted() && $form->isValid()){
-            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
+            $this->addFlash('success','message_deleted_successfully');
             $listCommentRepository->delete($listComment);
             $toDoList = $listComment->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
@@ -128,7 +128,7 @@ class ListCommentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $listComment->setToDoList($toDoList);
-            $this->addFlash('success', $translator->trans('message_created_successfully'));
+            $this->addFlash('success', 'message_created_successfully');
             $listComment->setCreation(new \DateTime());
             $listCommentRepository->save($listComment);
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);

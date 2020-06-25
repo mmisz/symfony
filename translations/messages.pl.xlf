@@ -405,6 +405,18 @@
                             <source>content</source>
                             <target>treść</target>
                         </trans-unit>
+                        <trans-unit id="message_category_contains_tasks">
+                            <source>message_category_contains_tasks</source>
+                            <target>Kategoria zawiera Listy</target>
+                        </trans-unit>
+                        <trans-unit id="message_category_contains_notes">
+                            <source>message_category_contains_notes</source>
+                            <target>Kategoria zawiera Notatki</target>
+                        </trans-unit>
+                        <trans-unit id="Email could not be found.">
+                            <source>Email could not be found.</source>
+                            <target>Email nie został odnaleziony</target>
+                        </trans-unit>
         </body>
     </file>
 </xliff>

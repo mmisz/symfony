@@ -47,7 +47,7 @@ class ListElementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listElementRepository->save($listElement);
 
-            $this->addFlash('success', $translator->trans('message_updated_successfully'));
+            $this->addFlash('success','message_updated_successfully');
             $toDoList = $listElement->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
         }
@@ -95,7 +95,7 @@ class ListElementController extends AbstractController
             else{
                 $listElement->setDoneDate(null);
             }
-            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
+            $this->addFlash('success','message_deleted_successfully');
             $listElementRepository->delete($listElement);
             $toDoList = $listElement->getToDoList();
             return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
@@ -136,7 +136,7 @@ class ListElementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $listElement->setToDoList($toDoList);
-            $this->addFlash('success', $translator->trans('message_created_successfully'));
+            $this->addFlash('success', 'message_created_successfully');
             $listElement->setCreation(new \DateTime());
             $listElement->setStatus($listStatusRepository->findOneBy(['name' => 'to do']));
             $listElementRepository->save($listElement);

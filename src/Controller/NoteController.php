@@ -112,7 +112,7 @@ class NoteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $note->setLastUpdate(new \DateTime());
             $noteRepository->save($note);
-            $this->addFlash('success', $translator->trans('message_updated_successfully'));
+            $this->addFlash('success', 'message_updated_successfully');
             return $this->redirectToRoute('note_index');
         }
 
@@ -155,7 +155,7 @@ class NoteController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if($form->isSubmitted() && $form->isValid()){
-            $this->addFlash('success', $translator->trans('message_deleted_successfully'));
+            $this->addFlash('success','message_deleted_successfully');
             $noteRepository->delete($note);
             return $this->redirectToRoute('note_index');
         }
@@ -196,7 +196,7 @@ class NoteController extends AbstractController
             $note->setAuthor($this->getUser());
             $noteRepository->save($note);
 
-            $this->addFlash('success', $translator->trans('message_created_successfully'));
+            $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('note_index');
         }

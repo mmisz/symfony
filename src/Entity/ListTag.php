@@ -46,7 +46,7 @@ class ListTag
      * @Assert\Type(type="string")
      * @Assert\NotBlank
      * @Assert\Length(
-     *     min="1",
+     *     min="3",
      *     max="64",
      * )
      */
