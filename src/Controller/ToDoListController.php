@@ -20,7 +20,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use App\Form\ListDeleteType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-
 /**
  * Class ToDoList.
  *
@@ -73,28 +72,28 @@ class ToDoListController extends AbstractController
      */
     public function show(ToDoList $toDoList, Request $request): Response
     {
-       /* if ($toDoList->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message.item_not_found');
+        /* if ($toDoList->getAuthor() !== $this->getUser()) {
+             $this->addFlash('warning', 'message.item_not_found');
 
-            return $this->redirectToRoute('to_do_index');
-        }*/
+             return $this->redirectToRoute('to_do_index');
+         }*/
         return $this->render(
             'to-do/show.html.twig',
             ['toDoList' => $toDoList]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListComment $listComment
-     * @param \App\Repository\ListCommentRepository $listCommentRepository
-     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param ToDoList $toDoList
+     * @param ToDoListRepository $toDoListRepository
+     * @param TranslatorInterface $translator
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
-     *
      * @Route(
      *     "/to-do-delete/{id}",
      *     methods={"GET", "DELETE"},
@@ -113,7 +112,7 @@ class ToDoListController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success','message_deleted_successfully');
+            $this->addFlash('success', 'message_deleted_successfully');
             $toDoListRepository->delete($toDoList);
             return $this->redirectToRoute('to_do_index');
         }
@@ -141,7 +140,7 @@ class ToDoListController extends AbstractController
      * @throws Exception
      *
      * @Route(
-     *     "/{id}/to-do-edit",
+     *     "/to-do-edit/{id}",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="to_do_edit",
@@ -205,7 +204,7 @@ class ToDoListController extends AbstractController
             $toDoList->setAuthor($this->getUser());
             $toDoListRepository->save($toDoList);
 
-            $this->addFlash('success','message_created_successfully');
+            $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('to_do_index');
         }

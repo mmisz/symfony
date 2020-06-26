@@ -89,7 +89,7 @@ class Note
      * )
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Assert\Type(type="App\Entity\Category")
+     * @Assert\Type(type="App\Entity\NoteCategory")
      */
     private $category;
 

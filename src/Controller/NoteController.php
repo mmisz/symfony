@@ -66,15 +66,10 @@ class NoteController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      *
-     *@Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', note)")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', note)")
      */
     public function show(Note $note, Request $request, TranslatorInterface $translator): Response
     {
-        if ($note->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', $translator->trans('message_item_not_found'));
-
-            return $this->redirectToRoute('note_index');
-        }
         return $this->render(
             'note/show.html.twig',
             ['note' => $note]
@@ -101,11 +96,6 @@ class NoteController extends AbstractController
      */
     public function edit(Request $request, Note $note, NoteRepository $noteRepository, TranslatorInterface $translator): Response
     {
-        if ($note->getAuthor() !== $this->getUser()) {
-            $this->addFlash('warning', 'message.item_not_found');
-
-            return $this->redirectToRoute('note_index');
-        }
         $form = $this->createForm(NoteType::class, $note, ['method' => 'PUT']);
         $form->handleRequest($request);
 
