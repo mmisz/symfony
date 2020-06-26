@@ -75,7 +75,7 @@ class ToDoList
      * @ORM\OneToMany(targetEntity=ListComment::class, mappedBy="to_do_list", orphanRemoval=true)
      *
      * @Assert\All({
-     * @Assert\Type(type="App\Entity\ListComments")
+     * @Assert\Type(type="App\Entity\ListComment")
      * })
      */
     private $listComments;
