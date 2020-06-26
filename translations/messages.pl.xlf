@@ -302,7 +302,7 @@
                         </trans-unit>
                         <trans-unit id="user_edit">
                             <source>user_edit</source>
-                            <target>edytuj użytkownika</target>
+                            <target>Edytuj użytkownika</target>
                         </trans-unit>
                         <trans-unit id="title_user_list">
                             <source>title_user_list</source>
