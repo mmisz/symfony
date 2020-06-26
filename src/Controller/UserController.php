@@ -6,6 +6,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\NoteRepository;
+use App\Repository\ToDoListRepository;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -202,9 +204,8 @@ class UserController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, User $user, UserRepository $userRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, User $user, UserRepository $userRepository, ToDoListRepository $toDoListRepository, NoteRepository $noteRepository): Response
     {
-
         $form = $this->createForm(UserEmailType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -213,6 +214,14 @@ class UserController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $lists = $toDoListRepository->findBy(['author'=>$user]);
+            $notes = $noteRepository->findBy(['author'=>$user]);
+            foreach ($notes as $note){
+                $noteRepository->delete($note);
+            }
+            foreach ($lists as $list){
+                $toDoListRepository->delete($list);
+            }
             $userRepository->delete($user);
             $this->addFlash('success', 'message_deleted_successfully');
 
