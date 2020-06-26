@@ -18,10 +18,10 @@ class ToDoListFixtures extends AbstractBaseFixtures implements DependentFixtureI
     {
         $this->createMany(50, 'toDoLists', function ($i) {
             $toDoList = new ToDoList();
-            $toDoList->setTitle($this->faker->sentence);
-            $toDoList->setStatus('to do');
+            $toDoList->setTitle($this->faker->word);
+            $toDoList->setStatus($this->getRandomReference('statuses'));
             $toDoList->setCreation($this->faker->dateTimeBetween('-100 days', '-1 days'));
-            $toDoList->setCategory($this->getRandomReference('categories'));
+            $toDoList->setCategory($this->getRandomReference('listCategories'));
             $toDoList->setAuthor($this->getRandomReference('users'));
 
             return $toDoList;
@@ -37,6 +37,6 @@ class ToDoListFixtures extends AbstractBaseFixtures implements DependentFixtureI
      */
     public function getDependencies(): array
     {
-        return [ListCategoryFixtures::class, UserFixtures::class];
+        return [ListCategoryFixtures::class, UserFixtures::class, StatusFixtures::class];
     }
 }

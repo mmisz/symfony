@@ -16,7 +16,7 @@ class ListTagFixtures extends AbstractBaseFixtures implements DependentFixtureIn
 {
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(10, 'tags', function ($i) {
+        $this->createMany(10, 'listTags', function ($i) {
             $tag = new ListTag();
             $tag->setName($this->faker->word);
             $tag->addToDoList($this->getRandomReference('toDoLists'));

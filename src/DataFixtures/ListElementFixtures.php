@@ -19,7 +19,7 @@ class ListElementFixtures extends AbstractBaseFixtures implements DependentFixtu
         $this->createMany(150, 'elements', function ($i) {
             $element = new ListElement();
             $element->setContent($this->faker->sentence);
-            $element->setStatus('to do');
+            $element->setStatus($this->getRandomReference('elementStatuses'));
             $element->setToDoList($this->getRandomReference('toDoLists'));
             $element->setCreation($this->faker->dateTimeBetween('-100 days', '-1 days'));
 
@@ -37,6 +37,6 @@ class ListElementFixtures extends AbstractBaseFixtures implements DependentFixtu
      */
     public function getDependencies(): array
     {
-        return [ToDoListFixtures::class];
+        return [StatusFixtures::class, ToDoListFixtures::class];
     }
 }

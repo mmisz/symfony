@@ -16,14 +16,14 @@ class NoteTagFixtures extends AbstractBaseFixtures implements DependentFixtureIn
 {
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(10, 'tags', function ($i) {
+        $this->createMany(10, 'noteTags', function ($i) {
             $tag = new NoteTag();
             $tag->setName($this->faker->word);
-            $tag->addNote($this->getRandomReference('toDoLists'));
-            $tag->addNote($this->getRandomReference('toDoLists'));
-            $tag->addNote($this->getRandomReference('toDoLists'));
-            $tag->addNote($this->getRandomReference('toDoLists'));
-            $tag->addNote($this->getRandomReference('toDoLists'));
+            $tag->addNote($this->getRandomReference('notes'));
+            $tag->addNote($this->getRandomReference('notes'));
+            $tag->addNote($this->getRandomReference('notes'));
+            $tag->addNote($this->getRandomReference('notes'));
+            $tag->addNote($this->getRandomReference('notes'));
             return $tag;
         });
 
@@ -38,6 +38,6 @@ class NoteTagFixtures extends AbstractBaseFixtures implements DependentFixtureIn
      */
     public function getDependencies(): array
     {
-        return [ToDoFixtures::class];
+        return [NoteFixtures::class];
     }
 }

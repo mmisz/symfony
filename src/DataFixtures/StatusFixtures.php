@@ -23,18 +23,26 @@ class StatusFixtures extends AbstractBaseFixtures
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(1, 'statuses', function ($i) {
+        $this->createMany(2, 'statuses', function ($i) {
             $status = new ListStatus();
-            $status->setName('to do');
-            $status->setName('done');
+            if ($i == 0) {
+                $status->setName('to do');
+            }
+            if ($i == 1) {
+                $status->setName('done');
+            }
 
             return $status;
         });
 
-        $this->createMany(1, 'statuses', function ($i) {
+        $this->createMany(2, 'elementStatuses', function ($i) {
             $status = new ListElementStatus();
-            $status->setName('to do');
-            $status->setName('done');
+            if ($i == 0) {
+                $status->setName('to do');
+            }
+            if ($i == 1) {
+                $status->setName('done');
+            }
 
             return $status;
         });

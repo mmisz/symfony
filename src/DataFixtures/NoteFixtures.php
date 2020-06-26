@@ -12,7 +12,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 /**
  * Class ToDoFixture.
  */
-class ToDoFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
+class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
     /**
      * @param ObjectManager $manager
@@ -20,13 +20,15 @@ class ToDoFixtures extends AbstractBaseFixtures implements DependentFixtureInter
     public function loadData(ObjectManager $manager): void
     {
         $this->createMany(50, 'notes', function ($i) {
-            $toDoList = new Note();
-            $toDoList->setTitle($this->faker->sentence);
-            $toDoList->setCreation($this->faker->dateTimeBetween('-100 days', '-1 days'));
-            $toDoList->setCategory($this->getRandomReference('categories'));
-            $toDoList->setAuthor($this->getRandomReference('users'));
+            $note = new Note();
+            $note->setTitle($this->faker->word);
+            $note->setContent($this->faker->sentence);
+            $note->setCreation($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $note->setLastUpdate($this->faker->dateTimeBetween('-100 days', '-1 days'));
+            $note->setCategory($this->getRandomReference('noteCategories'));
+            $note->setAuthor($this->getRandomReference('users'));
 
-            return $toDoList;
+            return $note;
         });
         $manager->flush();
     }
