@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * ListElementStatusRepository class.
  * @method ListElementStatus|null find($id, $lockMode = null, $lockVersion = null)
  * @method ListElementStatus|null findOneBy(array $criteria, array $orderBy = null)
  * @method ListElementStatus[]    findAll()
@@ -14,6 +15,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ListElementStatusRepository extends ServiceEntityRepository
 {
+    /**
+     * ListElementStatusRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ListElementStatus::class);

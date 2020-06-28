@@ -2,15 +2,11 @@
 
 namespace App\Entity;
 
-use App\Form\ToDoType;
-use App\Repository\ListTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
  * Class ListTag.
@@ -52,7 +48,6 @@ class ListTag
      */
     private $name;
 
-
     /**
      * ToDoLists.
      *
@@ -63,7 +58,6 @@ class ListTag
      * Assert\Type(type="Doctrine\Common\Collections\ArrayCollection")
      */
     private $toDoLists;
-
 
     public function __construct()
     {
@@ -89,7 +83,6 @@ class ListTag
     }
 
     /**
-     * @param string $name
      * @return $this
      */
     public function setName(string $name): self
@@ -98,6 +91,7 @@ class ListTag
 
         return $this;
     }
+
     /**
      * Add toDoList to collection.
      *
@@ -123,6 +117,7 @@ class ListTag
             $toDoList->removeListTag($this);
         }
     }
+
     /**
      * @return Collection|ToDoList[]
      */

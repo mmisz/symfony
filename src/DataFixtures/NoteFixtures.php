@@ -6,8 +6,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Note;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class ToDoFixture.
@@ -15,6 +15,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
     /**
+     * data loader for note.
      * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void

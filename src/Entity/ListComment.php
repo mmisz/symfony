@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ListCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=ListCommentRepository::class)
  * @ORM\Table(name="list_comments")
@@ -48,8 +48,6 @@ class ListComment
 
     /**
      *  Getter for id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -58,8 +56,6 @@ class ListComment
 
     /**
      * Getter for content.
-     *
-     * @return string|null
      */
     public function getContent(): ?string
     {
@@ -69,7 +65,6 @@ class ListComment
     /**
      * Setter for content.
      *
-     * @param string $content
      * @return $this
      */
     public function setContent(string $content): self
@@ -81,8 +76,6 @@ class ListComment
 
     /**
      * Getter for to_do_list.
-     *
-     * @return ToDoList|null
      */
     public function getToDoList(): ?ToDoList
     {
@@ -92,7 +85,6 @@ class ListComment
     /**
      * Setter for to_do_list.
      *
-     * @param ToDoList|null $to_do_list
      * @return $this
      */
     public function setToDoList(?ToDoList $to_do_list): self
@@ -104,8 +96,6 @@ class ListComment
 
     /**
      * getter for Creation.
-     *
-     * @return \DateTimeInterface|null
      */
     public function getCreation(): ?\DateTimeInterface
     {
@@ -115,7 +105,6 @@ class ListComment
     /**
      * Setter for Creation.
      *
-     * @param \DateTimeInterface $creation
      * @return $this
      */
     public function setCreation(\DateTimeInterface $creation): self

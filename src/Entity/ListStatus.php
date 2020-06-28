@@ -51,7 +51,6 @@ class ListStatus
     }
 
     /**
-     * @param string $name
      * @return $this
      */
     public function setName(string $name): self
@@ -70,7 +69,6 @@ class ListStatus
     }
 
     /**
-     * @param ToDoList $toDoList
      * @return $this
      */
     public function addToDoList(ToDoList $toDoList): self
@@ -84,7 +82,6 @@ class ListStatus
     }
 
     /**
-     * @param ToDoList $toDoList
      * @return $this
      */
     public function removeToDoList(ToDoList $toDoList): self

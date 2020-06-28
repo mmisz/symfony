@@ -36,13 +36,11 @@ class ListCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, ListCategory::class);
     }
 
-
     /**
      * Query all records.
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder();
@@ -59,6 +57,7 @@ class ListCategoryRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('listCategory');
     }
+
     /**
      * Save record.
      *
@@ -72,6 +71,7 @@ class ListCategoryRepository extends ServiceEntityRepository
         $this->_em->persist($category);
         $this->_em->flush($category);
     }
+
     /**
      * Delete record.
      *
@@ -85,6 +85,7 @@ class ListCategoryRepository extends ServiceEntityRepository
         $this->_em->remove($category);
         $this->_em->flush($category);
     }
+
     // /**
     //  * @return ListCategory[] Returns an array of ListCategory objects
     //  */

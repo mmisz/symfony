@@ -6,6 +6,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\AdminPasswordType;
+use App\Form\UserEmailType;
+use App\Form\UserPasswordType;
 use App\Repository\NoteRepository;
 use App\Repository\ToDoListRepository;
 use App\Repository\UserRepository;
@@ -16,9 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\UserEmailType;
-use App\Form\UserPasswordType;
-use App\Form\AdminPasswordType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -29,13 +29,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class UserController extends AbstractController
 {
-
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\UserRepository $userRepository User repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
+     * @param \App\Repository\UserRepository            $userRepository User repository
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
+     *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -58,6 +58,7 @@ class UserController extends AbstractController
             ['pagination' => $pagination]
         );
     }
+
     /**
      * User action.
      *
@@ -74,36 +75,36 @@ class UserController extends AbstractController
             ['user' => $usr]
         );
     }
+
     /**
- * Edit email action.
- *
- * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
- * @param \App\Entity\User                     $usr           User entity
- * @param \App\Repository\UserRepository        $userRepository User repository
- *
- * @return \Symfony\Component\HttpFoundation\Response HTTP response
- *
- * @throws \Doctrine\ORM\ORMException
- * @throws \Doctrine\ORM\OptimisticLockException
- *
- * @Route(
- *     "/{id}/user-email",
- *     methods={"GET", "PUT"},
- *     requirements={"id": "[1-9]\d*"},
- *     name="user_email",
- * )
- * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
- */
+     * Edit email action.
+     *
+     * @param Request $request
+     * @param User $usr
+     * @param UserRepository $userRepository
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/user-email",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_email",
+     * )
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
+     */
     public function editEmail(Request $request, User $usr, UserRepository $userRepository, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(UserEmailType::class, $usr, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $userRepository->save($usr);
-            $this->addFlash('success','message_updated_successfully');
-                return $this->redirectToRoute('user_show',['id'=>$usr->getId()]);
+            $this->addFlash('success', 'message_updated_successfully');
+
+            return $this->redirectToRoute('user_show', ['id' => $usr->getId()]);
         }
 
         return $this->render(
@@ -114,15 +115,16 @@ class UserController extends AbstractController
             ]
         );
     }
+
     /**
      * Edit password action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\User                     $usr           User entity
-     * @param \App\Repository\UserRepository        $userRepository User repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param User $usr
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -134,19 +136,18 @@ class UserController extends AbstractController
      * )
      * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', usr)")
      */
-    public function editPassword(Request $request, User $usr, UserRepository $userRepository,UserPasswordEncoderInterface $passwordEncoder, TranslatorInterface $translator): Response
+    public function editPassword(Request $request, User $usr, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, TranslatorInterface $translator): Response
     {
-        if($this->isGranted('ROLE_ADMIN')){
-        $type = AdminPasswordType::class;
-    }
-    else{
-        $type = UserPasswordType::class;
-    }
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $type = AdminPasswordType::class;
+        } else {
+            $type = UserPasswordType::class;
+        }
         $form = $this->createForm($type, $usr, ['method' => 'PUT']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('new_password')->getData();
-            if($this->isGranted('ROLE_ADMIN')){
+            if ($this->isGranted('ROLE_ADMIN')) {
                 $usr->setPassword(
                     $passwordEncoder->encodePassword(
                         $usr,
@@ -154,14 +155,14 @@ class UserController extends AbstractController
                     )
                 );
                 $userRepository->save($usr);
-                $this->addFlash('success','message_updated_successfully');
+                $this->addFlash('success', 'message_updated_successfully');
+
                 return $this->redirectToRoute('user_index');
-            }
-            else{
+            } else {
                 $usr = $this->getUser();
                 $oldPassword = $form->get('old_password')->getData();
                 $checkPass = $passwordEncoder->isPasswordValid($usr, $oldPassword);
-                if($checkPass === true) {
+                if (true === $checkPass) {
                     $usr->setPassword(
                         $passwordEncoder->encodePassword(
                             $usr,
@@ -170,12 +171,14 @@ class UserController extends AbstractController
                     );
                     $userRepository->save($usr);
                     $this->addFlash('success', 'message_updated_successfully');
-                    return $this->redirectToRoute('user_show',['id'=>$usr->getId()]);
+
+                    return $this->redirectToRoute('user_show', ['id' => $usr->getId()]);
                 } else {
                     $this->addFlash('warning', $translator->trans('message_wrong_password'));
                 }
             }
         }
+
         return $this->render(
             'user/password.html.twig',
             [
@@ -184,15 +187,16 @@ class UserController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\User                      $user           User entity
-     * @param \App\Repository\UserRepository        $userRepository User repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param User $user
+     * @param UserRepository $userRepository
+     * @param ToDoListRepository $toDoListRepository
+     * @param NoteRepository $noteRepository
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -214,12 +218,12 @@ class UserController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $lists = $toDoListRepository->findBy(['author'=>$user]);
-            $notes = $noteRepository->findBy(['author'=>$user]);
-            foreach ($notes as $note){
+            $lists = $toDoListRepository->findBy(['author' => $user]);
+            $notes = $noteRepository->findBy(['author' => $user]);
+            foreach ($notes as $note) {
                 $noteRepository->delete($note);
             }
-            foreach ($lists as $list){
+            foreach ($lists as $list) {
                 $toDoListRepository->delete($list);
             }
             $userRepository->delete($user);

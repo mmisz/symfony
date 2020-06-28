@@ -33,6 +33,7 @@ class NoteSingleTagType extends AbstractType
     {
         $this->tagsDataTransformer = $tagsDataTransformer;
     }
+
     /**
      * Builds the form.
      *

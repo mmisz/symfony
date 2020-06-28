@@ -28,18 +28,25 @@ class ListCommentRepository extends ServiceEntityRepository
 
     /**
      * ListCommentRepository constructor.
-     *
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ListComment::class);
     }
+
+    /**
+     * save comment.
+     * @param ListComment $listComment
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function save(ListComment $listComment): void
     {
         $this->_em->persist($listComment);
         $this->_em->flush($listComment);
     }
+
     /**
      * Delete record.
      *
@@ -53,12 +60,12 @@ class ListCommentRepository extends ServiceEntityRepository
         $this->_em->remove($listComment);
         $this->_em->flush($listComment);
     }
+
     /**
      * Query all records.
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder();

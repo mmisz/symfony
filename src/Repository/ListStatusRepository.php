@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\ListStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method ListStatus|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,13 +35,11 @@ class ListStatusRepository extends ServiceEntityRepository
         parent::__construct($registry, ListStatus::class);
     }
 
-
     /**
      * Query all records.
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder();
@@ -59,7 +56,4 @@ class ListStatusRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('listStatus');
     }
-
-
-
 }

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=NoteCategoryRepository::class)
  * @ORM\Table(name="note_categories")
@@ -69,7 +70,6 @@ class NoteCategory
     }
 
     /**
-     * @param string $title
      * @return $this
      */
     public function setTitle(string $title): self
@@ -88,7 +88,6 @@ class NoteCategory
     }
 
     /**
-     * @param Note $note
      * @return $this
      */
     public function addNote(Note $note): self
@@ -102,7 +101,6 @@ class NoteCategory
     }
 
     /**
-     * @param Note $note
      * @return $this
      */
     public function removeNote(Note $note): self

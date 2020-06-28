@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\NoteCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method NoteCategory|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,13 +35,11 @@ class NoteCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, NoteCategory::class);
     }
 
-
     /**
      * Query all records.
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder();
@@ -59,6 +56,7 @@ class NoteCategoryRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('noteCategory');
     }
+
     /**
      * Save record.
      *
@@ -72,6 +70,7 @@ class NoteCategoryRepository extends ServiceEntityRepository
         $this->_em->persist($category);
         $this->_em->flush($category);
     }
+
     /**
      * Delete record.
      *

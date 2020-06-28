@@ -416,7 +416,22 @@
                             <source>Email could not be found.</source>
                             <target>Email could not be found</target>
                         </trans-unit>
-
+                        <trans-unit id="Plain password">
+                            <source>Plain password</source>
+                            <target>password</target>
+                        </trans-unit>
+                        <trans-unit id="Email">
+                            <source>Email</source>
+                            <target>e-mail</target>
+                        </trans-unit>
+                        <trans-unit id="Register">
+                            <source>Register</source>
+                            <target>Register</target>
+                        </trans-unit>
+                        <trans-unit id="Agree terms">
+                            <source>Agree terms</source>
+                            <target>Agree to terms</target>
+                        </trans-unit>
         </body>
     </file>
 </xliff>

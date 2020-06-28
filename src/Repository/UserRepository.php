@@ -7,12 +7,13 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * UserRepository class.
+ *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User[]    findAll()
@@ -20,7 +21,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-
     /**
      * Items per page.
      *
@@ -43,6 +43,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
      * @param UserInterface $user
      * @param string $newEncodedPassword
      * @throws ORMException
@@ -58,6 +59,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
     /**
      * Query all records.
      *
@@ -80,8 +82,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $queryBuilder ?? $this->createQueryBuilder('user');
     }
 
-
     /**
+     * save User.
+     *
      * @param User $user
      * @throws ORMException
      * @throws OptimisticLockException
@@ -91,6 +94,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->persist($user);
         $this->_em->flush($user);
     }
+
     /**
      * Delete record.
      *
@@ -104,6 +108,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->remove($user);
         $this->_em->flush($user);
     }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

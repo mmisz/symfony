@@ -9,26 +9,35 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class SecurityController
- * @package App\Controller
+ * Class SecurityController.
  *
  * @Route("/")
  */
 class SecurityController extends AbstractController
 {
     /**
+     * action homepage.
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      * @Route("/", name="homepage")
      */
     public function homepage(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('to_do_index');
-        }
-        else{
+        } else {
             return $this->redirectToRoute('app_login');
         }
     }
+
     /**
+     * Action login.
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @param TranslatorInterface $translator
+     * @return Response
+     *
      * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils, TranslatorInterface $translator): Response
@@ -41,11 +50,16 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $this->addFlash('success','message_logged_successfully');
+        $this->addFlash('success', 'message_logged_successfully');
+
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**
+     * Action logout.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @Route("/logout", name="app_logout")
      */
     public function logout()

@@ -3,11 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\NoteTag;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * NoteTagRepository class.
+ *
  * @method NoteTag|null find($id, $lockMode = null, $lockVersion = null)
  * @method NoteTag|null findOneBy(array $criteria, array $orderBy = null)
  * @method NoteTag[]    findAll()
@@ -28,21 +30,18 @@ class NoteTagRepository extends ServiceEntityRepository
 
     /**
      * NoteTagRepository constructor.
-     *
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
+     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
      */
     public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
     {
         parent::__construct($registry, NoteTag::class);
     }
 
-
     /**
      * Query all records.
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder();
@@ -61,6 +60,8 @@ class NoteTagRepository extends ServiceEntityRepository
     }
 
     /**
+     * save Note Tag.
+     *
      * @param NoteTag $noteTag
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -72,8 +73,10 @@ class NoteTagRepository extends ServiceEntityRepository
     }
 
     /**
+     * find One By Name.
+     *
      * @param string $name
-     * @return NoteTag
+     * @return NoteTag|null
      */
     public function findOneByName(string $name)
     {
@@ -94,5 +97,24 @@ class NoteTagRepository extends ServiceEntityRepository
     {
         $this->_em->remove($noteTag);
         $this->_em->flush($noteTag);
+    }
+
+    /**
+     * find Tags For Author.
+     *
+     * @param User $user
+     * @return QueryBuilder
+     */
+    public function findTagsForAuthor(User $user): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder
+            ->innerJoin('noteTag.Notes', 'list')
+            ->andWhere('list.author = :user')
+            ->setParameter('user', $user)
+            ->orderBy('noteTag.id');
+
+        return $queryBuilder;
     }
 }

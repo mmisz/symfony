@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ListElementStatusRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ListElementStatusRepository", repositoryClass=ListElementStatusRepository::class)
  */
 class ListElementStatus
 {
@@ -51,14 +51,12 @@ class ListElementStatus
     }
 
     /**
-     * @param string $name
-     * @return $this
+     * Setter for Name.
+     * @param /ListElementStatus
      */
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -70,7 +68,6 @@ class ListElementStatus
     }
 
     /**
-     * @param ListElement $listElement
      * @return $this
      */
     public function addListElement(ListElement $listElement): self
@@ -84,7 +81,6 @@ class ListElementStatus
     }
 
     /**
-     * @param ListElement $listElement
      * @return $this
      */
     public function removeListElement(ListElement $listElement): self

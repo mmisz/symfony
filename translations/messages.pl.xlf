@@ -302,7 +302,7 @@
                         </trans-unit>
                         <trans-unit id="user_edit">
                             <source>user_edit</source>
-                            <target>Edytuj użytkownika</target>
+                            <target>edytuj użytkownika</target>
                         </trans-unit>
                         <trans-unit id="title_user_list">
                             <source>title_user_list</source>
@@ -383,7 +383,7 @@
                         </trans-unit>
                         <trans-unit id="message_logged_successfully">
                             <source>message_logged_successfully</source>
-                            <target>Zalogowano!</target>
+                            <target>Wylogowano!</target>
                         </trans-unit>
                         <trans-unit id="message_wrong_password">
                             <source>message_wrong_password</source>
@@ -416,6 +416,22 @@
                         <trans-unit id="Email could not be found.">
                             <source>Email could not be found.</source>
                             <target>Email nie został odnaleziony</target>
+                        </trans-unit>
+                        <trans-unit id="Plain password">
+                            <source>Plain password</source>
+                            <target>hasło</target>
+                        </trans-unit>
+                        <trans-unit id="Email">
+                            <source>Email</source>
+                            <target>e-mail</target>
+                        </trans-unit>
+                        <trans-unit id="Register">
+                            <source>Register</source>
+                            <target>Rejestracja</target>
+                        </trans-unit>
+                        <trans-unit id="Agree terms">
+                            <source>Agree terms</source>
+                            <target>Wyrażam zgodę na regulamin</target>
                         </trans-unit>
         </body>
     </file>

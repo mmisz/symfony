@@ -80,7 +80,6 @@ class NoteTag
     }
 
     /**
-     * @param string $name
      * @return $this
      */
     public function setName(string $name): self
@@ -99,7 +98,6 @@ class NoteTag
     }
 
     /**
-     * @param Note $note
      * @return $this
      */
     public function addNote(Note $note): self

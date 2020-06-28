@@ -3,23 +3,24 @@
 namespace App\Form;
 
 // src/Form/UserPasswordType.php
+
 namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class UserPasswordType
- * @package App\Form
+ * Class UserPasswordType.
  */
 class UserPasswordType extends AbstractType
 {
     /**
+     * build form.
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -39,23 +40,23 @@ class UserPasswordType extends AbstractType
             ]
         );
         $builder
-            ->add('new_password', RepeatedType::class, array(
+            ->add('new_password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat_Password'),
-            ))
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Repeat_Password'],
+            ])
         ;
     }
 
     /**
+     * configure options.
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => User::class,
-        ));
+        ]);
     }
 }
-

@@ -6,14 +6,18 @@
 namespace App\DataFixtures;
 
 use App\Entity\NoteTag;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class NoteTagFixtures.
  */
 class NoteTagFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
+    /**
+     * load note data.
+     * @param ObjectManager $manager
+     */
     public function loadData(ObjectManager $manager): void
     {
         $this->createMany(10, 'noteTags', function ($i) {
@@ -24,6 +28,7 @@ class NoteTagFixtures extends AbstractBaseFixtures implements DependentFixtureIn
             $tag->addNote($this->getRandomReference('notes'));
             $tag->addNote($this->getRandomReference('notes'));
             $tag->addNote($this->getRandomReference('notes'));
+
             return $tag;
         });
 

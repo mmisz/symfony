@@ -33,6 +33,7 @@ class ListSingleTagType extends AbstractType
     {
         $this->tagsDataTransformer = $tagsDataTransformer;
     }
+
     /**
      * Builds the form.
      *

@@ -1,37 +1,34 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Entity\ListElement;
 use App\Entity\ToDoList;
+use App\Form\ListElementType;
 use App\Repository\ListElementRepository;
 use App\Repository\ListElementStatusRepository;
 use App\Repository\ListStatusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-
-use App\Form\ListElementType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class ListElementController
- * @package App\Controller
+ * Class ListElementController.
  */
 class ListElementController extends AbstractController
 {
     /**
-     * Edit action.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\ListElement $listElement
-     * @param \App\Repository\ListElementRepository $listElementRepository
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * edit action.
+     * @param Request $request
+     * @param ListElement $listElement
+     * @param ListElementRepository $listElementRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route(
      *     "/list-element-edit/{id}",
      *     methods={"GET", "PUT"},
@@ -47,9 +44,10 @@ class ListElementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listElementRepository->save($listElement);
 
-            $this->addFlash('success','message_updated_successfully');
+            $this->addFlash('success', 'message_updated_successfully');
             $toDoList = $listElement->getToDoList();
-            return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
+
+            return $this->redirectToRoute('to_do_show', ['id' => $toDoList->getId()]);
         }
 
         return $this->render(
@@ -61,18 +59,17 @@ class ListElementController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListElement $listElement
-     * @param \App\Repository\ListElementRepository $listElementRepository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListElement $listElement
+     * @param ListElementRepository $listElementRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
-     *
      * @Route(
      *     "/list-element-delete/{id}",
      *     methods={"GET", "DELETE"},
@@ -88,18 +85,19 @@ class ListElementController extends AbstractController
         if (!$form->isSubmitted() && $request->isMethod('DELETE')) {
             $form->submit($request->request->get($form->getName()));
         }
-        if($form->isSubmitted() && $form->isValid()){
-            if($listElement->getStatus()->getName()=='done'){
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ('done' == $listElement->getStatus()->getName()) {
                 $listElement->setDoneDate(new \DateTime());
-            }
-            else{
+            } else {
                 $listElement->setDoneDate(null);
             }
-            $this->addFlash('success','message_deleted_successfully');
+            $this->addFlash('success', 'message_deleted_successfully');
             $listElementRepository->delete($listElement);
             $toDoList = $listElement->getToDoList();
-            return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
+
+            return $this->redirectToRoute('to_do_show', ['id' => $toDoList->getId()]);
         }
+
         return $this->render(
             'list-element/delete.html.twig',
             [
@@ -114,11 +112,11 @@ class ListElementController extends AbstractController
      * Create action.
      *
      * @param ToDoList $toDoList
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\ListElementRepository $listElementRepository ListElement repository
-     * @param ListStatusRepository $listStatusRepository
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListElementRepository $listElementRepository
+     * @param ListElementStatusRepository $listStatusRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @Route(
@@ -140,7 +138,8 @@ class ListElementController extends AbstractController
             $listElement->setCreation(new \DateTime());
             $listElement->setStatus($listStatusRepository->findOneBy(['name' => 'to do']));
             $listElementRepository->save($listElement);
-            return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
+
+            return $this->redirectToRoute('to_do_show', ['id' => $toDoList->getId()]);
         }
 
         return $this->render(

@@ -5,15 +5,14 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
+use App\Entity\ListComment;
+use App\Entity\ToDoList;
 use App\Form\ListCommentType;
 use App\Repository\ListCommentRepository;
-use App\Entity\ListComment;
-use App\Repository\ToDoListRepository;
-use App\Entity\ToDoList;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -24,13 +23,14 @@ class ListCommentController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\ListComment $listComment
-     * @param \App\Repository\ListCommentRepository $listCommentRepository
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListComment $listComment
+     * @param ListCommentRepository $listCommentRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route(
      *     "/list-comment-edit/{id}",
      *     methods={"GET", "PUT"},
@@ -48,7 +48,8 @@ class ListCommentController extends AbstractController
 
             $this->addFlash('success', 'message_updated_successfully');
             $toDoList = $listComment->getToDoList();
-            return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
+
+            return $this->redirectToRoute('to_do_show', ['id' => $toDoList->getId()]);
         }
 
         return $this->render(
@@ -60,15 +61,15 @@ class ListCommentController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListComment $listComment
-     * @param \App\Repository\ListCommentRepository $listCommentRepository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListComment $listComment
+     * @param ListCommentRepository $listCommentRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -87,12 +88,14 @@ class ListCommentController extends AbstractController
         if (!$form->isSubmitted() && $request->isMethod('DELETE')) {
             $form->submit($request->request->get($form->getName()));
         }
-        if($form->isSubmitted() && $form->isValid()){
-            $this->addFlash('success','message_deleted_successfully');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('success', 'message_deleted_successfully');
             $listCommentRepository->delete($listComment);
             $toDoList = $listComment->getToDoList();
-            return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
+
+            return $this->redirectToRoute('to_do_show', ['id' => $toDoList->getId()]);
         }
+
         return $this->render(
             'list-comment/delete.html.twig',
             [
@@ -102,14 +105,15 @@ class ListCommentController extends AbstractController
             ]
         );
     }
+
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListCommentRepository        $listCommentRepository ListComment repository
-     * @param \App\Entity\ToDoList     $toDoList ToDoList
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param ToDoList $toDoList
+     * @param Request $request
+     * @param ListCommentRepository $listCommentRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -131,7 +135,8 @@ class ListCommentController extends AbstractController
             $this->addFlash('success', 'message_created_successfully');
             $listComment->setCreation(new \DateTime());
             $listCommentRepository->save($listComment);
-            return $this->redirectToRoute('to_do_show',['id'=>$toDoList->getId()]);
+
+            return $this->redirectToRoute('to_do_show', ['id' => $toDoList->getId()]);
         }
 
         return $this->render(

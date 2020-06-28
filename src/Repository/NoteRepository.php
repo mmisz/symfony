@@ -7,12 +7,14 @@ use App\Entity\NoteCategory;
 use App\Entity\NoteTag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * NoteRepository class.
+ *
  * @method Note|null find($id, $lockMode = null, $lockVersion = null)
  * @method Note|null findOneBy(array $criteria, array $orderBy = null)
  * @method Note[]    findAll()
@@ -34,14 +36,16 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * NoteRepository constructor.
      *
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
+     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
      */
-    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Note::class);
     }
 
     /**
+     * save Note.
+     *
      * @param Note $note
      */
     public function save(Note $note): void
@@ -56,13 +60,13 @@ class NoteRepository extends ServiceEntityRepository
         } catch (ORMException $e) {
         }
     }
+
     /**
      * Delete record.
      *
-     * @param \App\Entity\ListComment $listComment ListComment entity
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @param Note $note
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Note $note): void
     {
@@ -75,10 +79,11 @@ class NoteRepository extends ServiceEntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
+            ->select('note', 'category')
+            ->join('note.category', 'category')
             ->orderBy('note.creation', 'DESC');
     }
 
@@ -93,6 +98,7 @@ class NoteRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('note');
     }
+
     /**
      * Query tasks by author.
      *
@@ -110,19 +116,31 @@ class NoteRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    /**
+     * query by Author and Category.
+     *
+     * @param User $user
+     * @param NoteCategory $category
+     * @return QueryBuilder
+     */
     public function queryByAuthorAndCategory(User $user, NoteCategory $category): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
 
         $queryBuilder->andWhere('note.author = :author AND note.category = :category')
             ->setParameter('category', $category)
-            ->setParameter('author', $user)
-        ;
+            ->setParameter('author', $user);
 
         return $queryBuilder;
     }
 
-
+    /**
+     * Query by Author and Tag.
+     *
+     * @param User $user
+     * @param NoteTag $tag
+     * @return QueryBuilder
+     */
     public function queryByAuthorAndTag(User $user, NoteTag $tag): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
@@ -131,11 +149,17 @@ class NoteRepository extends ServiceEntityRepository
             ->setParameter('author', $user)
             ->innerJoin('note.noteTags', 'note_tag')
             ->andWhere('note_tag = :tag')
-            ->setParameter('tag', $tag)
-        ;
+            ->setParameter('tag', $tag);
 
         return $queryBuilder;
     }
+
+    /**
+     * Find by Tag.
+     *
+     * @param NoteTag $tag
+     * @return QueryBuilder
+     */
     public function findByTag(NoteTag $tag)
     {
         $queryBuilder = $this->queryAll();

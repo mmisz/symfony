@@ -6,8 +6,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\ListTag;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class TagFixtures.
@@ -24,6 +24,7 @@ class ListTagFixtures extends AbstractBaseFixtures implements DependentFixtureIn
             $tag->addToDoList($this->getRandomReference('toDoLists'));
             $tag->addToDoList($this->getRandomReference('toDoLists'));
             $tag->addToDoList($this->getRandomReference('toDoLists'));
+
             return $tag;
         });
 

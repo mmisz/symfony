@@ -4,9 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ListElementRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ListElementRepository", repositoryClass=ListElementRepository::class)
  * @ORM\Table(name="list_elements")
@@ -42,7 +41,6 @@ class ListElement
      * @Assert\Type(type="App\Entity\ToDoList")
      */
     private $to_do_list;
-
 
     /**
      * @ORM\Column(type="datetime")
@@ -83,7 +81,6 @@ class ListElement
     }
 
     /**
-     * @param string $content
      * @return $this
      */
     public function setContent(string $content): self
@@ -102,7 +99,6 @@ class ListElement
     }
 
     /**
-     * @param ToDoList|null $to_do_list
      * @return $this
      */
     public function setToDoList(?ToDoList $to_do_list): self
@@ -121,7 +117,6 @@ class ListElement
     }
 
     /**
-     * @param \DateTimeInterface $creation
      * @return $this
      */
     public function setCreation(\DateTimeInterface $creation): self
@@ -140,7 +135,6 @@ class ListElement
     }
 
     /**
-     * @param \DateTimeInterface|null $done_date
      * @return $this
      */
     public function setDoneDate(?\DateTimeInterface $done_date): self
@@ -159,7 +153,6 @@ class ListElement
     }
 
     /**
-     * @param ListElementStatus|null $status
      * @return $this
      */
     public function setStatus(?ListElementStatus $status): self

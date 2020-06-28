@@ -199,6 +199,8 @@ class User implements UserInterface
     }
 
     /**
+     * Getter for Salt
+     *
      * @see UserInterface
      */
     public function getSalt()
@@ -224,7 +226,6 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $name
      * @return $this
      */
     public function setName(string $name): self

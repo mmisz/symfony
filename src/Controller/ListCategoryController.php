@@ -6,19 +6,17 @@
 namespace App\Controller;
 
 use App\Entity\ListCategory;
-use App\Entity\ListComment;
-use App\Entity\ToDoList;
+use App\Form\ListCategoryType;
 use App\Repository\ListCategoryRepository;
 use App\Repository\ToDoListRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\ListCategoryType;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * Class ListCategoryController.
  *
@@ -29,9 +27,9 @@ class ListCategoryController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListCategoryRepository        $listCategoryRepository ListCategory repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request                HTTP request
+     * @param \App\Repository\ListCategoryRepository    $listCategoryRepository ListCategory repository
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator              Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -41,10 +39,10 @@ class ListCategoryController extends AbstractController
      *     name="list_category_index",
      * )
      */
-    public function index(Request $request, ListCategoryRepository $categoryRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, ListCategoryRepository $listCategoryRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $categoryRepository->queryAll(),
+            $listCategoryRepository->queryAll(),
             $request->query->getInt('page', 1),
             ListCategoryRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -57,14 +55,11 @@ class ListCategoryController extends AbstractController
 
     /**
      * Show action.
-     *
-     * @param \App\Entity\ListCategory $category ListCategory entity
-     *
+     * @param ListCategory $category
      * @param ToDoListRepository $toDoListRepository
      * @param PaginatorInterface $paginator
-     * @param $request
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @return Response
      * @Route(
      *     "/{id}/list-category",
      *     methods={"GET"},
@@ -72,18 +67,17 @@ class ListCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(ListCategory $category, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator,Request $request): Response
+    public function show(ListCategory $category, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        if($this->isGranted('ROLE_ADMIN')){
+        if ($this->isGranted('ROLE_ADMIN')) {
             $pagination = $paginator->paginate(
-                $toDoListRepository->findBy(['category'=>$category]),
+                $toDoListRepository->findBy(['category' => $category]),
                 $request->query->getInt('page', 1),
                 ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
             );
-        }
-        else{
+        } else {
             $pagination = $paginator->paginate(
-                $toDoListRepository->queryByAuthorAndCategory($this->getUser(),$category),
+                $toDoListRepository->queryByAuthorAndCategory($this->getUser(), $category),
                 $request->query->getInt('page', 1),
                 ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
             );
@@ -93,21 +87,20 @@ class ListCategoryController extends AbstractController
             'list-category/show.html.twig',
             [
                 'pagination' => $pagination,
-                'category'=>$category
+                'category' => $category,
             ]
         );
     }
+
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListCategoryRepository $categoryRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
-     *
      * @Route(
      *     "/list-category-create",
      *     methods={"GET", "POST"},
@@ -134,15 +127,15 @@ class ListCategoryController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListCategory                      $category           Category entity
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListCategory $category
+     * @param ListCategoryRepository $categoryRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -175,15 +168,16 @@ class ListCategoryController extends AbstractController
             ]
         );
     }
+
     /**
+     *
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListCategory                      $category           Category entity
-     * @param \App\Repository\ListCategoryRepository        $categoryRepository Category repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListCategory $category
+     * @param ListCategoryRepository $categoryRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -194,7 +188,7 @@ class ListCategoryController extends AbstractController
      *     name="list_category_delete",
      * )
      * @IsGranted("ROLE_ADMIN")
-    */
+     */
     public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
     {
         if ($category->getToDoLists()->count()) {

@@ -11,6 +11,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
 /**
+ * Class ToDoListRepository
+ * @package App\Repository
  * @method ToDoList|null find($id, $lockMode = null, $lockVersion = null)
  * @method ToDoList|null findOneBy(array $criteria, array $orderBy = null)
  * @method ToDoList[]    findAll()
@@ -32,21 +34,31 @@ class ToDoListRepository extends ServiceEntityRepository
     /**
      * ToDoListRepository constructor.
      *
+     * @param ManagerRegistry $registry
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ToDoList::class);
     }
+
+    /**
+     * Save record.
+     *
+     * @param ToDoList $toDoList
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function save(ToDoList $toDoList): void
     {
         $this->_em->persist($toDoList);
         $this->_em->flush($toDoList);
     }
+
     /**
      * Delete record.
      *
-     * @param \App\Entity\ListComment $listComment ListComment entity
+     * @param \App\Entity\ToDoList $toDoList ListComment entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -62,10 +74,11 @@ class ToDoListRepository extends ServiceEntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
+            ->select('toDoList', 'category')
+            ->join('toDoList.category', 'category')
             ->orderBy('toDoList.creation', 'DESC');
     }
 
@@ -83,12 +96,11 @@ class ToDoListRepository extends ServiceEntityRepository
 
     /**
      * Query tasks by author.
-     *
      * @param \App\Entity\User $user User entity
-     *
      * @param ListCategory $category
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
+
     public function queryByAuthorAndCategory(User $user, ListCategory $category): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
@@ -102,6 +114,7 @@ class ToDoListRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query tasks by author and tag.
      * @param User $user
      * @param ListTag $tag
      * @return QueryBuilder
@@ -114,22 +127,41 @@ class ToDoListRepository extends ServiceEntityRepository
             ->setParameter('author', $user)
             ->innerJoin('toDoList.listTag', 'list_tag')
             ->andWhere('list_tag = :tag')
-            ->setParameter('tag', $tag)
-        ;
+            ->setParameter('tag', $tag);
 
         return $queryBuilder;
     }
 
-    public function findByTag(ListTag $tag)
+    /**
+     * find tasks by tag.
+     * @param ListTag $tag
+     * @return QueryBuilder
+     */
+    public function findByTag(ListTag $tag): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
 
         $queryBuilder
             ->innerJoin('toDoList.listTag', 'list_tag')
             ->andWhere('list_tag = :tag')
-            ->setParameter('tag', $tag)
-        ;
+            ->setParameter('tag', $tag);
 
         return $queryBuilder;
     }
+
+    /**
+     * query by author.
+     * @param User $user
+     * @return QueryBuilder
+     */
+    public function queryByAuthor(User $user): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder->andWhere('toDoList.author = :author')
+            ->setParameter('author', $user);
+
+        return $queryBuilder;
+    }
+
 }

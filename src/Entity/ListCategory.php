@@ -83,8 +83,6 @@ class ListCategory
 
     /**
      * Getter for id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -93,8 +91,6 @@ class ListCategory
 
     /**
      * Getter for title.
-     *
-     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -104,7 +100,6 @@ class ListCategory
     /**
      * Setter for title.
      *
-     * @param string $title
      * @return $this
      */
     public function setTitle(string $title): self
@@ -125,7 +120,6 @@ class ListCategory
     }
 
     /**
-     * @param ToDoList $toDoList
      * @return $this
      */
     public function addToDoList(ToDoList $toDoList): self
@@ -139,7 +133,6 @@ class ListCategory
     }
 
     /**
-     * @param ToDoList $toDoList
      * @return $this
      */
     public function removeToDoList(ToDoList $toDoList): self
@@ -157,8 +150,6 @@ class ListCategory
 
     /**
      * Getter for code.
-     *
-     * @return string|null
      */
     public function getCode(): ?string
     {
@@ -168,7 +159,6 @@ class ListCategory
     /**
      * Setter for code.
      *
-     * @param string $code
      * @return $this
      */
     public function setCode(string $code): self

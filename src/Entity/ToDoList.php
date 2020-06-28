@@ -8,13 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ToDoListRepository", repositoryClass=ToDoListRepository::class)
  * @ORM\Table(name="to_do_lists")
- *
  */
 class ToDoList
 {
@@ -47,7 +45,6 @@ class ToDoList
      * )
      */
     private $title;
-
 
     /**
      * Created at.
@@ -95,6 +92,7 @@ class ToDoList
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\ListTag",
      *     inversedBy="toDoLists",
+     *     fetch="EXTRA_LAZY",
      *     orphanRemoval=true
      * )
      * @ORM\JoinTable(name="to_do_list_list_tag")
@@ -104,7 +102,6 @@ class ToDoList
      * })
      */
     private $listTag;
-
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -160,7 +157,6 @@ class ToDoList
     }
 
     /**
-     * @param string $title
      * @return $this
      */
     public function setTitle(string $title): self
@@ -179,7 +175,6 @@ class ToDoList
     }
 
     /**
-     * @param \DateTimeInterface $creation
      * @return $this
      */
     public function setCreation(\DateTimeInterface $creation): self
@@ -198,7 +193,6 @@ class ToDoList
     }
 
     /**
-     * @param ListElement $listElement
      * @return $this
      */
     public function addListElement(ListElement $listElement): self
@@ -212,7 +206,6 @@ class ToDoList
     }
 
     /**
-     * @param ListElement $listElement
      * @return $this
      */
     public function removeListElement(ListElement $listElement): self
@@ -237,7 +230,6 @@ class ToDoList
     }
 
     /**
-     * @param ListComment $listComment
      * @return $this
      */
     public function addListComment(ListComment $listComment): self
@@ -251,7 +243,6 @@ class ToDoList
     }
 
     /**
-     * @param ListComment $listComment
      * @return $this
      */
     public function removeListComment(ListComment $listComment): self
@@ -276,7 +267,6 @@ class ToDoList
     }
 
     /**
-     * @param ListCategory|null $category
      * @return $this
      */
     public function setCategory(?ListCategory $category): self
@@ -285,6 +275,7 @@ class ToDoList
 
         return $this;
     }
+
     /**
      * Getter for listTag.
      *
@@ -296,7 +287,6 @@ class ToDoList
     }
 
     /**
-     * @param ListTag $listTag
      * @return $this
      */
     public function addListTag(ListTag $listTag): self
@@ -310,7 +300,6 @@ class ToDoList
     }
 
     /**
-     * @param ListTag $listTag
      * @return $this
      */
     public function removeListTag(ListTag $listTag): self
@@ -332,7 +321,6 @@ class ToDoList
     }
 
     /**
-     * @param DateTimeInterface|null $done_date
      * @return $this
      */
     public function setDoneDate(?\DateTimeInterface $done_date): self
@@ -351,7 +339,6 @@ class ToDoList
     }
 
     /**
-     * @param ListStatus|null $status
      * @return $this
      */
     public function setStatus(?ListStatus $status): self
@@ -370,7 +357,6 @@ class ToDoList
     }
 
     /**
-     * @param User|null $author
      * @return $this
      */
     public function setAuthor(?User $author): self

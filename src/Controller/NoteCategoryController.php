@@ -12,7 +12,6 @@ use App\Repository\NoteCategoryRepository;
 use App\Repository\NoteRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,13 +26,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class NoteCategoryController extends AbstractController
 {
     /**
-     * Index action.
+     * index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\NoteCategoryRepository        $noteCategoryRepository NoteCategory repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request
+     * @param NoteCategoryRepository $categoryRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
      *
      * @Route(
      *     "/",
@@ -54,12 +52,15 @@ class NoteCategoryController extends AbstractController
             ['pagination' => $pagination]
         );
     }
+
     /**
      * Show action.
      *
-     * @param \App\Entity\NoteCategory $category NoteCategory entity
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param NoteCategory $category
+     * @param NoteRepository $noteRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
      *
      * @Route(
      *     "/{id}/note-category",
@@ -68,18 +69,17 @@ class NoteCategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(NoteCategory $category, NoteRepository $noteRepository, PaginatorInterface $paginator,Request $request): Response
+    public function show(NoteCategory $category, NoteRepository $noteRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        if($this->isGranted('ROLE_ADMIN')){
+        if ($this->isGranted('ROLE_ADMIN')) {
             $pagination = $paginator->paginate(
-                $noteRepository->findBy(['category'=>$category]),
+                $noteRepository->findBy(['category' => $category]),
                 $request->query->getInt('page', 1),
                 NoteRepository::PAGINATOR_ITEMS_PER_PAGE
             );
-        }
-        else{
+        } else {
             $pagination = $paginator->paginate(
-                $noteRepository->queryByAuthorAndCategory($this->getUser(),$category),
+                $noteRepository->queryByAuthorAndCategory($this->getUser(), $category),
                 $request->query->getInt('page', 1),
                 NoteRepository::PAGINATOR_ITEMS_PER_PAGE
             );
@@ -89,18 +89,18 @@ class NoteCategoryController extends AbstractController
             'note-category/show.html.twig',
             [
                 'pagination' => $pagination,
-                'category'=>$category
+                'category' => $category,
             ]
         );
     }
+
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\NoteCategoryRepository        $categoryRepository NoteCategory repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param NoteCategoryRepository $categoryRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -130,15 +130,15 @@ class NoteCategoryController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
     /**
-     * Edit action.
+     * Edit action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\NoteCategory                      $category           NoteCategory entity
-     * @param \App\Repository\NoteCategoryRepository        $categoryRepository NoteCategory repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param NoteCategory $category
+     * @param NoteCategoryRepository $categoryRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -158,7 +158,7 @@ class NoteCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->save($category);
 
-            $this->addFlash('success','message_updated_successfully');
+            $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('note_category_index');
         }
@@ -171,15 +171,15 @@ class NoteCategoryController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\NoteCategory                      $category           NoteCategory entity
-     * @param \App\Repository\NoteCategoryRepository        $categoryRepository NoteCategory repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param NoteCategory $category
+     * @param NoteCategoryRepository $categoryRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *

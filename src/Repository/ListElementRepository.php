@@ -36,13 +36,11 @@ class ListElementRepository extends ServiceEntityRepository
         parent::__construct($registry, ListElement::class);
     }
 
-
     /**
      * Query all records.
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder();
@@ -61,7 +59,6 @@ class ListElementRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param ListElement $listElement
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

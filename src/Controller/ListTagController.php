@@ -10,7 +10,7 @@ use App\Form\ListSingleTagType;
 use App\Repository\ListTagRepository;
 use App\Repository\ToDoListRepository;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +27,9 @@ class ListTagController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListTagRepository        $listTagRepository ListTag repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request           HTTP request
+     * @param \App\Repository\ListTagRepository         $tagRepository ListTag repository
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator         Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -41,12 +41,19 @@ class ListTagController extends AbstractController
      */
     public function index(Request $request, ListTagRepository $tagRepository, PaginatorInterface $paginator): Response
     {
-        $pagination = $paginator->paginate(
-            $tagRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            ListTagRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
-
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $pagination = $paginator->paginate(
+                $tagRepository->queryAll(),
+                $request->query->getInt('page', 1),
+                ListTagRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        } else {
+            $pagination = $paginator->paginate(
+                $tagRepository->findTagsForAuthor($this->getUser()),
+                $request->query->getInt('page', 1),
+                ListTagRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
         return $this->render(
             'list-tag/index.html.twig',
             ['pagination' => $pagination]
@@ -56,9 +63,11 @@ class ListTagController extends AbstractController
     /**
      * Show action.
      *
-     * @param \App\Entity\ListTag $tag Tag entity
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param ListTag $tag
+     * @param ToDoListRepository $toDoListRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
      *
      * @Route(
      *     "/{id}",
@@ -67,38 +76,36 @@ class ListTagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(ListTag $tag, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator,Request $request): Response
+    public function show(ListTag $tag, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        if($this->isGranted('ROLE_ADMIN')){
+        if ($this->isGranted('ROLE_ADMIN')) {
             $pagination = $paginator->paginate(
                 $toDoListRepository->findByTag($tag),
                 $request->query->getInt('page', 1),
                 ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
             );
-        }
-        else{
+        } else {
             $pagination = $paginator->paginate(
-                $toDoListRepository->queryByAuthorAndTag($this->getUser(),$tag),
+                $toDoListRepository->queryByAuthorAndTag($this->getUser(), $tag),
                 $request->query->getInt('page', 1),
                 ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
             );
         }
+
         return $this->render(
             'list-tag/show.html.twig',
             [
                 'pagination' => $pagination,
-                'tag' => $tag]
+                'tag' => $tag, ]
         );
     }
+
     /**
      * Edit action.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListTag                   $listTag           ListTag entity
-     * @param \App\Repository\ListTagRepository        $listTagRepository ListTag repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ListTag $listTag
+     * @param ListTagRepository $listTagRepository
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -108,8 +115,9 @@ class ListTagController extends AbstractController
      *     name="list_tag_edit",
      *     requirements={"id": "[1-9]\d*"},
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, ListTag $listTag, ListTagRepository $listTagRepository, TranslatorInterface $translator): Response
+    public function edit(Request $request, ListTag $listTag, ListTagRepository $listTagRepository): Response
     {
         $form = $this->createForm(ListSingleTagType::class, $listTag, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -130,12 +138,13 @@ class ListTagController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ListTag                      $listTag           ListTag entity
-     * @param \App\Repository\ListTagRepository        $listTagRepository ListTag repository
+     * @param \Symfony\Component\HttpFoundation\Request $request           HTTP request
+     * @param \App\Entity\ListTag                       $listTag           ListTag entity
+     * @param \App\Repository\ListTagRepository         $listTagRepository ListTag repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -148,8 +157,9 @@ class ListTagController extends AbstractController
      *     name="list_tag_delete",
      *     requirements={"id": "[1-9]\d*"},
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, ListTag $listTag, ListTagRepository $listTagRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, ListTag $listTag, ListTagRepository $listTagRepository): Response
     {
         $form = $this->createForm(ListSingleTagType::class, $listTag, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -173,11 +183,12 @@ class ListTagController extends AbstractController
             ]
         );
     }
+
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\ListTagRepository        $listTagRepository ListTag repository
+     * @param \Symfony\Component\HttpFoundation\Request $request           HTTP request
+     * @param \App\Repository\ListTagRepository         $listTagRepository ListTag repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -189,8 +200,9 @@ class ListTagController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="list_tag_create",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, ListTagRepository $listTagRepository, TranslatorInterface $translator): Response
+    public function create(Request $request, ListTagRepository $listTagRepository): Response
     {
         $listTag = new ListTag();
         $form = $this->createForm(ListSingleTagType::class, $listTag);
@@ -199,7 +211,7 @@ class ListTagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $listTagRepository->save($listTag);
 
-            $this->addFlash('success','message_created_successfully');
+            $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('list_tag_index');
         }

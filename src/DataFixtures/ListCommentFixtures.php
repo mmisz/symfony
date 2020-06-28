@@ -6,8 +6,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\ListComment;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class ListCommentFixtures.

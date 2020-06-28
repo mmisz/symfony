@@ -11,7 +11,6 @@ use App\Repository\NoteRepository;
 use App\Repository\NoteTagRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,27 +27,32 @@ class NoteTagController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\NoteTagRepository        $noteTagRepository NoteTag repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator          Paginator
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request
+     * @param NoteTagRepository $tagRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
      *
      * @Route(
      *     "/",
      *     methods={"GET"},
      *     name="note_tag_index",
      * )
-     *
      */
     public function index(Request $request, NoteTagRepository $tagRepository, PaginatorInterface $paginator): Response
     {
-        $pagination = $paginator->paginate(
-            $tagRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            NoteTagRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
-
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $pagination = $paginator->paginate(
+                $tagRepository->queryAll(),
+                $request->query->getInt('page', 1),
+                NoteTagRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        } else {
+            $pagination = $paginator->paginate(
+                $tagRepository->findTagsForAuthor($this->getUser()),
+                $request->query->getInt('page', 1),
+                NoteRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
         return $this->render(
             'note-tag/index.html.twig',
             ['pagination' => $pagination]
@@ -58,9 +62,11 @@ class NoteTagController extends AbstractController
     /**
      * Show action.
      *
-     * @param \App\Entity\NoteTag $tag Tag entity
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param NoteTag $tag
+     * @param NoteRepository $noteRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
      *
      * @Route(
      *     "/{id}",
@@ -69,38 +75,38 @@ class NoteTagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function show(NoteTag $tag, NoteRepository $noteRepository, PaginatorInterface $paginator,Request $request): Response
+    public function show(NoteTag $tag, NoteRepository $noteRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        if($this->isGranted('ROLE_ADMIN')){
+        if ($this->isGranted('ROLE_ADMIN')) {
             $pagination = $paginator->paginate(
                 $noteRepository->findByTag($tag),
                 $request->query->getInt('page', 1),
                 NoteRepository::PAGINATOR_ITEMS_PER_PAGE
             );
-        }
-        else{
+        } else {
             $pagination = $paginator->paginate(
-                $noteRepository->queryByAuthorAndTag($this->getUser(),$tag),
+                $noteRepository->queryByAuthorAndTag($this->getUser(), $tag),
                 $request->query->getInt('page', 1),
                 NoteRepository::PAGINATOR_ITEMS_PER_PAGE
             );
         }
+
         return $this->render(
             'note-tag/show.html.twig',
             [
                 'pagination' => $pagination,
-                'tag' => $tag]
+                'tag' => $tag, ]
         );
     }
+
     /**
-     * Edit action.
+     * Edit action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\NoteTag                   $noteTag           NoteTag entity
-     * @param \App\Repository\NoteTagRepository        $noteTagRepository NoteTag repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param NoteTag $noteTag
+     * @param NoteTagRepository $noteTagRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -133,15 +139,15 @@ class NoteTagController extends AbstractController
             ]
         );
     }
+
     /**
-     * Delete action.
+     * Delete action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\NoteTag                      $noteTag           NoteTag entity
-     * @param \App\Repository\NoteTagRepository        $noteTagRepository NoteTag repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param NoteTag $noteTag
+     * @param NoteTagRepository $noteTagRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -164,7 +170,7 @@ class NoteTagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $noteTagRepository->delete($noteTag);
-            $this->addFlash('success','message_deleted_successfully');
+            $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('note_tag_index');
         }
@@ -177,14 +183,14 @@ class NoteTagController extends AbstractController
             ]
         );
     }
+
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\NoteTagRepository        $noteTagRepository NoteTag repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param NoteTagRepository $noteTagRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *

@@ -6,14 +6,11 @@ use App\Repository\NoteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=NoteRepository::class)
  * @ORM\Table(name="notes")
- *
  */
 class Note
 {
@@ -69,6 +66,7 @@ class Note
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\NoteTag",
      *     inversedBy="notes",
+     *     fetch="EXTRA_LAZY",
      *     orphanRemoval=true
      * )
      *
@@ -127,7 +125,6 @@ class Note
     }
 
     /**
-     * @param string $title
      * @return $this
      */
     public function setTitle(string $title): self
@@ -146,7 +143,6 @@ class Note
     }
 
     /**
-     * @param string $content
      * @return $this
      */
     public function setContent(string $content): self
@@ -165,7 +161,6 @@ class Note
     }
 
     /**
-     * @param \DateTimeInterface $creation
      * @return $this
      */
     public function setCreation(\DateTimeInterface $creation): self
@@ -184,7 +179,6 @@ class Note
     }
 
     /**
-     * @param \DateTimeInterface|null $last_update
      * @return $this
      */
     public function setLastUpdate(?\DateTimeInterface $last_update): self
@@ -205,7 +199,6 @@ class Note
     }
 
     /**
-     * @param NoteTag $noteTag
      * @return $this
      */
     public function addNoteTag(NoteTag $noteTag): self
@@ -218,7 +211,6 @@ class Note
     }
 
     /**
-     * @param NoteTag $noteTag
      * @return $this
      */
     public function removeNoteTag(NoteTag $noteTag): self
@@ -239,7 +231,6 @@ class Note
     }
 
     /**
-     * @param NoteCategory|null $category
      * @return $this
      */
     public function setCategory(?NoteCategory $category): self
@@ -258,7 +249,6 @@ class Note
     }
 
     /**
-     * @param User|null $author
      * @return $this
      */
     public function setAuthor(?User $author): self

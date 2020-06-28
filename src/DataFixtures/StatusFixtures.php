@@ -5,17 +5,15 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\ListStatus;
 use App\Entity\ListElementStatus;
+use App\Entity\ListStatus;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class StatusFixtures.
  */
 class StatusFixtures extends AbstractBaseFixtures
 {
-
     /**
      * Load data.
      *
@@ -25,10 +23,10 @@ class StatusFixtures extends AbstractBaseFixtures
     {
         $this->createMany(2, 'statuses', function ($i) {
             $status = new ListStatus();
-            if ($i == 0) {
+            if (0 == $i) {
                 $status->setName('to do');
             }
-            if ($i == 1) {
+            if (1 == $i) {
                 $status->setName('done');
             }
 
@@ -37,10 +35,10 @@ class StatusFixtures extends AbstractBaseFixtures
 
         $this->createMany(2, 'elementStatuses', function ($i) {
             $status = new ListElementStatus();
-            if ($i == 0) {
+            if (0 == $i) {
                 $status->setName('to do');
             }
-            if ($i == 1) {
+            if (1 == $i) {
                 $status->setName('done');
             }
 

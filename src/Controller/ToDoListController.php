@@ -6,18 +6,17 @@
 namespace App\Controller;
 
 use App\Entity\ToDoList;
+use App\Form\ListDeleteType;
 use App\Form\ToDoType;
 use App\Repository\ListStatusRepository;
 use App\Repository\ToDoListRepository;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Knp\Component\Pager\PaginatorInterface;
-use App\Form\ListDeleteType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -28,13 +27,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ToDoListController extends AbstractController
 {
     /**
-     * Index action.
+     * Index controller.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Request $request
      * @param ToDoListRepository $toDoListRepository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param PaginatorInterface $paginator
+     * @return Response
      *
      * @Route(
      *     "/",
@@ -43,23 +41,32 @@ class ToDoListController extends AbstractController
      */
     public function index(Request $request, ToDoListRepository $toDoListRepository, PaginatorInterface $paginator): Response
     {
-        $pagination = $paginator->paginate(
-            $toDoListRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            ToDoListRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $pagination = $paginator->paginate(
+                $toDoListRepository->queryAll(),
+                $request->query->getInt('page', 1),
+                $toDoListRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        } else {
+            $pagination = $paginator->paginate(
+                $toDoListRepository->queryByAuthor($this->getUser()),
+                $request->query->getInt('page', 1),
+                $toDoListRepository::PAGINATOR_ITEMS_PER_PAGE
+            );
+        }
+
         return $this->render(
             'to-do/index.html.twig',
-            ['pagination' => $pagination,]
+            ['pagination' => $pagination]
         );
     }
 
     /**
      * Show action.
      *
-     * @param \App\Entity\ToDoList $toDoList ToDoList entity
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param ToDoList $toDoList
+     * @param Request $request
+     * @return Response
      *
      * @Route(
      *     "/{id}",
@@ -68,7 +75,6 @@ class ToDoListController extends AbstractController
      *     requirements={"id": "[1-9]\d*"})
      *
      * @Security("is_granted('ROLE_ADMIN') or is_granted('VIEW', toDoList)")
-     *
      */
     public function show(ToDoList $toDoList, Request $request): Response
     {
@@ -86,14 +92,14 @@ class ToDoListController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Request $request
      * @param ToDoList $toDoList
      * @param ToDoListRepository $toDoListRepository
      * @param TranslatorInterface $translator
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route(
      *     "/to-do-delete/{id}",
      *     methods={"GET", "DELETE"},
@@ -114,8 +120,10 @@ class ToDoListController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'message_deleted_successfully');
             $toDoListRepository->delete($toDoList);
+
             return $this->redirectToRoute('to_do_index');
         }
+
         return $this->render(
             'to-do/delete.html.twig',
             [
@@ -129,15 +137,13 @@ class ToDoListController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\ListCategory $category Category entity
-     * @param \App\Repository\ListCategoryRepository $categoryRepository Category repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ToDoList $toDoList
+     * @param ToDoListRepository $toDoListRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws Exception
      *
      * @Route(
      *     "/to-do-edit/{id}",
@@ -154,7 +160,7 @@ class ToDoListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($toDoList->getStatus()->getName()=='done') {
+            if ('done' == $toDoList->getStatus()->getName()) {
                 $toDoList->setDoneDate(new \DateTime());
             } else {
                 $toDoList->setDoneDate(null);
@@ -173,15 +179,15 @@ class ToDoListController extends AbstractController
             ]
         );
     }
+
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\ToDoList                     $toDoList           ToDoList entity
-     * @param \App\Repository\ToDoListRepository        $toDoListRepository ToDoList repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
+     * @param Request $request
+     * @param ToDoListRepository $toDoListRepository
+     * @param ListStatusRepository $listStatusRepository
+     * @param TranslatorInterface $translator
+     * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
@@ -190,7 +196,6 @@ class ToDoListController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="to_do_create",
      * )
-     *
      */
     public function create(Request $request, ToDoListRepository $toDoListRepository, ListStatusRepository $listStatusRepository, TranslatorInterface $translator): Response
     {
