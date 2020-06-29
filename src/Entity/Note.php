@@ -108,17 +108,11 @@ class Note
         $this->noteTags = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
@@ -134,9 +128,6 @@ class Note
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getContent(): ?string
     {
         return $this->content;
@@ -152,9 +143,6 @@ class Note
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
     public function getCreation(): ?\DateTimeInterface
     {
         return $this->creation;
@@ -170,9 +158,6 @@ class Note
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
     public function getLastUpdate(): ?\DateTimeInterface
     {
         return $this->last_update;
@@ -222,9 +207,6 @@ class Note
         return $this;
     }
 
-    /**
-     * @return NoteCategory|null
-     */
     public function getCategory(): ?NoteCategory
     {
         return $this->category;
@@ -240,9 +222,6 @@ class Note
         return $this;
     }
 
-    /**
-     * @return User|null
-     */
     public function getAuthor(): ?User
     {
         return $this->author;

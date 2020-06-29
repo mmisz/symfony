@@ -16,7 +16,6 @@ class NoteFixtures extends AbstractBaseFixtures implements DependentFixtureInter
 {
     /**
      * data loader for note.
-     * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void
     {

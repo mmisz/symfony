@@ -28,7 +28,6 @@ class ListCommentRepository extends ServiceEntityRepository
 
     /**
      * ListCommentRepository constructor.
-     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -37,7 +36,7 @@ class ListCommentRepository extends ServiceEntityRepository
 
     /**
      * save comment.
-     * @param ListComment $listComment
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

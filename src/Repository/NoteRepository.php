@@ -35,8 +35,7 @@ class NoteRepository extends ServiceEntityRepository
 
     /**
      * NoteRepository constructor.
-     *
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -45,7 +44,6 @@ class NoteRepository extends ServiceEntityRepository
 
     /**
      * save Note.
-     *
      * @param Note $note
      */
     public function save(Note $note): void
@@ -77,7 +75,7 @@ class NoteRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
@@ -172,6 +170,7 @@ class NoteRepository extends ServiceEntityRepository
 
         return $queryBuilder;
     }
+
     // /**
     //  * @return Note[] Returns an array of Note objects
     //  */

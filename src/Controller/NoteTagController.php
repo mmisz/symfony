@@ -12,6 +12,7 @@ use App\Repository\NoteTagRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class NoteTagController extends AbstractController
 {
     /**
-     * Index action.
+     * index action.
      *
      * @param Request $request
      * @param NoteTagRepository $tagRepository
@@ -53,6 +54,7 @@ class NoteTagController extends AbstractController
                 NoteRepository::PAGINATOR_ITEMS_PER_PAGE
             );
         }
+
         return $this->render(
             'note-tag/index.html.twig',
             ['pagination' => $pagination]
@@ -100,12 +102,11 @@ class NoteTagController extends AbstractController
     }
 
     /**
-     * Edit action
+     * Edit action.
      *
      * @param Request $request
      * @param NoteTag $noteTag
      * @param NoteTagRepository $noteTagRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -118,7 +119,7 @@ class NoteTagController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository, TranslatorInterface $translator): Response
+    public function edit(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository): Response
     {
         $form = $this->createForm(NoteSingleTagType::class, $noteTag, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -141,12 +142,11 @@ class NoteTagController extends AbstractController
     }
 
     /**
-     * Delete action
+     * Delete action.
      *
      * @param Request $request
      * @param NoteTag $noteTag
      * @param NoteTagRepository $noteTagRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -159,9 +159,9 @@ class NoteTagController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, NoteTag $noteTag, NoteTagRepository $noteTagRepository): Response
     {
-        $form = $this->createForm(NoteSingleTagType::class, $noteTag, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $noteTag, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
@@ -185,11 +185,10 @@ class NoteTagController extends AbstractController
     }
 
     /**
-     * Create action.
+     * Create action
      *
      * @param Request $request
      * @param NoteTagRepository $noteTagRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -201,7 +200,7 @@ class NoteTagController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, NoteTagRepository $noteTagRepository, TranslatorInterface $translator): Response
+    public function create(Request $request, NoteTagRepository $noteTagRepository): Response
     {
         $noteTag = new NoteTag();
         $form = $this->createForm(NoteSingleTagType::class, $noteTag);

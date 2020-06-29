@@ -12,6 +12,7 @@ use App\Repository\ToDoListRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,11 +56,13 @@ class ListCategoryController extends AbstractController
 
     /**
      * Show action.
+     *
      * @param ListCategory $category
      * @param ToDoListRepository $toDoListRepository
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
+     *
      * @Route(
      *     "/{id}/list-category",
      *     methods={"GET"},
@@ -93,14 +96,14 @@ class ListCategoryController extends AbstractController
     }
 
     /**
-     * Create action.
+     * Create action
      *
      * @param Request $request
      * @param ListCategoryRepository $categoryRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route(
      *     "/list-category-create",
      *     methods={"GET", "POST"},
@@ -108,7 +111,7 @@ class ListCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, ListCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
+    public function create(Request $request, ListCategoryRepository $categoryRepository): Response
     {
         $category = new ListCategory();
         $form = $this->createForm(ListCategoryType::class, $category);
@@ -134,7 +137,6 @@ class ListCategoryController extends AbstractController
      * @param Request $request
      * @param ListCategory $category
      * @param ListCategoryRepository $categoryRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -147,7 +149,7 @@ class ListCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
+    public function edit(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
     {
         $form = $this->createForm(ListCategoryType::class, $category, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -170,13 +172,11 @@ class ListCategoryController extends AbstractController
     }
 
     /**
-     *
      * Delete action.
      *
      * @param Request $request
      * @param ListCategory $category
      * @param ListCategoryRepository $categoryRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -189,14 +189,14 @@ class ListCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, ListCategory $category, ListCategoryRepository $categoryRepository): Response
     {
         if ($category->getToDoLists()->count()) {
             $this->addFlash('warning', 'message_category_contains_tasks');
 
             return $this->redirectToRoute('list_category_index');
         }
-        $form = $this->createForm(ListCategoryType::class, $category, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $category, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {

@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\ListTag;
-use App\Entity\ToDoList;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -11,6 +10,7 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * ListTagRepository class.
+ *
  * @method ListTag|null find($id, $lockMode = null, $lockVersion = null)
  * @method ListTag|null findOneBy(array $criteria, array $orderBy = null)
  * @method ListTag[]    findAll()
@@ -63,7 +63,7 @@ class ListTagRepository extends ServiceEntityRepository
 
     /**
      * save tag.
-     * @param ListTag $listTag
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -75,7 +75,7 @@ class ListTagRepository extends ServiceEntityRepository
 
     /**
      * find by name.
-     * @param string $name
+     *
      * @return ListTag|null
      */
     public function findOneByName(string $name)
@@ -98,10 +98,9 @@ class ListTagRepository extends ServiceEntityRepository
         $this->_em->remove($listTag);
         $this->_em->flush($listTag);
     }
+
     /**
      * find tags by author of content.
-     * @param User $user
-     * @return QueryBuilder
      */
     public function findTagsForAuthor(User $user): QueryBuilder
     {

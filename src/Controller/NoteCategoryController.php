@@ -13,6 +13,7 @@ use App\Repository\NoteRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -95,11 +96,10 @@ class NoteCategoryController extends AbstractController
     }
 
     /**
-     * Create action.
+     * create action.
      *
      * @param Request $request
      * @param NoteCategoryRepository $categoryRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -111,7 +111,7 @@ class NoteCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request, NoteCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
+    public function create(Request $request, NoteCategoryRepository $categoryRepository): Response
     {
         $category = new NoteCategory();
         $form = $this->createForm(NoteCategoryType::class, $category);
@@ -132,12 +132,11 @@ class NoteCategoryController extends AbstractController
     }
 
     /**
-     * Edit action
+     * Edit action.
      *
      * @param Request $request
      * @param NoteCategory $category
      * @param NoteCategoryRepository $categoryRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -150,7 +149,7 @@ class NoteCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
+    public function edit(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
     {
         $form = $this->createForm(NoteCategoryType::class, $category, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -178,7 +177,6 @@ class NoteCategoryController extends AbstractController
      * @param Request $request
      * @param NoteCategory $category
      * @param NoteCategoryRepository $categoryRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -191,14 +189,14 @@ class NoteCategoryController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, NoteCategory $category, NoteCategoryRepository $categoryRepository): Response
     {
         if ($category->getNotes()->count()) {
             $this->addFlash('warning', 'message_category_contains_notes');
 
             return $this->redirectToRoute('note_category_index');
         }
-        $form = $this->createForm(NoteCategoryType::class, $category, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $category, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {

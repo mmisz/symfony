@@ -11,8 +11,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Class ToDoListRepository
- * @package App\Repository
+ * Class ToDoListRepository.
+ *
  * @method ToDoList|null find($id, $lockMode = null, $lockVersion = null)
  * @method ToDoList|null findOneBy(array $criteria, array $orderBy = null)
  * @method ToDoList[]    findAll()
@@ -34,7 +34,6 @@ class ToDoListRepository extends ServiceEntityRepository
     /**
      * ToDoListRepository constructor.
      *
-     * @param ManagerRegistry $registry
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
@@ -96,11 +95,11 @@ class ToDoListRepository extends ServiceEntityRepository
 
     /**
      * Query tasks by author.
-     * @param \App\Entity\User $user User entity
+     *
+     * @param User $user
      * @param ListCategory $category
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder
      */
-
     public function queryByAuthorAndCategory(User $user, ListCategory $category): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
@@ -115,6 +114,7 @@ class ToDoListRepository extends ServiceEntityRepository
 
     /**
      * Query tasks by author and tag.
+     *
      * @param User $user
      * @param ListTag $tag
      * @return QueryBuilder
@@ -134,6 +134,7 @@ class ToDoListRepository extends ServiceEntityRepository
 
     /**
      * find tasks by tag.
+     *
      * @param ListTag $tag
      * @return QueryBuilder
      */
@@ -151,6 +152,7 @@ class ToDoListRepository extends ServiceEntityRepository
 
     /**
      * query by author.
+     *
      * @param User $user
      * @return QueryBuilder
      */
@@ -163,5 +165,4 @@ class ToDoListRepository extends ServiceEntityRepository
 
         return $queryBuilder;
     }
-
 }

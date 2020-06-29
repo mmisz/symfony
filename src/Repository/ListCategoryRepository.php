@@ -24,7 +24,7 @@ class ListCategoryRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 3;
+    const PAGINATOR_ITEMS_PER_PAGE = 5;
 
     /**
      * CategoryRepository constructor.
@@ -48,10 +48,6 @@ class ListCategoryRepository extends ServiceEntityRepository
 
     /**
      * Get or create new query builder.
-     *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {

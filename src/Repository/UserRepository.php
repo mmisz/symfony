@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
@@ -34,9 +35,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * UserRepository constructor.
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
      */
-    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
@@ -44,8 +44,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      *
-     * @param UserInterface $user
-     * @param string $newEncodedPassword
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -85,7 +83,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * save User.
      *
-     * @param User $user
      * @throws ORMException
      * @throws OptimisticLockException
      */

@@ -16,7 +16,6 @@ class NoteTagFixtures extends AbstractBaseFixtures implements DependentFixtureIn
 {
     /**
      * load note data.
-     * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void
     {

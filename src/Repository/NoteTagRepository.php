@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\NoteTag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -30,9 +31,8 @@ class NoteTagRepository extends ServiceEntityRepository
 
     /**
      * NoteTagRepository constructor.
-     * @param \Doctrine\Common\Persistence\ManagerRegistry $registry
      */
-    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, NoteTag::class);
     }
@@ -62,7 +62,6 @@ class NoteTagRepository extends ServiceEntityRepository
     /**
      * save Note Tag.
      *
-     * @param NoteTag $noteTag
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -75,7 +74,6 @@ class NoteTagRepository extends ServiceEntityRepository
     /**
      * find One By Name.
      *
-     * @param string $name
      * @return NoteTag|null
      */
     public function findOneByName(string $name)
@@ -101,16 +99,13 @@ class NoteTagRepository extends ServiceEntityRepository
 
     /**
      * find Tags For Author.
-     *
-     * @param User $user
-     * @return QueryBuilder
      */
     public function findTagsForAuthor(User $user): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
 
         $queryBuilder
-            ->innerJoin('noteTag.Notes', 'list')
+            ->innerJoin('noteTag.notes', 'list')
             ->andWhere('list.author = :user')
             ->setParameter('user', $user)
             ->orderBy('noteTag.id');

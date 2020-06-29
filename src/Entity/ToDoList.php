@@ -140,17 +140,11 @@ class ToDoList
         $this->listTag = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
@@ -166,9 +160,6 @@ class ToDoList
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getCreation(): DateTimeInterface
     {
         return $this->creation;
@@ -258,9 +249,6 @@ class ToDoList
         return $this;
     }
 
-    /**
-     * @return ListCategory|null
-     */
     public function getCategory(): ?ListCategory
     {
         return $this->category;
@@ -312,9 +300,6 @@ class ToDoList
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface|null
-     */
     public function getDoneDate(): ?\DateTimeInterface
     {
         return $this->done_date;
@@ -330,9 +315,6 @@ class ToDoList
         return $this;
     }
 
-    /**
-     * @return ListStatus|null
-     */
     public function getStatus(): ?ListStatus
     {
         return $this->status;
@@ -348,9 +330,6 @@ class ToDoList
         return $this;
     }
 
-    /**
-     * @return User|null
-     */
     public function getAuthor(): ?User
     {
         return $this->author;

@@ -10,10 +10,10 @@ use App\Form\ListDeleteType;
 use App\Form\ToDoType;
 use App\Repository\ListStatusRepository;
 use App\Repository\ToDoListRepository;
-use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -95,7 +95,6 @@ class ToDoListController extends AbstractController
      * @param Request $request
      * @param ToDoList $toDoList
      * @param ToDoListRepository $toDoListRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -109,9 +108,9 @@ class ToDoListController extends AbstractController
      *
      * @Security("is_granted('ROLE_ADMIN') or is_granted('DELETE', toDoList)")
      */
-    public function delete(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
     {
-        $form = $this->createForm(ListDeleteType::class, $toDoList, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $toDoList, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() && $request->isMethod('DELETE')) {
@@ -140,7 +139,6 @@ class ToDoListController extends AbstractController
      * @param Request $request
      * @param ToDoList $toDoList
      * @param ToDoListRepository $toDoListRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -154,7 +152,7 @@ class ToDoListController extends AbstractController
      *
      * @Security("is_granted('ROLE_ADMIN') or is_granted('EDIT', toDoList)")
      */
-    public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository, TranslatorInterface $translator): Response
+    public function edit(Request $request, ToDoList $toDoList, ToDoListRepository $toDoListRepository): Response
     {
         $form = $this->createForm(ToDoType::class, $toDoList, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -186,7 +184,6 @@ class ToDoListController extends AbstractController
      * @param Request $request
      * @param ToDoListRepository $toDoListRepository
      * @param ListStatusRepository $listStatusRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -197,7 +194,7 @@ class ToDoListController extends AbstractController
      *     name="to_do_create",
      * )
      */
-    public function create(Request $request, ToDoListRepository $toDoListRepository, ListStatusRepository $listStatusRepository, TranslatorInterface $translator): Response
+    public function create(Request $request, ToDoListRepository $toDoListRepository, ListStatusRepository $listStatusRepository): Response
     {
         $toDoList = new ToDoList();
         $form = $this->createForm(ToDoType::class, $toDoList);

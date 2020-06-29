@@ -199,7 +199,7 @@ class User implements UserInterface
     }
 
     /**
-     * Getter for Salt
+     * Getter for Salt.
      *
      * @see UserInterface
      */
@@ -217,9 +217,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;

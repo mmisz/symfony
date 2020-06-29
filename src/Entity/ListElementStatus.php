@@ -34,17 +34,11 @@ class ListElementStatus
         $this->listElements = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -52,6 +46,7 @@ class ListElementStatus
 
     /**
      * Setter for Name.
+     *
      * @param /ListElementStatus
      */
     public function setName(string $name): void

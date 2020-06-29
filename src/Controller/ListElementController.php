@@ -7,8 +7,8 @@ use App\Entity\ToDoList;
 use App\Form\ListElementType;
 use App\Repository\ListElementRepository;
 use App\Repository\ListElementStatusRepository;
-use App\Repository\ListStatusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,10 +21,10 @@ class ListElementController extends AbstractController
 {
     /**
      * edit action.
+     *
      * @param Request $request
      * @param ListElement $listElement
      * @param ListElementRepository $listElementRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -36,7 +36,7 @@ class ListElementController extends AbstractController
      *     name="list_element_edit",
      * )
      */
-    public function edit(Request $request, ListElement $listElement, ListElementRepository $listElementRepository, TranslatorInterface $translator): Response
+    public function edit(Request $request, ListElement $listElement, ListElementRepository $listElementRepository): Response
     {
         $form = $this->createForm(ListElementType::class, $listElement, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -61,15 +61,15 @@ class ListElementController extends AbstractController
     }
 
     /**
-     * Delete action.
+     * delete action.
      *
      * @param Request $request
      * @param ListElement $listElement
      * @param ListElementRepository $listElementRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route(
      *     "/list-element-delete/{id}",
      *     methods={"GET", "DELETE"},
@@ -77,9 +77,9 @@ class ListElementController extends AbstractController
      *     name="list_element_delete",
      * )
      */
-    public function delete(Request $request, ListElement $listElement, ListElementRepository $listElementRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, ListElement $listElement, ListElementRepository $listElementRepository): Response
     {
-        $form = $this->createForm(ListElementType::class, $listElement, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $listElement, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() && $request->isMethod('DELETE')) {
@@ -115,10 +115,10 @@ class ListElementController extends AbstractController
      * @param Request $request
      * @param ListElementRepository $listElementRepository
      * @param ListElementStatusRepository $listStatusRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
      * @Route(
      *     "{id}/list-element-create",
      *     methods={"GET", "POST"},
@@ -126,7 +126,7 @@ class ListElementController extends AbstractController
      *     name="list_element_create",
      * )
      */
-    public function create(ToDoList $toDoList, Request $request, ListElementRepository $listElementRepository, ListElementStatusRepository $listStatusRepository, TranslatorInterface $translator): Response
+    public function create(ToDoList $toDoList, Request $request, ListElementRepository $listElementRepository, ListElementStatusRepository $listStatusRepository): Response
     {
         $listElement = new ListElement();
         $form = $this->createForm(ListElementType::class, $listElement);

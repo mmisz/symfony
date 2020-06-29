@@ -9,13 +9,15 @@ use App\Entity\ListTag;
 use App\Form\ListSingleTagType;
 use App\Repository\ListTagRepository;
 use App\Repository\ToDoListRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ListTagController.
@@ -27,11 +29,11 @@ class ListTagController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request           HTTP request
-     * @param \App\Repository\ListTagRepository         $tagRepository ListTag repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator         Paginator
+     * @param Request $request       HTTP request
+     * @param ListTagRepository $tagRepository ListTag repository
+     * @param PaginatorInterface $paginator     Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -54,6 +56,7 @@ class ListTagController extends AbstractController
                 ListTagRepository::PAGINATOR_ITEMS_PER_PAGE
             );
         }
+
         return $this->render(
             'list-tag/index.html.twig',
             ['pagination' => $pagination]
@@ -101,15 +104,16 @@ class ListTagController extends AbstractController
     }
 
     /**
-     * Edit action.
+     * Edit action
+     *
      * @param Request $request
      * @param ListTag $listTag
      * @param ListTagRepository $listTagRepository
      * @return Response
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
-     * @Route(
+     * * @Route(
      *     "/{id}/list-tag-edit",
      *     methods={"GET", "PUT"},
      *     name="list_tag_edit",
@@ -142,14 +146,14 @@ class ListTagController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request           HTTP request
-     * @param \App\Entity\ListTag                       $listTag           ListTag entity
-     * @param \App\Repository\ListTagRepository         $listTagRepository ListTag repository
+     * @param Request $request           HTTP request
+     * @param ListTag $listTag           ListTag entity
+     * @param ListTagRepository $listTagRepository ListTag repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/list-tag-delete",
@@ -161,7 +165,7 @@ class ListTagController extends AbstractController
      */
     public function delete(Request $request, ListTag $listTag, ListTagRepository $listTagRepository): Response
     {
-        $form = $this->createForm(ListSingleTagType::class, $listTag, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $listTag, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
@@ -187,13 +191,13 @@ class ListTagController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request           HTTP request
-     * @param \App\Repository\ListTagRepository         $listTagRepository ListTag repository
+     * @param Request $request           HTTP request
+     * @param ListTagRepository $listTagRepository ListTag repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/list-tag-create",

@@ -13,8 +13,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /**
- * Class RegistrationController
- * @package App\Controller
+ * Class RegistrationController.
  */
 class RegistrationController extends AbstractController
 {
@@ -27,7 +26,7 @@ class RegistrationController extends AbstractController
      * @param LoginFormAuthenticator $authenticator
      * @return Response
      *
-     *  @Route("/register", name="app_register")
+     * @Route("/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {

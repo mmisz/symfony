@@ -16,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,7 +78,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Edit email action.
+     * edit email action.
      *
      * @param Request $request
      * @param User $usr
@@ -87,7 +88,7 @@ class UserController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      *
-     * @Route(
+     * * @Route(
      *     "/{id}/user-email",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
@@ -117,7 +118,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Edit password action.
+     * Edit passw.
      *
      * @param Request $request
      * @param User $usr
@@ -146,7 +147,7 @@ class UserController extends AbstractController
         $form = $this->createForm($type, $usr, ['method' => 'PUT']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $newPassword = $form->get('new_password')->getData();
+            $newPassword = $form->get('password')->getData();
             if ($this->isGranted('ROLE_ADMIN')) {
                 $usr->setPassword(
                     $passwordEncoder->encodePassword(
@@ -210,7 +211,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user, UserRepository $userRepository, ToDoListRepository $toDoListRepository, NoteRepository $noteRepository): Response
     {
-        $form = $this->createForm(UserEmailType::class, $user, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {

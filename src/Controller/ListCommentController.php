@@ -10,6 +10,7 @@ use App\Entity\ToDoList;
 use App\Form\ListCommentType;
 use App\Repository\ListCommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,11 +23,9 @@ class ListCommentController extends AbstractController
 {
     /**
      * Edit action.
-     *
      * @param Request $request
      * @param ListComment $listComment
      * @param ListCommentRepository $listCommentRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -38,7 +37,7 @@ class ListCommentController extends AbstractController
      *     name="list_comment_edit",
      * )
      */
-    public function edit(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository, TranslatorInterface $translator): Response
+    public function edit(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository): Response
     {
         $form = $this->createForm(ListCommentType::class, $listComment, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -68,7 +67,6 @@ class ListCommentController extends AbstractController
      * @param Request $request
      * @param ListComment $listComment
      * @param ListCommentRepository $listCommentRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -80,9 +78,9 @@ class ListCommentController extends AbstractController
      *     name="list_comment_delete",
      * )
      */
-    public function delete(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository, TranslatorInterface $translator): Response
+    public function delete(Request $request, ListComment $listComment, ListCommentRepository $listCommentRepository): Response
     {
-        $form = $this->createForm(ListCommentType::class, $listComment, ['method' => 'DELETE']);
+        $form = $this->createForm(FormType::class, $listComment, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() && $request->isMethod('DELETE')) {
@@ -107,12 +105,11 @@ class ListCommentController extends AbstractController
     }
 
     /**
-     * Create action.
+     * create action.
      *
      * @param ToDoList $toDoList
      * @param Request $request
      * @param ListCommentRepository $listCommentRepository
-     * @param TranslatorInterface $translator
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -124,7 +121,7 @@ class ListCommentController extends AbstractController
      *     name="list_comment_create",
      * )
      */
-    public function create(ToDoList $toDoList, Request $request, ListCommentRepository $listCommentRepository, TranslatorInterface $translator): Response
+    public function create(ToDoList $toDoList, Request $request, ListCommentRepository $listCommentRepository): Response
     {
         $listComment = new ListComment();
         $form = $this->createForm(ListCommentType::class, $listComment);

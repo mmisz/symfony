@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ListStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -30,7 +31,7 @@ class ListStatusRepository extends ServiceEntityRepository
      *
      * @param \Doctrine\Common\Persistence\ManagerRegistry $registry Manager registry
      */
-    public function __construct(\Doctrine\Common\Persistence\ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ListStatus::class);
     }

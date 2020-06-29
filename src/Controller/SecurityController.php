@@ -17,9 +17,9 @@ class SecurityController extends AbstractController
 {
     /**
      * action homepage.
-     *
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
+     *
      * @Route("/", name="homepage")
      */
     public function homepage(AuthenticationUtils $authenticationUtils): Response

@@ -21,8 +21,6 @@ class UserPasswordType extends AbstractType
 {
     /**
      * build form.
-     * @param FormBuilderInterface $builder
-     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -40,7 +38,7 @@ class UserPasswordType extends AbstractType
             ]
         );
         $builder
-            ->add('new_password', RepeatedType::class, [
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
                 'first_options' => ['label' => 'Password'],
@@ -51,7 +49,6 @@ class UserPasswordType extends AbstractType
 
     /**
      * configure options.
-     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
