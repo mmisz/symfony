@@ -166,13 +166,12 @@ class ToDoList
     }
 
     /**
-     * @return $this
+     * setter for Creation.
+     * @param DateTimeInterface $creation
      */
-    public function setCreation(\DateTimeInterface $creation): self
+    public function setCreation(\DateTimeInterface $creation): void
     {
         $this->creation = $creation;
-
-        return $this;
     }
 
     /**
@@ -255,13 +254,13 @@ class ToDoList
     }
 
     /**
-     * @return $this
+     * Setter for Category.
+     *
+     * @param ListCategory|null $category
      */
-    public function setCategory(?ListCategory $category): self
+    public function setCategory(?ListCategory $category): void
     {
         $this->category = $category;
-
-        return $this;
     }
 
     /**
@@ -306,13 +305,13 @@ class ToDoList
     }
 
     /**
-     * @return $this
+     * Setter for DoneDate.
+     *
+     * @param DateTimeInterface|null $done_date
      */
-    public function setDoneDate(?\DateTimeInterface $done_date): self
+    public function setDoneDate(?\DateTimeInterface $done_date): void
     {
         $this->done_date = $done_date;
-
-        return $this;
     }
 
     public function getStatus(): ?ListStatus
@@ -321,13 +320,12 @@ class ToDoList
     }
 
     /**
-     * @return $this
+     * Setter for Status.
+     * @param ListStatus|null $status
      */
-    public function setStatus(?ListStatus $status): self
+    public function setStatus(?ListStatus $status): void
     {
         $this->status = $status;
-
-        return $this;
     }
 
     public function getAuthor(): ?User
@@ -336,12 +334,11 @@ class ToDoList
     }
 
     /**
-     * @return $this
+     * Setter for Author.
+     * @param User|null $author
      */
-    public function setAuthor(?User $author): self
+    public function setAuthor(?User $author): void
     {
         $this->author = $author;
-
-        return $this;
     }
 }

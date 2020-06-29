@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ListElementRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -81,13 +82,13 @@ class ListElement
     }
 
     /**
-     * @return $this
+     * Setter for Content.
+     *
+     * @param string $content
      */
-    public function setContent(string $content): self
+    public function setContent(string $content): void
     {
         $this->content = $content;
-
-        return $this;
     }
 
     /**
@@ -99,49 +100,48 @@ class ListElement
     }
 
     /**
-     * @return $this
+     * Setter for ToDoList.
+     *
+     * @param ToDoList|null $to_do_list
      */
-    public function setToDoList(?ToDoList $to_do_list): self
+    public function setToDoList(?ToDoList $to_do_list): void
     {
         $this->to_do_list = $to_do_list;
-
-        return $this;
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getCreation(): ?\DateTimeInterface
+    public function getCreation(): ?DateTimeInterface
     {
         return $this->creation;
     }
 
     /**
-     * @return $this
+     * Setter for Creation.
+     * @param DateTimeInterface $creation
      */
-    public function setCreation(\DateTimeInterface $creation): self
+    public function setCreation(DateTimeInterface $creation): void
     {
         $this->creation = $creation;
-
-        return $this;
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getDoneDate(): ?\DateTimeInterface
+    public function getDoneDate(): ?DateTimeInterface
     {
         return $this->done_date;
     }
 
     /**
-     * @return $this
+     * Setter for DoneDate.
+     *
+     * @param DateTimeInterface|null $done_date
      */
-    public function setDoneDate(?\DateTimeInterface $done_date): self
+    public function setDoneDate(?DateTimeInterface $done_date): void
     {
         $this->done_date = $done_date;
-
-        return $this;
     }
 
     /**
@@ -153,12 +153,12 @@ class ListElement
     }
 
     /**
-     * @return $this
+     * Setter for Status.
+     *
+     * @param ListElementStatus|null $status\
      */
-    public function setStatus(?ListElementStatus $status): self
+    public function setStatus(?ListElementStatus $status): void
     {
         $this->status = $status;
-
-        return $this;
     }
 }

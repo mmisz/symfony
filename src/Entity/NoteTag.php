@@ -80,13 +80,11 @@ class NoteTag
     }
 
     /**
-     * @return $this
+     * @param string $name
      */
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**

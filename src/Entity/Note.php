@@ -103,59 +103,74 @@ class Note
      */
     private $author;
 
+    /**
+     * Note constructor.
+     */
     public function __construct()
     {
         $this->noteTags = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
     /**
-     * @return $this
+     * Setter for Title.
+     *
+     * @param string $title
      */
-    public function setTitle(string $title): self
+    public function setTitle(string $title): void
     {
         $this->title = $title;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
     /**
-     * @return $this
+     * Setter for Content
+     *
+     * @param string $content
      */
-    public function setContent(string $content): self
+    public function setContent(string $content): void
     {
         $this->content = $content;
-
-        return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreation(): ?\DateTimeInterface
     {
         return $this->creation;
     }
 
     /**
-     * @return $this
+     * Setter for Creation
+     *
+     * @param \DateTimeInterface $creation
      */
-    public function setCreation(\DateTimeInterface $creation): self
+    public function setCreation(\DateTimeInterface $creation): void
     {
         $this->creation = $creation;
-
-        return $this;
     }
 
     public function getLastUpdate(): ?\DateTimeInterface
@@ -207,33 +222,38 @@ class Note
         return $this;
     }
 
+    /**
+     * @return NoteCategory|null
+     */
     public function getCategory(): ?NoteCategory
     {
         return $this->category;
     }
 
     /**
-     * @return $this
+     * Setter for Category
+     * @param NoteCategory|null $category
      */
-    public function setCategory(?NoteCategory $category): self
+    public function setCategory(?NoteCategory $category): void
     {
         $this->category = $category;
-
-        return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
     /**
-     * @return $this
+     * Setter for Author.
+     *
+     * @param User|null $author
      */
-    public function setAuthor(?User $author): self
+    public function setAuthor(?User $author): void
     {
         $this->author = $author;
-
-        return $this;
     }
 }

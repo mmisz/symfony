@@ -223,12 +223,12 @@ class User implements UserInterface
     }
 
     /**
-     * @return $this
+     * Setter for name.
+     *
+     * @param string $name
      */
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 }
